@@ -7,7 +7,7 @@ const Hero = () => {
     <div className="flex flex-col gap-[60px] pt-[120px]">
       <div>
         <h1 className="text-neutral-15 font-Amiri lg:text-[64px] sm:text-[48px] text-[36px] font-bold lg:leading-[90px] sm:leading-[48px] leading-[42px] text-center max-w-[1121px] mx-auto w-full">
-          Creating Beautiful,
+          Creating Beautiful,{" "}
           <span className="text-primary-10 ">Healthy Smiles</span> with Expert
           Dental Care
         </h1>

@@ -7,7 +7,9 @@ import arrowUpBlack from "@/assets/icons/arrowUp-black.svg";
 import expertise from "@/assets/icons/expertise.svg";
 import care from "@/assets/icons/care.svg";
 import leftDisabledArrow from "@/assets/icons/left-disabled-arrow.svg";
+import leftEnabledArrow from "@/assets/icons/left-enabled-arrow.svg";
 import rightActiveArrow from "@/assets/icons/right--active-arrow.svg";
+import rightDisabledArrow from "@/assets/icons/right-disabled-arrow.svg";
 import quotation from "@/assets/icons/quotation.svg";
 import nextActive from "@/assets/icons/next-active.svg";
 import previousDisabled from "@/assets/icons/previous-disabled.svg";
@@ -91,7 +93,9 @@ export const ICONS = {
     expertise,
     care,
     leftDisabledArrow,
+    leftEnabledArrow,
     rightActiveArrow,
+    rightDisabledArrow,
     quotation,
     nextActive,
     previousDisabled,

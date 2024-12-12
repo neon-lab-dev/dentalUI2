@@ -20,7 +20,7 @@ const WhyUs = () => {
   ];
   return (
     <div className=" flex flex-col lg:flex-row max-w-full items-center justify-between gap-20">
-      <div className="lg:order-2 flex flex-col lg:item-start lg:items-start">
+      <div className="lg:order-2 flex flex-col lg:item-start lg:items-start gap-4">
         <Heading
           subHeading={"WHY US"}
           classNames={"max-w-[340px] lg:max-w-[881px] w-full"}
