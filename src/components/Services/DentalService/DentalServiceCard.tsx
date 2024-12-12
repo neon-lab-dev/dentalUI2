@@ -20,7 +20,7 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
     <div
       className={`${
         isFullWidth
-          ? "flex flex-col md:flex-row items-center gap-8 w-full"
+          ? "flex flex-col lg:flex-row items-start gap-8 w-full"
           : ""
       } border border-neutral-15/60 rounded-3xl`}
     >
@@ -29,7 +29,7 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
         alt="Dental service"
         className={`${
           isFullWidth
-            ? "w-full md:w-1/2 object-cover h-full rounded-t-3xl"
+            ? "w-full lg:w-1/2 object-cover h-full rounded-t-3xl lg:rounded-l-3xl lg:rounded-r-none"
             : "w-full object-cover rounded-t-3xl h-[270px]"
         }`}
       />
@@ -40,17 +40,16 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
             : "flex flex-col p-6 2xl:p-12"
         }`}
       >
-        <h1 className="text-black font-Amiri lg:text-[48px] sm:text-[32px] text-2xl font-bold lg:leading-[48px] sm:leading-8 leading-7">
+        <h1 className="text-black font-Amiri lg:text-[48px] md:text-[32px] text-2xl font-bold lg:leading-[48px] md:leading-8 leading-7">
           {title}
         </h1>
-        <p className="text-neutral-10 font-Poppins md:text-xl sm:text-base text-xs  mt-4">{content}</p>
+        <p className="text-neutral-10 font-Poppins lg:text-xl md:text-base text-xs text-start  mt-4">{content}</p>
         <Button
           variant="Gradient"
-          classNames={`${isBtnVisible?"":"hidden md:flex"} md:px-[50px] md:py-[22px] md:px-[36px] sm:py-[16px] px-[28px] py-[14px] w-fit mt-12 ${
+          classNames={`${isBtnVisible?"":"hidden lg:flex"} lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] w-fit mt-12 ${
             isFullWidth ? "self-start" : ""
           }`}
-        >
-          <p className="md:text-[22px] sm:text-[18px] text-base">Schedule An Appointment!</p>
+        >Schedule An Appointment!
         </Button>
 
 

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ICONS } from "@/assets";
 const Statement = () => {
   return (
-    <div className="bg-[#FF7F50] rounded-[32px] xl:mx-[120px] md:my-[193px] py-8 px-4 relative  ">
+    <div className="bg-[#FF7F50] rounded-[32px] px-4 md:px-8 xl:px-[60px] 2xl:px-[120px] md:my-[193px] py-8 px-4 relative  ">
       <Image
         src={ICONS.openinvertedcomma}
         alt="open inverted comma"
@@ -12,7 +12,7 @@ const Statement = () => {
       />
       <div className="md:py-12 py-8">
         {" "}
-        <div className="font-Amiri xl:text-5xl md:text-4xl text-2xl font-bold xl:leading-[66px] md:leading-[44px] leading-9 text-white text-center xl:pt-[61px] pt-8  xl:px-[206px]">
+        <div className="font-Amiri lg:text-5xl md:text-4xl text-2xl font-bold lg:leading-[66px] md:leading-[44px] leading-9 text-white text-center xl:pt-[61px] pt-8  xl:px-[206px]">
           As the CEO of [Your Dental Practice Name], my goal has always been to
           create a welcoming environment where every patient feels cared for and
           confident in their smile. Our dedicated team is committed to providing
@@ -21,7 +21,7 @@ const Statement = () => {
           it’s our privilege to be a part of yours.
         </div>
         <div className="md:w-[620px] h-[2px] bg-[#ADD8E6] mx-auto my-[24px]"></div>
-        <div className=" text-center font-Amiri  md:text-5xl text-2xl font-bold md:leading-[66px] leading-9 md:pb-[61px] pb-8">
+        <div className=" text-center font-Amiri lg:text-5xl md:text-4xl text-2xl font-bold lg:leading-[66px] md:leading-[44px] leading-9 md:pb-[61px] pb-8">
           -A Message from Our CEO
         </div>
       </div>

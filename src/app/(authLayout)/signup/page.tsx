@@ -41,19 +41,20 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className=" w-full flex justify-start items-center gap-20">
-      <div className="">
-        <div className="py-6">
-          <h1 className="font-Amiri text-5xl font-bold leading-[66px] pb-4 text-[#101010]">
+    <div className=" w-full flex flex-col justify-start items-center ">
+      <div className="w-full">
+          <h1 className="font-Amiri md:text-5xl text-4xl font-bold leading-[66px] pb-4 text-neutral-15">
             Join Our Dental Family
           </h1>
-          <p className="font-Poppins text-lg pt-4 text-[#333]">
+          <p className="font-Poppins lg:text-xl md:text-base text-xs pt-4 text-neutral-10">
             Sign up today and take the first step toward a healthier smile.
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="max-w-[840px]  space-y-4">
-          <div className="py-6 flex flex-col  gap-8">
-            <div className="flex gap-8">
+      <div className="w-full">
+        
+        <form onSubmit={handleSubmit} className="max-w-[840px]  ">
+          <div className="py-6 flex flex-col  lg:gap-8 gap-4">
+            <div className="md:flex-row flex flex-col lg:gap-8 gap-4">
               <InputField
                 id="firstname"
                 name="fname"
@@ -75,7 +76,7 @@ const SignUpPage = () => {
                 className="w-full"
               />
             </div>
-            <div className="flex gap-8">
+            <div className="lg:flex-row flex flex-col lg:gap-8 gap-4">
               <InputField
                 id="emailId"
                 name="email"
@@ -97,7 +98,7 @@ const SignUpPage = () => {
                 className="w-full"
               />
             </div>
-            <div className="flex gap-8">
+            <div className="md:flex-row flex flex-col lg:gap-8 gap-4">
               <InputField
                 id="DOB"
                 name="dob"
@@ -127,7 +128,7 @@ const SignUpPage = () => {
                 className="w-full"
               />
             </div>
-            <div className="flex gap-8">
+            <div className="md:flex-row flex flex-col lg:gap-8 gap-4">
               <InputField
                 id="password"
                 name="password"
@@ -155,7 +156,7 @@ const SignUpPage = () => {
             Login
           </Button>
         </form>
-        <p className="text-lg pt-6">
+        <p className="lg:text-xl md:text-base text-xs pt-6 text-center md:text-start">
           Already have an account?{" "}
           <span className="text-[#FF7F50] cursor-pointer"> Login </span>
         </p>

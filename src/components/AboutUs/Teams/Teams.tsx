@@ -4,7 +4,7 @@ import TeamCard from "./TeamCard";
 
 const Teams = () => {
   return (
-    <div className="flex flex-col items-center xl:gap-[89px] gap-12  xl:mx-[120px] xl:my-[106px] ">
+    <div className="flex items-center flex-col gap-10 mt-[120px] overflow-hidden">
       <div className="flex flex-col md:gap-8 gap-4 w-full max-w-[1276px]">
         <Heading
           subHeading={""}
@@ -12,7 +12,7 @@ const Teams = () => {
           aligned={"Center"}
           headingWidth={"w-full"}
           isHeadingCenter={true}
-        > 
+        >
           Meet the <span className="text-primary-10">Experts</span> Behind Your
           Smile
         </Heading>
@@ -23,15 +23,19 @@ const Teams = () => {
           together to ensure every visit is a positive experience.
         </p>
       </div>
-      <div className="xl:flex xl:w-full gap-6 items-center justify-around md:grid md:grid-cols-2 md:grid-rows-2">
-        <div className="xl:pt-[125px]">
+      <div className="flex w-full gap-6 md: lg:flex overflow-x-auto lg:overflow-x-auto whitespace-nowrap md:grid md:grid-cols-2 md:grid-rows-2 md:gap-4 md:overflow-visible items-center justify-around">
+        <div className="lg:pt-[125px] md:pt-0 pt-[75px] flex-shrink-0">
           <TeamCard />
         </div>
-        <TeamCard />
-        <div className="xl:pt-[125px]"> 
+        <div className="flex-shrink-0">
           <TeamCard />
         </div>
-        <TeamCard />
+        <div className="lg:pt-[125px] md:pt-0 pt-[75px] flex-shrink-0">
+          <TeamCard />
+        </div>
+        <div className="flex-shrink-0">
+          <TeamCard />
+        </div>
       </div>
     </div>
   );

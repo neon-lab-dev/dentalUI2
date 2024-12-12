@@ -14,39 +14,28 @@ const ConvenientDentalCareCard = ({ details }: { details: any }) => {
       />
 
       {/* Text */}
-      <div className="absolute top-[38%] md:top[42%] transform group-hover:translate-y-[-10%] transition-all duration-500 w-full h-full left-0 z-20 right-0 flex items-start justify-center flex-col p-12">
+      <div className="absolute md:top-[42%] top-[46%] transform group-hover:translate-y-[-10%] transition-all duration-500 w-full h-full left-0 z-20 right-0 flex items-start justify-center flex-col p-12">
         <div>
-        <h1 className="text-white capitalize md:text-[48px] text-[19px] font-bold leading-normal 2xl:leading-[66px] font-Amiri">
-          {details.name}
-        </h1>
-        <p className="md:z-[1] md:opacity-0 md:group-hover:z-20 md:group-hover:opacity-100 md:transition-all md:duration-700 text-white font-Poppins text-[9px] md-4">
-          {details.numberOfClinic}
-        </p>
+          <h1 className="text-white capitalize md:text-[48px] text-[19px] font-bold leading-normal md:leading-[66px] font-Amiri">
+            {details.name}
+          </h1>
+          <p className="z-[-1] md:opacity-0 md:group-hover:z-20 md:group-hover:opacity-100 md:transition-all md:duration-700 text-white font-Poppins text-[9px] ">
+            {details.numberOfClinic}
+          </p>
         </div>
-       
-        <Link
-          href={`/${details._id}`}
-          className="z-[1] opacity-0 group-hover:z-20 group-hover:opacity-100 absolute bottom-[10%] right-[-50%] transform group-hover:right-[5%] transition-all duration-500 bg-white text-primary-10 px-11 py-4 font-Poppins text-[22px] font-semibold rounded-[55px] flex items-center gap-3"
-        >
-          See All
-          <Image
-            src={ICONS.rightArrowOrange}
-            alt="right-arrow"
-            className="size-6"
-          />
-        </Link>
+
       </div>
 
       {/* Button */}
       <Link
         href={`/${details._id}`}
-        className="z-[1-] opacity-0 group-hover:z-20 group-hover:opacity-100 absolute bottom-[10%] right-[-50%] transform group-hover:right-[5%] transition-all duration-500 bg-white text-primary-10 px-11 py-4 font-Poppins text-[22px] font-semibold rounded-[55px] flex items-center gap-3"
+        className="z-[1-] opacity-0 group-hover:z-20 group-hover:opacity-100 absolute bottom-[10%] right-[-50%] transform group-hover:right-[5%] transition-all duration-500 bg-white text-primary-10 lg:px-11 lg:py-4  px-5 py-2 font-Poppins lg:text-[22px] text-[9px] font-semibold rounded-[55px] flex items-center gap-3"
       >
         See All
         <Image
           src={ICONS.rightArrowOrange}
           alt="right-arrow"
-          className="size-6"
+          className="lg:size-6 size-[9px]"
         />
       </Link>
 

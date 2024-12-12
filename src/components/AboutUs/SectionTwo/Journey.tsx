@@ -5,8 +5,8 @@ import Button from "@/components/Buttons/Button";
 import Heading from "@/components/shared/Heading/Heading";
 const Journey = () => {
   return (
-    <div className="flex flex-col-reverse items-center  xl:flex-row justify-center xl:gap-[124px] gap-12 xl:mx-[120px] xl:my-[128px]">
-      <div className="md:mt-[60px] mt-12">
+    <div className="flex flex-col-reverse items-center lg:flex-row flex-col gap-10 mt-[120px] overflow-hidden ">
+      <div className="lg:w-[50%] w-[100%]">
         {" "}
         <Image
           src={IMAGES.journey}
@@ -14,7 +14,7 @@ const Journey = () => {
           className={`rounded-3xl flex justify-center`}
         />
       </div>
-      <div className="flex flex-col  justify-center">
+      <div className="lg:w-[50%] w-[100%]">
         <div> 
           <Heading
             subHeading={""}
@@ -27,7 +27,7 @@ const Journey = () => {
             <span className="text-primary-10"> Excellence</span>
           </Heading>
 
-          <p className="text-neutral-10 font-Poppins text-xl md:text-[16px] lg:text-[22px] max-w-[893px] w-full flex-1 xl:mt-8 md:mt-5 mt-4">
+          <p className="text-neutral-10 font-Poppins text-xs lg:text-xl md:text-base max-w-[744px] w-full flex-1 mt-8">
             Founded with a commitment to compassionate care and advanced
             dentistry, [Your Dental Practice Name] has been transforming smiles
             and building lasting patient relationships from day one. Our story

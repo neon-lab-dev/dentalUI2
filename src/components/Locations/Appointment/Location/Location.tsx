@@ -1,34 +1,48 @@
+"use client";
 import React from "react";
 import LocationData from "./LocationCard/LocationData";
 import DateTimeSelector from "./DateTimeSelector/DateTimeSelector";
 import { LocationProvider } from "./LocationContext";
 
-const Location = () => {
+interface LocationProps {
+  goToNextStep: () => void; // Callback function for proceeding to the next step
+}
+const Location: React.FC<LocationProps> = ({ goToNextStep }) =>{
   return (
-    <div className="flex flex-col items-center ">
-      <div className="w-[90%] font-Amiri font-bold xl:text-[64px] md:text-[48px] text-[36px] xl:leading-[90px] md:leading-[44px] leading-[40px] text-center py-[60px] ">
+    <div className="flex flex-col items-center">
+      {/* Page Heading */}
+      <h1 className="font-Amiri font-bold text-center text-[36px] md:text-[48px] xl:text-[64px] leading-[40px] md:leading-[44px] xl:leading-[90px] py-8 md:py-12">
         Schedule Your Appointment Today
-      </div>
-      <div className="flex flex-col items-center justify-center xl:gap-12 py-12 xl:px-[47px] px-4 rounded-[48px] xl:w-[90%] md:mx-8 mx-4 bg-[#EBFAFF] border border-[#333] shadow-sm ">
+      </h1>
+
+      {/* Content Container */}
+      <div className="flex flex-col items-center justify-center gap-8 md:gap-10 xl:gap-12 py-8 md:py-12 px-4 md:px-8 xl:px-12 rounded-2xl md:rounded-[32px] xl:rounded-[48px] w-[90%] bg-[#EBFAFF] border border-[#333] shadow-sm">
+        {/* Progress Bar */}
         <div className="flex justify-between gap-5 w-full">
-          <div className="h-[16px] bg-[#FF7F50] rounded-[30px] flex-1"></div>
-          <div className="h-[16px] bg-[#FF7F50] rounded-[30px] flex-1"></div>
-          <div className="h-[16px] bg-[#FF7F50] rounded-[30px] flex-1"></div>
-          <div className="h-[16px] border border-[#FF7F50] rounded-[30px] flex-1"></div>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              key={index}
+              className={`h-[16px] rounded-[30px] flex-1 ${
+                index < 3 ? "bg-[#FF7F50]" : "border border-[#FF7F50]"
+              }`}
+            ></div>
+          ))}
         </div>
-        <div className="font-bold xl:text-5xl md:text-4xl text-[32px] my-12 md:my-20 xl:my-0 leading-10 md:leading-[44px] xl:leading-[66px] font-Amiri text-center"> 
+
+        {/* Select Location */}
+        <h2 className="font-Amiri font-bold text-center text-[32px] md:text-4xl lg:text-5xl font-bold leading-10 md:leading-[44px] lg:leading-[66px]">
           Select Location
-        </div>
-        <div>
-          <LocationProvider>
-            <LocationData />
-          </LocationProvider>
-        </div>
-        <div className="font-bold xl:text-5xl md:text-4xl text-[32px] my-12 md:my-20 xl:my-0 leading-10 md:leading-[44px] xl:leading-[66px] font-Amiri text-center">
+        </h2>
+        <LocationProvider>
+          <LocationData />
+        </LocationProvider>
+
+        {/* Select Date and Time */}
+        <h2 className="font-Amiri font-bold text-center text-[32px] md:text-4xl xl:text-5xl leading-10 md:leading-[44px] xl:leading-[66px]">
           Select Date and Time
-        </div>
+        </h2>
         <div className="w-full">
-          <DateTimeSelector />
+          <DateTimeSelector goToNextStep={goToNextStep} />
         </div>
       </div>
     </div>

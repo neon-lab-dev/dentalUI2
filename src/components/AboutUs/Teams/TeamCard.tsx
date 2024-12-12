@@ -8,11 +8,11 @@ const TeamCard = () => {
       <Image
         src={IMAGES.teamsimg}
         alt="Card Image"
-        className="  rounded-[32px] "
+        className="rounded-[32px] min-w-[216px] max-w-[402px]"
       />
-      <div className=" xl:opacity-0 transition-all duration-300 mt-6 xl:hover:opacity-100" >
-        <h1 className="font-Amiri text-4xl font-bold">John Doe</h1>
-        <p className="font-Poppins text-xl">Senior Dentist</p>
+      <div className="lg:opacity-0 transition-all duration-300 mt-6 xl:hover:opacity-100">
+        <h1 className="font-Amiri md:text-4xl text-2xl font-bold">John Doe</h1>
+        <p className="font-Poppins md:text-base text-xs">Senior Dentist</p>
       </div>
     </div>
   );

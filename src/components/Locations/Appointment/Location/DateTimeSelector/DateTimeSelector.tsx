@@ -1,13 +1,12 @@
 "use client";
-// import { useState } from "react";
-// import "react-datetime/css/react-datetime.css";
+import React from "react";
 import Button from "@/components/Buttons/Button";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-// import dayjs, { Dayjs } from "dayjs";
 
-const DatePickerPage = () => {
+interface DatePickerPageProps {
+  goToNextStep: () => void;
+}
+
+const DatePickerPage: React.FC<DatePickerPageProps> = ({ goToNextStep }) => {
   // const [selectedDateTime, setSelectedDateTime] = useState<string | null>(null);
   // const [selectedDate, setSelectedDate] = useState<string | null>(null);
   // const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -74,7 +73,8 @@ const DatePickerPage = () => {
 
           <Button
             variant="Filled"
-            classNames="w-full flex justify-center xl:mt-[176px] md:mt-[54px] mt-12 px-[28px] py-[14px] "
+            onClick={goToNextStep} // Ensure this function is correctly passed and exists
+            classNames="w-full flex justify-center xl:mt-[176px] md:mt-[54px] mt-12 px-[28px] py-[14px]"
           >
             Continue
           </Button>
@@ -83,5 +83,7 @@ const DatePickerPage = () => {
     </div>
   );
 };
+
+ 
 
 export default DatePickerPage;

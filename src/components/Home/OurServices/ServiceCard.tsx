@@ -18,9 +18,9 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
       <Image
         src={service.img}
         alt="patient-img"
-        className="rounded-t-3xl h-[214px] object-cover "
+        className="rounded-t-3xl min-h-[170px] max-h-[214px] object-cover "
       />
-      <div className="px-6 pb-6 pt-[16px]">
+      <div className="px-6 pb-6 pt-[10px] lg:pt-4">
         <h1 className="text-neutral-15 text-[32px] font-bold lg:leading-[40px] sm:leading-[30px] leading-[22px] font-Amiri text-xl sm:text-[28px] lg:text[32px]">
           {service.title}
         </h1>

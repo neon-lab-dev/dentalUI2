@@ -35,7 +35,16 @@ export default {
         'services-hero-gradient' : "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #000 100%)",
         'convenient-dental-care' : 'linear-gradient(0deg, rgba(51, 14, 0, 0.70) 0%, rgba(51, 14, 0, 0.70) 100%)'
       },
-    },
+      animation: {
+        marquee: "marquee 20s linear infinite", // Changed from 10s to 20s to slow down
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
+  }
   },
   plugins: [],
 } satisfies Config;

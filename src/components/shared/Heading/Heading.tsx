@@ -24,13 +24,13 @@ const Heading: React.FC<THeading> = ({
       }  gap-8 ${classNames}`}
     >
       {subHeading && (
-        <div className="md:px-5 md:py-[10px] sm:px-4 sm:py-2 px-[12px] py-[6px] text-xs sm:text-sm md:text-xl text-neutral-10 flex items-center justify-center rounded-[49px] border border-neutral-10 w-fit">
+        <div className="lg:px-5 lg:py-[10px] md:px-4 md:py-2 px-[12px] py-[6px] text-xs md:text-sm lg:text-xl text-neutral-10 flex items-center justify-center rounded-[49px] border border-neutral-10 w-fit">
           {subHeading}
         </div>
       )}
 
       <h1
-        className={`text-neutral-15 font-Amiri font-bold md:text-5xl sm:text-4xl text-[32px] md:leading-[66px] sm:leading-[44px] leading-[32px] ${headingWidth} ${
+        className={`text-neutral-15 font-Amiri font-bold lg:text-5xl md:text-4xl text-[32px] lg:leading-[66px] md:leading-[44px] leading-[32px] ${headingWidth} ${
           aligned === "Center" ? "mx-auto" : "mx-0"
         } w-full ${aligned === "Center" ? " text-center" : "text-start"}`}
       >

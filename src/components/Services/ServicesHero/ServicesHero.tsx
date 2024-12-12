@@ -10,32 +10,32 @@ const ServicesHero = () => {
         <Image
           src={IMAGES.servicesHeroImg}
           alt="blog-hero"
-          className="w-full h-auto md:max-h-[836px] sm:max-h-[640px] max-h-[860px] md:min-h-[836px] sm:min-h-[640px] min-h-[860px] rounded-3xl object-cover"
+          className="w-full h-auto lg:max-h-[836px] md:max-h-[640px] max-h-[860px] lg:min-h-[836px] md:min-h-[640px] min-h-[860px] rounded-3xl object-cover"
         />
 
         {/* Content Overlay */}
-        <div className="bg-services-hero-gradient w-full h-full absolute top-0 bottom-0 rounded-3xl flex flex-col justify-end pb-8 sm:pb-10  md:pb-14 ">
+        <div className="bg-services-hero-gradient w-full h-full absolute top-0 bottom-0 rounded-3xl flex flex-col justify-end pb-8 md:pb-10  lg:pb-14 ">
           {/* Hero Title */}
           <div >
-            <h1 className="text-white font-Amiri text-[48px] md:text-[64px] sm:text-[48px] text-[36px] font-bold md:leading-[66px] sm:leading-[64px] leading-[42px] 2xl:leading-[90px] max-w-[900px] 2xl:max-w-[1090px] mx-auto text-center">
+            <h1 className="text-white font-Amiri text-[48px] lg:text-[64px] md:text-[48px] text-[36px] font-bold lg:leading-[66px] md:leading-[64px] leading-[42px] 2xl:leading-[90px] max-w-[900px] 2xl:max-w-[1090px] mx-auto text-center">
               Comprehensive{" "}
               <span className="text-secondary-10">Dental Services</span> for a
-              Healthy, Beautiful Smile
+              Healthy, Beautiful mdile
             </h1>
 
-            <p className="text-secondary-30 font-Poppins md:text-xl sm:text-base text-xs max-w-[974px] w-full flex-1 mt-8 mx-auto text-center">
+            <p className="text-secondary-30 font-Poppins lg:text-xl md:text-base text-xs max-w-[974px] w-full flex-1 mt-8 mx-auto text-center">
               At Dentist Clinic, we offer a full range of dental services
               tailored to your unique needs. From preventive care and
-              restorative treatments to cosmetic dentistry, our team is here to
+              restorative treatments to comdetic dentistry, our team is here to
               ensure your oral health is in the best hands.
             </p>
 
             <div className="flex items-center justify-center gap-6 mt-8">
               <Button
                 variant="Gradient"
-                classNames="md:px-[50px] md:py-[22px] md:px-[36px] sm:py-[16px] px-[28px] py-[14px] "
+                classNames="lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] "
               >
-                <p className="md:text-[22px] sm:text-[18px] text-base">
+                <p className="lg:text-[22px] md:text-[18px] text-base">
                   Schedule An Appointment!
                 </p>
               </Button>

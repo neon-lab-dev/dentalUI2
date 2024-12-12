@@ -4,7 +4,7 @@ import FAQCard from "./FAQCard";
 
 const FAQ = () => {
   return (
-    <div className=" xl:mx-[120px] xl:my-[106px] mx-[20px] my-[59px]">
+    <div className="flex flex-col items-center  gap-10 mt-[120px] overflow-hidden ">
       <Heading
         subHeading={""}
         classNames={""}

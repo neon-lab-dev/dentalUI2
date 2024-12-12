@@ -46,9 +46,9 @@ const Blogs = () => {
         Stay Informed with Expert{" "}
         <span className="text-primary-10">Dental Tips</span>
       </Heading>
-      <p className="text-neutral-10 font-Poppins md:text-xl sm:text-base text-xs max-w-[987px] mx-auto w-full flex-1 mt-8 text-start md:text-center">
+      <p className="text-neutral-10 font-Poppins lg:text-xl md:text-base text-xs max-w-[987px] mx-auto w-full flex-1 mt-8 text-start lg:text-center">
         Explore our blog for the latest insights on dental health, treatments,
-        and tips to keep your smile healthy. Stay updated with expert advice
+        and tips to keep your mdile healthy. Stay updated with expert advice
         from our team.
       </p>
 

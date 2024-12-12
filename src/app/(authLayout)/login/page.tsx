@@ -31,12 +31,12 @@ const LoginPage = () => {
    
       <div className=" w-full flex justify-start items-center gap-20">
        
-        <div className="">
+        <div className="flex flex-col md:gap-12 gap-8">
           <div className="py-6">
-            <h1 className="font-Amiri text-5xl font-bold leading-[66px] pb-8 text-[#101010]">
+            <h1 className="font-Amiri md:text-5xl text-4xl font-bold  leading-[66px]  pb-8 text-neutral-15">
               Welcome Back!
             </h1>
-            <p className="font-Poppins text-lg text-[#333]">
+            <p className="font-Poppins lg:text-xl md:text-base text-xs text-neutral-10">
               Access your account to manage appointments, review treatment
               plans, and stay connected with your dental care. Enter your
               details below to get started.
@@ -71,7 +71,7 @@ const LoginPage = () => {
               Submit
             </Button>
           </form>
-          <p className="text-lg pt-6">
+          <p className="lg:text-xl md:text-base text-xs pt-6 text-center md:text-start">
             Dont have an account?{" "}
             <span className="text-[#FF7F50] cursor-pointer"> Sign Up </span>
           </p>

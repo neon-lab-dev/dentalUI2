@@ -10,19 +10,19 @@ const BlogHero = () => {
   const heroDescriptions = [
     {
       description:
-        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident smile in a comfortable environment.",
+        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident mdile in a comfortable environment.",
     },
     {
       description:
-        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident smile in a comfortable environment.",
+        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident mdile in a comfortable environment.",
     },
     {
       description:
-        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident smile in a comfortable environment.",
+        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident mdile in a comfortable environment.",
     },
     {
       description:
-        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident smile in a comfortable environment.",
+        "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident mdile in a comfortable environment.",
     },
   ];
 
@@ -33,13 +33,13 @@ const BlogHero = () => {
         <Image
           src={IMAGES.blogHEroImg}
           alt="blog-hero"
-          className="w-full h-auto md:max-h-[836px] sm:max-h-[896px] max-h-[729px] md:min-h-[836px] sm:min-h-[896px] min-h-[729px] rounded-3xl object-cover"
+          className="w-full h-auto lg:max-h-[836px] md:max-h-[896px] max-h-[729px] lg:min-h-[836px] md:min-h-[896px] min-h-[729px] rounded-3xl object-cover"
         />
 
         {/* Content Overlay */}
-        <div className="bg-gradient-black w-full max-w-[500px] 2xl:max-w-[866px] h-full absolute top-0 bottom-0 rounded-3xl md:p-16 pb-10 pl-11 2xl:pl-[90px] flex flex-col md:justify-center justify-end">
+        <div className="bg-gradient-black w-full max-w-[500px] 2xl:max-w-[866px] h-full absolute top-0 bottom-0 rounded-3xl lg:p-16 pb-10 pl-11 2xl:pl-[90px] flex flex-col lg:justify-center justify-end">
           {/* Hero Title */}
-          <h1 className="text-secondary-30 font-Amiri  text-4xl sm:text-[48px] 2xl:text-[64px] font-bold leading-[42px] sm:leading-[66px] 2xl:leading-[90px]">
+          <h1 className="text-secondary-30 font-Amiri  text-4xl md:text-[48px] 2xl:text-[64px] font-bold leading-[42px] md:leading-[66px] 2xl:leading-[90px]">
             Expert Dental <br /> Advice and Tips
           </h1>
 
@@ -56,7 +56,7 @@ const BlogHero = () => {
           >
             {heroDescriptions.map((description, index) => (
               <SwiperSlide key={index}>
-                <p className="font-Poppins text-xs sm:text-base md:text-[22px] text-secondary-30 max-w-[300px] md:max-w-[497px] mt-3">
+                <p className="font-Poppins text-xs md:text-base lg:text-[22px] text-secondary-30 max-w-[300px] lg:max-w-[497px] mt-3">
                   {description.description}
                 </p>
               </SwiperSlide>
@@ -72,23 +72,23 @@ const BlogHero = () => {
             {/* Previous Button */}
             <button
               id="prevButton"
-              className="bg-primary-10 opacity-40 flex items-center justify-center rounded-full w-8 sm:w-[48px] md:h-[60px] h-8 sm:h-[48px] md:w-[60px] overflow-hidden"
+              className="bg-primary-10 opacity-40 flex items-center justify-center rounded-full w-8 md:w-[48px] lg:h-[60px] h-8 md:h-[48px] lg:w-[60px] overflow-hidden"
             >
               <Image
                 src={ICONS.previousDisabled}
                 alt="previous-arrow"
-                className="sm:w-8 sm:h-8 w-4 h-4 "
+                className="md:w-8 md:h-8 w-4 h-4 "
               />
             </button>
             {/* Next Button */}
             <button
               id="nextButton"
-              className="bg-primary-10 flex items-center justify-center rounded-full w-8 sm:w-[48px] md:h-[60px] h-8 sm:h-[48px] md:w-[60px] overflow-hidden"
+              className="bg-primary-10 flex items-center justify-center rounded-full w-8 md:w-[48px] lg:h-[60px] h-8 md:h-[48px] lg:w-[60px] overflow-hidden"
             >
               <Image
                 src={ICONS.nextActive}
                 alt="next-arrow"
-                className="sm:w-8 sm:h-8 w-4 h-4"
+                className="md:w-8 md:h-8 w-4 h-4"
               />
             </button>
           </div>

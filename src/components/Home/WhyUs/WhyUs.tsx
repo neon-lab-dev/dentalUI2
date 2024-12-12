@@ -23,7 +23,7 @@ const WhyUs = () => {
       <div className="lg:order-2 flex flex-col lg:item-start lg:items-start">
         <Heading
           subHeading={"WHY US"}
-          classNames={"max-w-[340px] sm:max-w-[881px] w-full"}
+          classNames={"max-w-[340px] md:max-w-[881px] w-full"}
           aligned={"Left"}
           headingWidth={"200px"}
           isHeadingCenter={false}
@@ -33,8 +33,8 @@ const WhyUs = () => {
             Dental Care?
           </p>
         </Heading>
-        <p className="text-neutral-10 font-Poppins text-xs lg:text-xl sm:text-base max-w-[340px] sm:max-w-[881px] w-full">
-          See how we’ve transformed smiles and improved lives through expert
+        <p className="text-neutral-10 font-Poppins text-xs lg:text-xl md:text-base max-w-[340px] md:max-w-[881px] w-full">
+          See how we’ve transformed mdiles and improved lives through expert
           dental care. Read testimonials from patients who trust us with their
           oral health.
         </p>

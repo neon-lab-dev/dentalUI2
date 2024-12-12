@@ -25,19 +25,19 @@ const OurClinic = () => {
           Conveniently Located Clinics
         </Heading>
 
-        <p className="text-neutral-10 font-Poppins md:text-xl sm:text-base text-xs  max-w-[893px] w-fit flex-1 mt-8">
+        <p className="text-neutral-10 font-Poppins lg:text-xl md:text-base text-xs  max-w-[893px] w-fit flex-1 mt-8">
           With state-of-the-art facilities and a caring team, our clinics are
           designed for your comfort and convenience. Find the nearest location
           and schedule your visit today.
         </p>
 
         <div className="mt-[60px]">
-          <Button variant="Filled" classNames="flex justify-center text-xs sm:text-base md:text[20px] px-[50px] py-4 lg:w-fit  w-full mx-auto">
+          <Button variant="Filled" classNames="flex justify-center text-xs md:text-base lg:text[20px] px-[50px] py-4 lg:w-fit  w-full mx-auto">
             Learn More
             <Image
               src={ICONS.arrowUpWhite}
               alt="arrow-up"
-              className="md:size-[22px] sm:size-4 size-3"
+              className="lg:size-[22px] md:size-4 size-3"
             />
           </Button>
         </div>
