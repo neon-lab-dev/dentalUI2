@@ -36,7 +36,7 @@ const ConvenientDentalCare = () => {
         <span className="text-primary-10">Dental Care</span> Near You
       </Heading>
 
-      <div className="grid md:grid-cols-2 grid-col-1  gap-8 mt-12">
+      <div className="grid md:grid-cols-2 grid-col-1 gap-4  lg:gap-8 mt-12">
         {
             convenientDentalCareDetails.map((details) => (
               <ConvenientDentalCareCard key={details._id} details={details} />
