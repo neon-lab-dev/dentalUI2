@@ -2,6 +2,7 @@
 import { ICONS, IMAGES } from "@/assets";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper as SwiperInstance } from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -30,7 +31,7 @@ const BlogHero = () => {
   ];
   const handleReachBeginning = () => setLeftDisable(true);
   const handleReachEnd = () => setRightDisable(true);
-  const handleSlideChange = (swiper: any) => {
+  const handleSlideChange = (swiper:SwiperInstance) => {
     setLeftDisable(swiper.isBeginning);
     setRightDisable(swiper.isEnd);
   };

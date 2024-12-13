@@ -3,6 +3,7 @@ import { ICONS, IMAGES } from "@/assets";
 import Heading from "@/components/shared/Heading/Heading";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper as SwiperInstance } from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -82,7 +83,7 @@ const Testimonials = () => {
 
   const handleReachBeginning = () => setLeftDisable(true);
   const handleReachEnd = () => setRightDisable(true);
-  const handleSlideChange = (swiper: any) => {
+  const handleSlideChange = (swiper:SwiperInstance) => {
     setLeftDisable(swiper.isBeginning);
     setRightDisable(swiper.isEnd);
   };
@@ -171,8 +172,11 @@ const Testimonials = () => {
             slidesPerView: 3,
           },
           1280: {
-            slidesPerView: 4,
+            slidesPerView: 3.4,
           },
+          1440:{
+            slidesPerView: 3.4,
+          }
         }}
         navigation={{
           prevEl: "#prevButton",
