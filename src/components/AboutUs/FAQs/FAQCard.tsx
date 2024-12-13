@@ -12,15 +12,15 @@ const FAQCard = () => {
  
   return (
     <div
-      className={`relative  md:w-full md:rounded-[32px] rounded-2xl flex justify-between transition-all duration-300 ease-in-out md:px-12 p-4 md:p-8 py-4 md:py-[58px] border border-[#00000040]  self-stretch  ${
+      className={`relative  w-full md:rounded-[32px] rounded-2xl flex justify-between transition-all duration-300 ease-in-out md:px-12 p-4 md:p-8 py-4 md:py-[58px] border border-[#00000040]  self-stretch  ${
         isExpanded
-          ? "xl:h-[200px] md:h-[228px]  md:w-full  p-4 md:p-8 w-full md:bg-white flex-col justify-center  border border-orange-500 "
+          ? "xl:h-[200px] md:h-[228px]  md:w-full  p-4 md:p-8 w-full bg-white flex-col justify-center  border border-orange-500 "
           : "xl:h-[178px] md:h-[112px] h-16  items-center md:w-full"
       }`}
     >
       <div className="flex justify-between">
         <div>
-          <div className="font-Amiri md:text-4xl xl:text-5xl text-2xl font-bold md:leading-[44px] xl:leading-[62px] leading-9">
+          <div className="font-Amiri md:text-4xl lg:text-5xl text-2xl font-bold ">
             Lorem ipsum dior sit. ispel
           </div>
  

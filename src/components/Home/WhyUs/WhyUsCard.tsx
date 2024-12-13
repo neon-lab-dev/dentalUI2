@@ -12,7 +12,7 @@ type TWhyUsCard = {
 };
 const WhyUsCard: React.FC<TWhyUsCard> = ({ info }) => {
   return (
-    <div className="rounded-3xl border border-secondary-20 shadow-md sm:h-[316px] h-[200px] lg:h-[320px] md:max-w-[325px] sm:w-[316px] w-[172px] w-full p-6">
+    <div className="rounded-3xl border border-secondary-20 shadow-md  md:h-[316px] h-[200px] max-w-[340px]  min-w-[172px] w-full p-6">
       <button className="md:p-6 sm:-4 p-3 rounded-full bg-primary-10">
         <Image src={ICONS.care} alt="phone-icon" className="sm:size-7 size-5" />
       </button>

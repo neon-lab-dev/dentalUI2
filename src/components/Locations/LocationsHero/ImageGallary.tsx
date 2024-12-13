@@ -30,7 +30,7 @@ const ImageGallary = () => {
           <Image
             width={640}
             height={540}
-            className="h-full rounded-3xl object-cover"
+            className="h-full rounded-3xl object-fill"
             src={slide.img}
             alt="accordion navigate ui"
           />

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ICONS } from "@/assets";
 const Statement = () => {
   return (
-    <div className="bg-[#FF7F50] rounded-[32px] px-4 md:px-8 xl:px-[60px] 2xl:px-[120px] md:my-[193px] py-8 px-4 relative  ">
+    <div className="bg-[#FF7F50] rounded-[32px] px-4 md:px-8 xl:px-[60px] 2xl:px-[120px] lg:my-[193px] md:my-[105px] my-[92px] py-8 px-4 relative ">
       <Image
         src={ICONS.openinvertedcomma}
         alt="open inverted comma"

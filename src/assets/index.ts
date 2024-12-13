@@ -7,7 +7,9 @@ import arrowUpBlack from "@/assets/icons/arrowUp-black.svg";
 import expertise from "@/assets/icons/expertise.svg";
 import care from "@/assets/icons/care.svg";
 import leftDisabledArrow from "@/assets/icons/left-disabled-arrow.svg";
+import leftEnabledArrow from "@/assets/icons/left-enabled-arrow.svg";
 import rightActiveArrow from "@/assets/icons/right--active-arrow.svg";
+import rightDisabledArrow from "@/assets/icons/right-disabled-arrow.svg";
 import quotation from "@/assets/icons/quotation.svg";
 import nextActive from "@/assets/icons/next-active.svg";
 import previousDisabled from "@/assets/icons/previous-disabled.svg";
@@ -77,6 +79,10 @@ import location1 from "@/assets/images/location-1.png";
 import location2 from "@/assets/images/location-2.png";
 import location3 from "@/assets/images/location-3.png";
 import location4 from "@/assets/images/location-4.png";
+import location_1 from "@/assets/images/location1.jpeg";
+import location_2 from "@/assets/images/location2.png";
+import location_3 from "@/assets/images/location3.png";
+import location_4 from "@/assets/images/location4.png";
 
 //Appointment
 import rightblackarrow from"@/assets/icons/right-arrow-black.svg"
@@ -91,7 +97,9 @@ export const ICONS = {
     expertise,
     care,
     leftDisabledArrow,
+    leftEnabledArrow,
     rightActiveArrow,
+    rightDisabledArrow,
     quotation,
     nextActive,
     previousDisabled,
@@ -136,4 +144,8 @@ export const IMAGES = {
     aboutushero,
     journey,
     teamsimg,
+    location_1,
+    location_2,
+    location_3,
+    location_4,
 }

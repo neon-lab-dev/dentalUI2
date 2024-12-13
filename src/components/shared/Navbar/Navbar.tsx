@@ -53,12 +53,13 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <div
-          className={`flex-col lg:flex-row items-center gap-6 ${
+          className={`flex-col lg:flex-row items-center gap-6 z-50 ${
             isMenuOpen ? "flex" : "hidden lg:flex"
           } absolute lg:relative top-[100px] lg:top-0 left-0 lg:left-auto w-full lg:w-auto bg-white lg:bg-transparent p-5 lg:p-0 shadow-md lg:shadow-none`}
         >
           {navlinks.map((link) => (
             <Link
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               key={link.label}
               href={link.path}
               className={`text-neutral-10 font-Poppins text-xl ${

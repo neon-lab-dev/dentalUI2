@@ -8,7 +8,7 @@ const TeamCard = () => {
       <Image
         src={IMAGES.teamsimg}
         alt="Card Image"
-        className="rounded-[32px] min-w-[216px] max-w-[402px]"
+        className="rounded-[32px] max-w-[216px]  min-w-[216px] md:min-w-[316px] md:max-w-[360px]"
       />
       <div className="lg:opacity-0 transition-all duration-300 mt-6 xl:hover:opacity-100">
         <h1 className="font-Amiri md:text-4xl text-2xl font-bold">John Doe</h1>

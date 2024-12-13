@@ -4,7 +4,7 @@ import FAQCard from "./FAQCard";
 
 const FAQ = () => {
   return (
-    <div className="flex flex-col items-center  gap-10 mt-[120px] overflow-hidden ">
+    <div className="flex-1 flex-col items-center  gap-10 mt-[120px] overflow-hidden ">
       <Heading
         subHeading={""}
         classNames={""}
@@ -15,7 +15,7 @@ const FAQ = () => {
         FAQs
       </Heading>
 
-      <div className="flex flex-col gap-8 py-0 xl:gap-4 md:gap-6 xl:py-[90px] md:py-[80px]">
+      <div className="flex flex-col  gap-8 py-0 xl:gap-4 md:gap-6 xl:py-[90px] md:py-[80px]">
         <FAQCard />
         <FAQCard />
         <FAQCard />

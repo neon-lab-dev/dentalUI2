@@ -4,13 +4,13 @@ export const ourServices = [
     {
         title: "Emergency Exam",
         description: "Same-day care from a team of friendly experts.",
-        img: IMAGES.patient1,
+        img:  IMAGES.patient4,
     },
     {
         title: "Teeth Whitening",
         description:
             "A brighter smile in 90 minutes? It’s easier (and more affordable!) than you think.",
-        img: IMAGES.patient2,
+        img: IMAGES.patient3,
     },
     {
         title: "Invisalign",
@@ -21,6 +21,6 @@ export const ourServices = [
     {
         title: "Implants",
         description: "We are implant specialists that use 3D-guided technology.",
-        img: IMAGES.patient4,
+        img: IMAGES.patient1,
     },
 ];

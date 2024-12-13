@@ -10,7 +10,7 @@ const ConvenientDentalCareCard = ({ details }: { details: any }) => {
       <Image
         src={details.img}
         alt="animated_card"
-        className="w-full max-w-[824px] max-h-[600px] object-cover"
+        className="w-full max-h-[600px] object-cover"
       />
 
       {/* Text */}

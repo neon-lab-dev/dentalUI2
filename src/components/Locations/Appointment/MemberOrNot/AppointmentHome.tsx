@@ -51,7 +51,7 @@ const AppointmentHome: React.FC<AppointmentHomeProps> = ({ goToNextStep }) => {
             key={btn.type}
             variant={selectedBtn === btn.type ? "Filled" : "Outlined"}
             onClick={() => handleBtnClick(btn.type)}
-            classNames={`w-[90%] xl:w-[670px] h-[73px] md:h-[100px] xl:h-[120px] px-[60px] xl:px-[102px] py-[10px] rounded-[79px] font-Amiri text-[16px] md:text-2xl lg:text-[32px] flex flex-col justify-center items-center gap-[4px] md:gap-0 ${
+            classNames={`w-full lg:w-[670px] h-[73px] md:h-[100px] xl:h-[120px] px-[60px] xl:px-[102px] py-[10px] rounded-[79px] font-Amiri text-base md:text-2xl lg:text-[32px] flex flex-col justify-center items-center gap-[4px] md:gap-0 ${
               selectedBtn === btn.type ? "text-black" : ""
             }`}
           >

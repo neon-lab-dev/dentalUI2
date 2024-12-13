@@ -2,11 +2,15 @@
 import { ICONS, IMAGES } from "@/assets";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper as SwiperInstance } from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { useState } from "react";
 
 const BlogHero = () => {
+  const [rightDisable, setRightDisable] = useState<boolean>(false);
+    const [leftDisable, setLeftDisable] = useState<boolean>(true);
   const heroDescriptions = [
     {
       description:
@@ -25,6 +29,12 @@ const BlogHero = () => {
         "At Dentist Clinic, we provide personalized, high-quality dental care. Our experienced team is dedicated to helping you achieve a healthy, confident mdile in a comfortable environment.",
     },
   ];
+  const handleReachBeginning = () => setLeftDisable(true);
+  const handleReachEnd = () => setRightDisable(true);
+  const handleSlideChange = (swiper:SwiperInstance) => {
+    setLeftDisable(swiper.isBeginning);
+    setRightDisable(swiper.isEnd);
+  };
 
   return (
     <div className="pt-[63px] w-full overflow-hidden max-w-screen">
@@ -49,6 +59,9 @@ const BlogHero = () => {
             className="overflow-hidden"
             modules={[Navigation]}
             slidesPerView={1}
+            onReachBeginning={handleReachBeginning}
+            onReachEnd={handleReachEnd}
+            onSlideChange={handleSlideChange}
             navigation={{
               prevEl: "#prevButton",
               nextEl: "#nextButton",
@@ -72,10 +85,10 @@ const BlogHero = () => {
             {/* Previous Button */}
             <button
               id="prevButton"
-              className="bg-primary-10 opacity-40 flex items-center justify-center rounded-full w-8 md:w-[48px] lg:h-[60px] h-8 md:h-[48px] lg:w-[60px] overflow-hidden"
+              className={`bg-primary-10 ${leftDisable? "opacity-40":""}  flex items-center z-100 justify-center rounded-full w-8 md:w-[48px] lg:h-[60px] h-8 md:h-[48px] lg:w-[60px] overflow-hidden`}
             >
               <Image
-                src={ICONS.previousDisabled}
+                src={ICONS.previousDisabled }
                 alt="previous-arrow"
                 className="md:w-8 md:h-8 w-4 h-4 "
               />
@@ -83,7 +96,7 @@ const BlogHero = () => {
             {/* Next Button */}
             <button
               id="nextButton"
-              className="bg-primary-10 flex items-center justify-center rounded-full w-8 md:w-[48px] lg:h-[60px] h-8 md:h-[48px] lg:w-[60px] overflow-hidden"
+              className={`bg-primary-10 ${rightDisable? "opacity-40":""} flex items-center justify-center rounded-full w-8 md:w-[48px] lg:h-[60px] h-8 md:h-[48px] lg:w-[60px] overflow-hidden`}
             >
               <Image
                 src={ICONS.nextActive}
