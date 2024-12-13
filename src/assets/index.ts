@@ -79,6 +79,10 @@ import location1 from "@/assets/images/location-1.png";
 import location2 from "@/assets/images/location-2.png";
 import location3 from "@/assets/images/location-3.png";
 import location4 from "@/assets/images/location-4.png";
+import location_1 from "@/assets/images/location1.jpeg";
+import location_2 from "@/assets/images/location2.png";
+import location_3 from "@/assets/images/location3.png";
+import location_4 from "@/assets/images/location4.png";
 
 //Appointment
 import rightblackarrow from"@/assets/icons/right-arrow-black.svg"
@@ -140,4 +144,8 @@ export const IMAGES = {
     aboutushero,
     journey,
     teamsimg,
+    location_1,
+    location_2,
+    location_3,
+    location_4,
 }
