@@ -1,46 +1,60 @@
-"use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
+import {useSelector } from "react-redux";
+import { fetchClinics } from "@/store/slices/clinicSlice";
+import { RootState } from "@/store";
+import { useAppDispatch } from "@/store";
 import { IMAGES } from "@/assets";
-import LocationCard from './LocationCard';
-import ClinicCard from './ClinicCard';
+import LocationCard from "./LocationCard";
+import ClinicCard from "./ClinicCard";
+import { GroupedClinics } from "@/store/slices/clinicSlice";
 
-const LocationData = () => {
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+interface LocationDataProps {
+  setSelectedSubClinicId: (id: string | null) => void; // Callback for selected sub-clinic ID
+}
 
-  const convenientDentalCareDetails = [
+type GroupedClinicKeys = keyof GroupedClinics; // Restrict to the keys of GroupedClinics
+
+const LocationData: React.FC<LocationDataProps> = ({ setSelectedSubClinicId }) =>  {
+  const dispatch = useAppDispatch();
+  const { groupedClinics, loading } = useSelector((state: RootState) => state.clinic);
+  const [selectedCardId, setSelectedCardId] = useState<GroupedClinicKeys | null>(null); // Use GroupedClinicKeys
+
+  const convenientDentalCareDetails: { _id: GroupedClinicKeys; img: any; name: string; numberOfClinic: string }[] = [
     {
-      _id: "124343423123443",
-      img: IMAGES.location1,
+      _id: "newYorkCity",
+      img: IMAGES.location_1,
       name: "New York City",
-      numberOfClinic: '12 Clinics'
+      numberOfClinic: `${groupedClinics.newYorkCity.count} Clinics`,
     },
     {
-      _id: "12434356424123443", 
-      img: IMAGES.location2,
+      _id: "losAngeles",
+      img: IMAGES.location_2,
       name: "Los Angeles",
-      numberOfClinic: '12 Clinics'
+      numberOfClinic: `${groupedClinics.losAngeles.count} Clinics`,
     },
     {
-      _id: "1243434123442343",
-      img: IMAGES.location3,
+      _id: "houston",
+      img: IMAGES.location_3,
       name: "Houston",
-      numberOfClinic: '12 Clinics'
+      numberOfClinic: `${groupedClinics.houston.count} Clinics`,
     },
     {
-      _id: "12434341234433",
-      img: IMAGES.location4,
+      _id: "chicago",
+      img: IMAGES.location_4,
       name: "Chicago",
-      numberOfClinic: '12 Clinics'
+      numberOfClinic: `${groupedClinics.chicago.count} Clinics`,
     },
   ];
 
-  const handleMainCardClick = (id: string) => {
-    if (selectedCardId === id) {
-      setSelectedCardId(null); 
-    } else {
-      setSelectedCardId(id); 
-    }
+  useEffect(() => {
+    dispatch(fetchClinics());
+  }, [dispatch]);
+
+  const handleMainCardClick = (id: GroupedClinicKeys) => {
+    setSelectedCardId((prev) => (prev === id ? null : id));
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
@@ -57,7 +71,7 @@ const LocationData = () => {
 
       <div className="w-full">
         {/* Show ClinicCard only when any card is selected */}
-        {selectedCardId && <ClinicCard />}
+        {selectedCardId && <ClinicCard clinics={groupedClinics[selectedCardId].clinics} onSubCardSelect={setSelectedSubClinicId}  />}
       </div>
     </div>
   );

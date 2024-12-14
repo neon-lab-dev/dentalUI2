@@ -7,10 +7,16 @@ import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import Container from "../Container/Container";
 import { navlinks } from "./navlinks";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store";
+import { clearUser } from "@/store/slices/userSlice";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { first_name, isLoggedIn } = useSelector((state: RootState) => state.user);
+
 
   return (
     <Container>
@@ -82,7 +88,13 @@ const Navbar = () => {
           </Link>
           <Link href={"/login"}>
             <Button variant="Filled" classNames="">
-              Sign in
+            {isLoggedIn ? (
+        <span>
+          Welcome, {first_name}! 
+        </span>
+      ) : (
+       <span>Login</span> 
+      )}
             </Button>
           </Link>
         </div>

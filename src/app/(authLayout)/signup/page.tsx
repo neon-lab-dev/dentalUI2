@@ -1,43 +1,63 @@
 "use client";
 import { useState } from "react";
-
+import axios from "axios";
 import InputField from "@/components/Form/InputField";
 import Button from "@/components/Buttons/Button";
 
-interface FormData {
-  fname: string;
-  lname: string;
-  email: string;
-  phone: string;
-  dob: string;
-  insurance: string;
-  password: string;
-  cnfpassword: string;
-}
 
 const SignUpPage = () => {
-  const [formData, setFormData] = useState<FormData>({
-    fname: "",
-    lname: "",
-    email: "",
-    phone: "",
-    dob: "",
-    insurance: "",
-    password: "",
-    cnfpassword: "",
-  });
+  
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDOB] = useState("");
+  const [induranceStatus, setInduranceStatus] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [cnfpassword, setCnfPassword] = useState("");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(
+        "https://dental-backend-three.vercel.app/api/v1/register",
+        {first_name: fname,
+          last_name: lname,
+          phoneNo: phone,
+          email,
+          password,
+          confirm_password: cnfpassword,
+          dob,
+          induranceStatus },
+        { headers: { "Content-Type": "application/json" }, withCredentials: true }
+      );
+
+      if (response.data.success) {
+        console.log(response.data.message)
+        alert("Registration successful");
+        console.log("Registration successful");
+        // Redirect logic here
+      } else {
+        setErrorMessage(`Registration failed: ${response.data.message}`);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        setErrorMessage(`Registration failed: ${error.response.data.message}`);
+      } else if (error.request) {
+        setErrorMessage("Network error, please try again.");
+      } else {
+        setErrorMessage(`An error occurred: ${error.message}`);
+      }
+    }
   };
-  const handleSubmit = () => {
-    alert("Submitted Sucessfully");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== cnfpassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+    handleRegister();
   };
 
   return (
@@ -61,8 +81,8 @@ const SignUpPage = () => {
                 label="First Name"
                 type="text"
                 placeholder="Enter First Name"
-                value={formData.fname}
-                onChange={handleChange}
+                value={fname}
+                onChange={(e) => setFname(e.target.value)}
                 className="w-full "
               />
               <InputField
@@ -71,8 +91,8 @@ const SignUpPage = () => {
                 label="Last Name"
                 type="text"
                 placeholder="Enter Last Name"
-                value={formData.lname}
-                onChange={handleChange}
+                value={lname}
+                onChange={(e) => setLname(e.target.value)}
                 className="w-full"
               />
             </div>
@@ -83,8 +103,8 @@ const SignUpPage = () => {
                 label="Email Id"
                 type="email"
                 placeholder="Enter Email ID"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full"
               />
               <InputField
@@ -93,8 +113,8 @@ const SignUpPage = () => {
                 label="Phone Number"
                 type="number"
                 placeholder="Enter Phone Number"
-                value={formData.phone}
-                onChange={handleChange}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 className="w-full"
               />
             </div>
@@ -105,8 +125,8 @@ const SignUpPage = () => {
                 label="Date Of Birth"
                 type="date"
                 placeholder="Enter Date Of Birth"
-                value={formData.dob}
-                onChange={handleChange}
+                value={dob}
+                onChange={(e) => setDOB(e.target.value)}
                 className="w-full"
               />
               <InputField
@@ -114,8 +134,8 @@ const SignUpPage = () => {
                 name="insurance"
                 label="Select an Insureance"
                 type="select" // Use 'select' type for dropdown
-                value={formData.insurance}
-                onChange={handleChange}
+                value={induranceStatus}
+                onChange={(e) => setInduranceStatus(e.target.value)}
                 options={[
                   "-Select One-",
                   "ICICI Lombard",
@@ -135,8 +155,8 @@ const SignUpPage = () => {
                 label="Password"
                 type="password"
                 placeholder="Enter Password"
-                value={formData.password}
-                onChange={handleChange}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full "
               />
               <InputField
@@ -145,20 +165,20 @@ const SignUpPage = () => {
                 label="Confirm Password"
                 type="password"
                 placeholder=" Confirm Password"
-                value={formData.cnfpassword}
-                onChange={handleChange}
+                value={cnfpassword}
+                onChange={(e) => setCnfPassword(e.target.value)}
                 className="w-full"
               />
             </div>
           </div>
-
+         <p className="lg:text-xl md:text-base text-xs py-1 text-center md:text-start text-red-700">{errorMessage}</p>
           <Button variant="Filled" classNames="w-full flex justify-center">
-            Login
+          Register
           </Button>
         </form>
-        <p className="lg:text-xl md:text-base text-xs pt-6 text-center md:text-start">
+        <p className="lg:text-xl md:text-base text-xs pt-6 text-center md:text-start  ">
           Already have an account?{" "}
-          <span className="text-[#FF7F50] cursor-pointer"> Login </span>
+          <span className="text-[#FF7F50] cursor-pointer">  Login </span>
         </p>
       </div>
     </div>

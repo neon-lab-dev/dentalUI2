@@ -1,37 +1,44 @@
 "use client";
-import { useState } from "react";
-import React from 'react'
+import React, { useState } from "react";
 
-const ClinicCard = () => {
-    const [selectedSubCard, setSelectedSubCard] = useState<number | null>(null);
-    const newCards = [
-        { id: 1, name: "Clinic 1" },
-        { id: 2, name: "Clinic 2" },
-        { id: 3, name: "Clinic 3" },
-        { id: 4, name: "Clinic 4" },
+interface Clinic {
+  _id: string;
+  city:string;
+  address: string;
+}
 
-      ];
-      const handleSubCardClick = (id: number) => {
-        setSelectedSubCard(id);
-      };
+interface ClinicCardProps {
+  clinics: Clinic[];
+  onSubCardSelect: (id: string | null) => void;
+}
+
+
+const ClinicCard: React.FC<ClinicCardProps> = ({ clinics, onSubCardSelect }) => {
+    const [selectedSubCard, setSelectedSubCard] = useState<string | null>(null);
+  
+    const handleSubCardClick = (id: string) => {
+      const newSelectedId = selectedSubCard === id ? null : id; // Toggle selection
+      setSelectedSubCard(newSelectedId);
+      onSubCardSelect(newSelectedId); // Pass the selected ID to the parent
+    };
   return (
     <div>
       <div className="flex xl:flex-row flex-col xl:gap-8 gap-5 mt-6">
-          {newCards.map((card) => (  
+          {clinics.map((card) => (  
             <div
-              key={card.id}
-              onClick={() => handleSubCardClick(card.id)}
+              key={card._id}
+              onClick={() => handleSubCardClick(card._id)}
               className={`relative overflow-hidden group cursor-pointer rounded-3xl w-full ${
-                selectedSubCard === card.id ? "bg-[#FF7F50]" : "bg-[#F5F5DC]"
+                selectedSubCard === card._id ? "bg-[#FF7F50]" : "bg-[#F5F5DC]"
               }`}
             >
               <div className="w-full h-full xl:px-8 xl:py-6 md:p-5 p-4">
                 <h1 className="text-black capitalize xl:text-[32px] md:text-[32px] text-[16px] font-bold  xl:leading-[66px] md:leading-[30px] leading-6 font-Amiri">
-                  {card.name}
+                  {card.city}
                 </h1>
                 <div className="h-[2px] bg-[#FF7F50] self-stretch my-[10px]"></div>
                 <div className="font-Poppins xl:text-xl md:text-[16px] text-[12px] ">
-                  444 North Orleans Chicago, IL 60654-5602
+                {card.address}
                 </div>
               </div>
             </div>

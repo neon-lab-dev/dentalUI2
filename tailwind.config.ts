@@ -21,11 +21,13 @@ export default {
         secondary: {
           10: "#ADD8E6",
           20 : "#DCDCDC",
-          30 : "#F5F5DC"
+          30 : "#F5F5DC",
         },
         neutral: {
           10: "#333333",
           15 : "#101010",
+          20:"#7E818C",
+          25:"#0F2552",
         },
       },
       backgroundImage: {
