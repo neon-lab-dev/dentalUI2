@@ -1,6 +1,7 @@
 import { IMAGES } from "@/assets";
 import Button from "@/components/Buttons/Button";
 import Image from "next/image";
+import Link from "next/link";
 
 const ServicesHero = () => {
   return (
@@ -31,14 +32,11 @@ const ServicesHero = () => {
             </p>
 
             <div className="flex items-center justify-center gap-6 mt-8">
-              <Button
-                variant="Gradient"
-                classNames="lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] "
-              >
-                <p className="lg:text-[22px] md:text-[18px] text-base">
-                  Schedule An Appointment!
-                </p>
-              </Button>
+            <Link href={"/locations/schedule-appointment"}>
+        <Button variant="Gradient" classNames="lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] ">
+         Schedule An Appointment!
+        </Button>
+        </Link>
             </div>
           </div>
         </div>

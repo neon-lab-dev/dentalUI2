@@ -6,6 +6,7 @@ import InputField from "@/components/Form/InputField";
 import Button from "@/components/Buttons/Button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const LoginPage = () => {
   const [userName, setUserName] = useState("");
@@ -82,14 +83,15 @@ const LoginPage = () => {
             />
           </div>
           <p className="lg:text-xl md:text-base text-xs py-1 text-center md:text-start text-red-700">{errorMessage}</p>
-
+         
           <Button variant="Filled" classNames="w-full flex justify-center">
             Submit
           </Button>
+         
         </form>
         <p className="lg:text-xl md:text-base text-xs pt-6 text-center md:text-start">
           Don&apos;t have an account?{" "}
-          <span className="text-[#FF7F50] cursor-pointer">Sign Up</span>
+          <Link href={"/signup"}className="text-[#FF7F50] cursor-pointer">Sign Up </Link>
         </p>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       </div>

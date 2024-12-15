@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import InputField from "@/components/Form/InputField";
 import Button from "@/components/Buttons/Button";
+import Link from "next/link";
 
 
 const SignUpPage = () => {
@@ -181,7 +182,7 @@ const SignUpPage = () => {
         </form>
         <p className="lg:text-xl md:text-base text-xs pt-6 text-center md:text-start  ">
           Already have an account?{" "}
-          <span className="text-[#FF7F50] cursor-pointer">  Login </span>
+          <Link href={"/login"} className="text-[#FF7F50] cursor-pointer">  Login</Link>
         </p>
       </div>
     </div>
