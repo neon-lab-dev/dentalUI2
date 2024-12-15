@@ -1,19 +1,18 @@
 "use client";
 import { ICONS, IMAGES } from "@/assets";
-import Button from "@/components/Buttons/Button";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import Container from "../Container/Container";
 import { navlinks } from "./navlinks";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
   const { first_name, isLoggedIn } = useSelector(
     (state: RootState) => state.user
   );

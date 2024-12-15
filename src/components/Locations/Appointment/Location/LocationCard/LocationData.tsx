@@ -7,6 +7,9 @@ import { IMAGES } from "@/assets";
 import LocationCard from "./LocationCard";
 import ClinicCard from "./ClinicCard";
 import { GroupedClinics } from "@/store/slices/clinicSlice";
+import { StaticImageData } from "next/image";
+
+
 
 interface LocationDataProps {
   setSelectedSubClinicId: (id: string | null) => void; // Callback for selected sub-clinic ID
@@ -19,7 +22,8 @@ const LocationData: React.FC<LocationDataProps> = ({ setSelectedSubClinicId }) =
   const { groupedClinics, loading } = useSelector((state: RootState) => state.clinic);
   const [selectedCardId, setSelectedCardId] = useState<GroupedClinicKeys | null>(null); // Use GroupedClinicKeys
 
-  const convenientDentalCareDetails: { _id: GroupedClinicKeys; img: any; name: string; numberOfClinic: string }[] = [
+  const convenientDentalCareDetails: {  _id: GroupedClinicKeys;
+    img: StaticImageData; name: string; numberOfClinic: string }[] = [
     {
       _id: "newYorkCity",
       img: IMAGES.location_1,

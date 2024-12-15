@@ -22,35 +22,38 @@ const SignUpPage = () => {
     try {
       const response = await axios.post(
         "https://dental-backend-three.vercel.app/api/v1/register",
-        {first_name: fname,
+        {
+          first_name: fname,
           last_name: lname,
           phoneNo: phone,
           email,
           password,
           confirm_password: cnfpassword,
           dob,
-          induranceStatus },
+          induranceStatus,
+        },
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
-
+  
       if (response.data.success) {
-        console.log(response.data.message)
+        console.log(response.data.message);
         alert("Registration successful");
         console.log("Registration successful");
         // Redirect logic here
       } else {
         setErrorMessage(`Registration failed: ${response.data.message}`);
       }
-    } catch (error: any) {
-      if (error.response) {
-        setErrorMessage(`Registration failed: ${error.response.data.message}`);
-      } else if (error.request) {
-        setErrorMessage("Network error, please try again.");
+    } catch (error: unknown) {
+      // Use axios.isAxiosError to check for Axios-specific error
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(
+          `Registration failed: ${error.response?.data?.message || "Unknown error occurred."}`
+        );
       } else {
-        setErrorMessage(`An error occurred: ${error.message}`);
+        setErrorMessage("An unexpected error occurred. Please try again.");
       }
     }
-  };
+  };  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== cnfpassword) {

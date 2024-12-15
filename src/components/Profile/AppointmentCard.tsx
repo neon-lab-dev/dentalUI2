@@ -11,7 +11,7 @@ const AppointmentCard = () => {
         {/* Image Section */}
         <div className="flex gap-4  xl:order-1">
           <div className="flex-shrink-0">
-            <img
+            <Image
               src="https://via.placeholder.com/80" // Replace with the actual image URL
               alt="Service"
               className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover"

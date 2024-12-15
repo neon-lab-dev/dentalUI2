@@ -21,25 +21,26 @@ const LoginPage = () => {
         { email: userName, password },
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
-
+  
       if (response.data.success) {
-        const {id ,first_name, email, phoneNo } = response.data.user; 
-        console.log(response.data.user)
+        const { id, first_name, email, phoneNo } = response.data.user;
+        console.log(response.data.user);
         dispatch(setUser({ id, first_name, email, phoneNo, isLoggedIn: true }));
         router.push("/");
       } else {
         setErrorMessage(`Login failed: ${response.data.message}`);
       }
-    } catch (error: any) {
-      if (error.response) {
-        setErrorMessage(`Login failed: ${error.response.data.message}`);
-      } else if (error.request) {
-        setErrorMessage("Network error, please try again.");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(
+          `Login failed: ${error.response?.data?.message || "Unknown error occurred."}`
+        );
       } else {
-        setErrorMessage(`An error occurred: ${error.message}`);
+        setErrorMessage("An unexpected error occurred. Please try again.");
       }
     }
   };
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,7 +88,7 @@ const LoginPage = () => {
           </Button>
         </form>
         <p className="lg:text-xl md:text-base text-xs pt-6 text-center md:text-start">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span className="text-[#FF7F50] cursor-pointer">Sign Up</span>
         </p>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
