@@ -1,80 +1,105 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@/components/Buttons/Button";
+import Calender from "./Calendar";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface DatePickerPageProps {
   goToNextStep: () => void;
+  selectedSubClinicId: string | null;
 }
 
-const DatePickerPage: React.FC<DatePickerPageProps> = ({ goToNextStep }) => {
-  // const [selectedDateTime, setSelectedDateTime] = useState<string | null>(null);
-  // const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  // const [selectedTime, setSelectedTime] = useState<string | null>(null);
+const DatePickerPage: React.FC<DatePickerPageProps> = ({
+  goToNextStep,
+  selectedSubClinicId,
+}) => {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [availableSlots, setAvailableSlots] = useState<
+    Array<{ time: string; isBooked: boolean; _id: string }>
+  >([]);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const clinics = useSelector((state: RootState) => state.clinic.clinics);
 
-  // const handleDateChange = (date: Dayjs | null) => {
-  //   if (!date) return;
-  //   const formattedDate = date.format("DD MMMM, YYYY");
-  //   setSelectedDate(formattedDate);
-  //   setSelectedDateTime(null);
-  //   setSelectedTime(null);
-  // };
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    console.log("Selected date:", date);
+  };
+  const handleTimeClick = (time: string) => {
+    setSelectedTime(time);
+  };
 
-  // const handleTimeClick = (time: string) => {
-  //   if (!selectedDate) return;
-  //   setSelectedTime(time);
-  //   setSelectedDateTime(`${selectedDate} ${time}`);
-  // };
+  useEffect(() => {
+    if (selectedSubClinicId) {
+      const clinic = clinics.find((c) => c._id === selectedSubClinicId);
 
-  // const generateTimes = () => {
-  //   const times = [];
-  //   for (let hour = 9; hour <= 21; hour += 2) {
-  //     const time = dayjs().set("hour", hour).set("minute", 0).format("hh:mm A");
-  //     times.push(time);
-  //   }
-  //   return times;
-  // };
+      if (clinic && selectedDate) {
+        const scheduleForDate = clinic.schedule.find(
+          (schedule) =>
+            new Date(schedule.date).toISOString().split("T")[0] ==
+            new Date(selectedDate).toISOString().split("T")[0]
+        );
 
+        if (scheduleForDate) {
+          setAvailableSlots(scheduleForDate.slots);
+        } else {
+          setAvailableSlots([]); // No slots available for the selected date
+        }
+      }
+    }
+  }, [selectedSubClinicId, selectedDate, clinics]);
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
   return (
-    <div className="flex  w-full justify-center items-center bg-transparent">
+    <div className="flex w-full justify-center items-center bg-transparent">
       <div className="w-full bg-transparent flex xl:flex-row flex-col gap-6 md:gap-8 justify-between">
         {/* Calendar Section */}
-        <div className="flex-1">
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <StaticDatePicker
-              orientation="landscape"
-              value={selectedDate ? dayjs(selectedDate, "DD MMMM, YYYY") : null}
-              onChange={handleDateChange}
-              className="full-calendar"
-            />
-          </LocalizationProvider> */}
+        <div className="flex-[4] xl:flex-[4] flex-1">
+          <Calender onDateSelect={handleDateSelect} />
         </div>
-        <div>
-          <div className="flex flex-col gap-12 ">
-            {/* Time Section */}
-            {/* <div className="bg-transparent p-4 grid xl:grid-cols-5 grid-cols-3 gap-6">
-              {generateTimes().map((time) => (
-                <Button
-                  key={time}
-                  onClick={() => handleTimeClick(time)}
-                  variant={selectedTime === time ? "Filled" : "Outlined"}
-                  classNames="font-Poppins md:text-[24px] text-[12px] font-normal px-6 py-3 rouded-[52px] "
-                >
-                  {time}
-                </Button>
-              ))}
-            </div> */}
+  
+        {/* Time Section */}
+        <div className="flex-[6] xl:flex-[6] flex-1">
+          <div className="flex flex-col gap-12">
+            {/* Time Section */}{availableSlots.length<= 0?(
+                <p>No available slots for the selected date.</p>
+              ):(<div className="bg-transparent p-4 grid xl:grid-cols-4 grid-cols-3 gap-6">
+                {availableSlots.length > 0 ? (
+                  availableSlots.map((slot) => (
+                    <Button
+                      key={slot._id}
+                      disable={slot.isBooked}
+                      onClick={() => handleTimeClick(slot.time)}
+                      variant={selectedTime === slot.time ? "Filled" : "Outlined"}
+                    >
+                      {slot.time}
+                    </Button>
+                  ))
+                ) : (
+                  ""
+                )}
+              </div>)}
+            
+  
             {/* Display Selected Date-Time */}
-            {/* <div>
-              <p className="xl:py-5 xl:px-6 p-4 border border-[#333] rounded-2xl bg-[#F5F5DC] font-Poppins xl:text-[32px] md:text-[16px] text-[12px]">
-                {selectedDateTime || "No date and time selected"}
+            <div>
+              <p className=" flex gap-10 xl:px-6 p-4 border border-neutral-10 rounded-2xl bg-secondary-30 font-Poppins lg:text-[32px] md:text-2xl text-xs">
+                <span className=" font-Poppins  ">{formatDate(selectedDate)
+                }{" "}</span> 
+                <span className="text-neutral-10">{selectedTime && availableSlots.length>0 && ` ${selectedTime}`}</span> {/* Display selected time */}
               </p>
-            </div> */}
+            </div>
           </div>
-
+  
           <Button
             variant="Filled"
             onClick={goToNextStep} // Ensure this function is correctly passed and exists
-            classNames="w-full flex justify-center xl:mt-[176px] md:mt-[54px] mt-12 px-[28px] py-[14px]"
+            classNames="w-full flex justify-center mt-12 px-[28px] py-[14px]"
           >
             Continue
           </Button>
@@ -82,8 +107,7 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({ goToNextStep }) => {
       </div>
     </div>
   );
+  
 };
-
- 
 
 export default DatePickerPage;
