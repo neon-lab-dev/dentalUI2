@@ -1,5 +1,5 @@
 "use client";
-import { IMAGES } from "@/assets";
+import { ICONS, IMAGES } from "@/assets";
 import Button from "@/components/Buttons/Button";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,14 +9,14 @@ import Container from "../Container/Container";
 import { navlinks } from "./navlinks";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store";
-import { clearUser } from "@/store/slices/userSlice";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { first_name, isLoggedIn } = useSelector((state: RootState) => state.user);
-
+  const { first_name, isLoggedIn } = useSelector(
+    (state: RootState) => state.user
+  );
 
   return (
     <Container>
@@ -26,36 +26,9 @@ const Navbar = () => {
           <Image
             src={IMAGES.dentistClinicLogo}
             alt="dentist-clinic"
-            className="w-[151px]"
+            className="lg:w-[151px] md:w-[130px] w-[70px]"
           />
         </Link>
-
-        {/* Hamburger Icon */}
-        <div className="lg:hidden">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-neutral-10"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d={
-                  isMenuOpen
-                    ? "M6 18L18 6M6 6l12 12" // Close icon
-                    : "M4 6h16M4 12h16M4 18h16" // Menu icon
-                }
-              />
-            </svg>
-          </button>
-        </div>
 
         {/* Navigation Links */}
         <div
@@ -65,7 +38,7 @@ const Navbar = () => {
         >
           {navlinks.map((link) => (
             <Link
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => setIsMenuOpen(false)}
               key={link.label}
               href={link.path}
               className={`text-neutral-10 font-Poppins text-xl ${
@@ -78,43 +51,42 @@ const Navbar = () => {
             </Link>
           ))}
         </div>
-
+      <div className="flex items-center">
         {/* Call-to-Action Buttons */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="flex items-center gap-2 md:gap-6">
           <Link href={"/signup"}>
-            <Button variant="Outlined" classNames="">
+            <button  className="border-[#FF7F50] bg-none text-[#FF7F50] border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-base font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap ">
               Book Now!
-            </Button>
+            </button>
           </Link>
-          <Link href={"/login"}>
-            <Button variant="Filled" classNames="">
+          <Link href={isLoggedIn ? "/profile" : "/login"}>
             {isLoggedIn ? (
-        <span>
-          Welcome, {first_name}! 
-        </span>
-      ) : (
-       <span>Login</span> 
-      )}
-            </Button>
+              <button
+                className="lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap text-neutral-10 font-Poppins text-base bg-secondary-10"
+              >
+                <span>Hi, {first_name}!</span>
+              </button>
+            ) : (
+              <button  className=" border-[#FF7F50] bg-[#FF7F50] text-[#F5F5DC]   border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-sm font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap ">
+                Login
+              </button>
+            )}
           </Link>
+        </div>
+        {/* Hamburger Icon */}
+        <div className="lg:hidden flex items-center">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="focus:outline-none"
+          >
+            <Image src={ICONS.hamburger} alt="" className="md:size-14 size-7" />
+          </button>
         </div>
       </div>
+        
 
-      {/* Mobile Menu Buttons */}
-      {isMenuOpen && (
-        <div className="lg:hidden mt-4">
-          <Link href={"/signup"}>
-            <Button variant="Outlined" classNames="w-full mb-2">
-              Book Now!
-            </Button>
-          </Link>
-          <Link href={"/login"}>
-            <Button variant="Filled" classNames="w-full">
-              Sign in
-            </Button>
-          </Link>
-        </div>
-      )}
+        
+      </div>
     </Container>
   );
 };

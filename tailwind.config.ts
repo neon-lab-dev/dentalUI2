@@ -17,6 +17,7 @@ export default {
         black: "#000",
         primary: {
           10: "#FF7F50",
+          20:"#D40000"
         },
         secondary: {
           10: "#ADD8E6",
