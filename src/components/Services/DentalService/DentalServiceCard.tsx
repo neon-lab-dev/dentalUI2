@@ -1,5 +1,6 @@
 import Button from "@/components/Buttons/Button";
 import Image, { StaticImageData } from "next/image";
+import Link from "next/link";
 
 interface DentalServiceCardProps {
   img: string | StaticImageData;
@@ -37,20 +38,18 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
         className={`${
           isFullWidth
             ? "p-6 flex-1"
-            : "flex flex-col p-6 2xl:p-12"
+            : "flex flex-col p-6 2xl:p-12 "
         }`}
       >
         <h1 className="text-black font-Amiri lg:text-[46px] md:text-[32px] text-2xl font-bold lg:leading-[48px] md:leading-8 leading-7">
           {title}
         </h1>
         <p className="text-neutral-10 font-Poppins lg:text-xl md:text-base text-xs text-start  mt-4">{content}</p>
-        <Button
-          variant="Gradient"
-          classNames={`${isBtnVisible?"":"hidden lg:flex"} lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] mt-4 w-fit ${
-            isFullWidth ? "self-start" : ""
-          }`}
-        >Schedule An Appointment!
+        <Link href={"/locations/schedule-appointment"}>
+        <Button variant="Gradient" classNames={`lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] ${isBtnVisible?"":"hidden"} `}>
+         Schedule An Appointment!
         </Button>
+        </Link>
 
 
        
