@@ -6,9 +6,20 @@ import { LocationProvider } from "./LocationContext";
 
 interface LocationProps {
   goToNextStep: () => void; // Callback function for proceeding to the next step
+  updateAppointmentData: (field: string, value: string) => void; // Callback to update appointment data
 }
-const Location: React.FC<LocationProps> = ({ goToNextStep }) => {
+
+const Location: React.FC<LocationProps> = ({ goToNextStep, updateAppointmentData }) => {
   const [selectedClinicId, setSelectedClinicId] = useState<string | null>(null); // State for selected clinic ID
+  
+  const handleClinicSelection = (clinicId: string, state: string, city: string, address: string) => {
+    setSelectedClinicId(clinicId);
+    updateAppointmentData("clinicId", clinicId);
+    updateAppointmentData("state", state);
+    updateAppointmentData("city", city);
+    updateAppointmentData("address", address);
+  };
+
   return (
     <div className="flex flex-col items-center">
       {/* Content Container */}
@@ -18,9 +29,7 @@ const Location: React.FC<LocationProps> = ({ goToNextStep }) => {
           {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className={`h-[16px] rounded-[30px] flex-1 ${
-                index < 3 ? "bg-[#FF7F50]" : "border border-[#FF7F50]"
-              }`}
+              className={`h-[16px] rounded-[30px] flex-1 ${index < 3 ? "bg-[#FF7F50]" : "border border-[#FF7F50]"}`}
             ></div>
           ))}
         </div>
@@ -30,7 +39,7 @@ const Location: React.FC<LocationProps> = ({ goToNextStep }) => {
           Select Location
         </h2>
         <LocationProvider>
-          <LocationData setSelectedSubClinicId={setSelectedClinicId} />
+          <LocationData setSelectedSubClinicId={handleClinicSelection} />
         </LocationProvider>
 
         {/* Select Date and Time */}
@@ -38,10 +47,11 @@ const Location: React.FC<LocationProps> = ({ goToNextStep }) => {
           Select Date and Time
         </h2>
         <div className="w-full">
-          <DateTimeSelector
-            goToNextStep={goToNextStep}
-            selectedSubClinicId={selectedClinicId}
-          />
+        <DateTimeSelector
+  goToNextStep={goToNextStep}
+  selectedSubClinicId={selectedClinicId}
+  updateAppointmentData={updateAppointmentData} // Pass the missing prop
+/>
         </div>
       </div>
     </div>

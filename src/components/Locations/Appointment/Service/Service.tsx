@@ -12,6 +12,8 @@ interface ServiceType {
 // Define the props for the Service component
 interface ServiceProps {
   goToNextStep: () => void; // Callback function for proceeding to the next step
+  onServiceSelect: (service: ServiceType) => void; // Callback to pass the selected service to the parent
+  updateAppointmentData: (field: string, value: string) => void; // Add this line to include updateAppointmentData
 }
 
 const services: ServiceType[] = [
@@ -21,13 +23,13 @@ const services: ServiceType[] = [
   { id: 4, name: "Braces Consultation", duration: "20 minutes" },
   { id: 5, name: "Root Canal", duration: "60 minutes" },
 ];
-
-const Service: React.FC<ServiceProps> = ({ goToNextStep }) => {
+const Service: React.FC<ServiceProps> = ({ goToNextStep, onServiceSelect }) => {
   const [selectedService, setSelectedService] = useState<number | null>(null);
 
   const handleCardSelect = (service: ServiceType) => {
     setSelectedService(service.id);
-    goToNextStep();
+    onServiceSelect(service); // Pass the selected service to the parent (parent gets service name)
+    goToNextStep(); // Proceed to the next step
   };
 
   return (

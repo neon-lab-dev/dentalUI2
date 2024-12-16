@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 import clinicReducer from "./slices/clinicSlice"
 import appointmentReducer from "./slices/apppointmentSlice"
+import bookAppontmentReducer from "./slices/bookAppointmentSlice"
 import { useDispatch } from "react-redux";
 import authReducer from "./slices/authSlice";
 
@@ -10,7 +11,8 @@ export const store = configureStore({
     user: userReducer,
     clinic: clinicReducer,
     appointments: appointmentReducer,
-    auth: authReducer
+    auth: authReducer,
+    bookAppointment:bookAppontmentReducer
   },
 });
 
