@@ -65,8 +65,12 @@ export const fetchClinicById = createAsyncThunk(
         `https://dental-backend-three.vercel.app/api/v1/clinic/${clinicId}`
       );
       return response.data.clinic as Clinic; // Explicitly type the response
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to fetch clinic details");
+    } catch (error: unknown) {
+      // Ensure the error is typed correctly
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response?.data?.message || "Failed to fetch clinic details");
+      }
+      return rejectWithValue("An unknown error occurred");
     }
   }
 );

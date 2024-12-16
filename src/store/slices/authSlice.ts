@@ -1,9 +1,32 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+// Define the type for the user data
+interface User {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  induranceStatus: string;
+  phoneNo: number;
+  dob: string; // ISO string format
+  role: string;
+  createdAt: string; // ISO string format
+  __v: number;
+}
 
 interface AuthState {
-  user: null | Record<string, any>; // `user` can be null or an object with user data
-  error: null | string; // `error` can be null or a string
+  user: User | null; // 'user' can be a User object or null
+  error: string | null; // 'error' can be a string or null
   loading: boolean;
+}
+
+// Define the type for the payload of loginSuccess and loginFailure
+interface LoginSuccessPayload {
+  user: User;
+}
+
+interface LoginFailurePayload {
+  error: string;
 }
 
 const initialState: AuthState = {
@@ -20,12 +43,12 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    loginSuccess(state, action) {
+    loginSuccess(state, action: PayloadAction<LoginSuccessPayload>) {
       state.user = action.payload.user;
       state.loading = false;
     },
-    loginFailure(state, action) {
-      state.error = action.payload;
+    loginFailure(state, action: PayloadAction<LoginFailurePayload>) {
+      state.error = action.payload.error;
       state.loading = false;
     },
     logout(state) {

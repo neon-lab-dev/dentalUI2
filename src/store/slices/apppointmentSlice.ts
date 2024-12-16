@@ -79,9 +79,9 @@ const appointmentSlice = createSlice({
         state.previousAppointments = previous;
         state.loading = false;
       })
-      .addCase(fetchAppointments.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(fetchAppointments.rejected, (state, action: PayloadAction<unknown>) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload as string; // cast to string if it's an error message
       });
   },
 });
