@@ -1,5 +1,5 @@
 "use client";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import LocationData from "./LocationCard/LocationData";
 import DateTimeSelector from "./DateTimeSelector/DateTimeSelector";
 import { LocationProvider } from "./LocationContext";
@@ -7,11 +7,10 @@ import { LocationProvider } from "./LocationContext";
 interface LocationProps {
   goToNextStep: () => void; // Callback function for proceeding to the next step
 }
-const Location: React.FC<LocationProps> = ({ goToNextStep }) =>{
+const Location: React.FC<LocationProps> = ({ goToNextStep }) => {
   const [selectedClinicId, setSelectedClinicId] = useState<string | null>(null); // State for selected clinic ID
   return (
     <div className="flex flex-col items-center">
-
       {/* Content Container */}
       <div className="flex flex-col items-center justify-center gap-8 md:gap-10 xl:gap-12 py-8 md:py-12 px-4 md:px-8 xl:px-12 rounded-2xl md:rounded-[32px] xl:rounded-[48px] w-[90%] bg-[#EBFAFF] border border-[#333] shadow-sm">
         {/* Progress Bar */}
@@ -31,7 +30,7 @@ const Location: React.FC<LocationProps> = ({ goToNextStep }) =>{
           Select Location
         </h2>
         <LocationProvider>
-        <LocationData setSelectedSubClinicId={setSelectedClinicId} />
+          <LocationData setSelectedSubClinicId={setSelectedClinicId} />
         </LocationProvider>
 
         {/* Select Date and Time */}
@@ -39,7 +38,10 @@ const Location: React.FC<LocationProps> = ({ goToNextStep }) =>{
           Select Date and Time
         </h2>
         <div className="w-full">
-          <DateTimeSelector goToNextStep={goToNextStep} selectedSubClinicId={selectedClinicId} />
+          <DateTimeSelector
+            goToNextStep={goToNextStep}
+            selectedSubClinicId={selectedClinicId}
+          />
         </div>
       </div>
     </div>

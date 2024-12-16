@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Amiri, Poppins } from "next/font/google";
-import { Providers } from "@/store/Providers"; 
+import { Providers } from "@/store/Providers";
+import Rehydration from "@/store/Rehydration";
 
 const amiri = Amiri({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <body className={`${amiri.className} ${poppins.className}`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Rehydration>{children}</Rehydration>
+        </Providers>
       </body>
     </html>
   );

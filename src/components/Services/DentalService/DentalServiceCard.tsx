@@ -46,7 +46,7 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
         </h1>
         <p className="text-neutral-10 font-Poppins lg:text-xl md:text-base text-xs text-start  mt-4">{content}</p>
         <Link href={"/locations/schedule-appointment"}>
-        <Button variant="Gradient" classNames={`lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] ${isBtnVisible?"":"hidden"} `}>
+        <Button variant="Gradient" classNames={`lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] mt-5 py-[14px] ${isBtnVisible?"":"hidden"} `}>
          Schedule An Appointment!
         </Button>
         </Link>

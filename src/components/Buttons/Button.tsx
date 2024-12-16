@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 type TButton = {
   disable?:boolean
-  variant: "Outlined" | "Filled" | "Gradient";
+  variant: "Outlined" | "Filled" | "Gradient" | "Filled2";
   classNames?: string;
   children?: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -20,9 +20,10 @@ const Button: React.FC<TButton> = ({
     "border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[28px] py-[14px] lg:text-[22px] md:text-[18px] text-base font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap ";
 
   const variantClasses = {
-    Outlined: "border-[#FF7F50] bg-none text-[#FF7F50]",
-    Filled: "border-[#FF7F50] bg-[#FF7F50] text-[#F5F5DC]",
-    Gradient: "border-none bg-primary-gradient text-[#F5F5DC]",
+    Outlined: "border-primary-10 bg-none text-primary-10",
+    Filled: "border-primary-10 bg-primary-10 text-secondary-30",
+    Gradient: "border-none bg-primary-gradient text-secondary-30",
+    Filled2: "border-none bg-secondary-30 text-primary-10",
   };
   const disabledClasses = "opacity-50 cursor-not-allowed";
 

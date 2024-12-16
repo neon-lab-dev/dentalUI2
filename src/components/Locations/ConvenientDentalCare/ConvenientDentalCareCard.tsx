@@ -23,12 +23,11 @@ const ConvenientDentalCareCard = ({ details }: { details: any }) => {
             {details.numberOfClinic}
           </p>
         </div>
-
       </div>
 
       {/* Button */}
       <Link
-        href={`/${details._id}`}
+        href={`/locations/${details.name.replace(/\s+/g, "-").toLowerCase()}`}
         className="z-[1-] opacity-0 group-hover:z-20 group-hover:opacity-100 absolute bottom-[10%] right-[-50%] transform group-hover:right-[5%] transition-all duration-500 bg-white text-primary-10 lg:px-11 lg:py-4  px-5 py-2 font-Poppins lg:text-[22px] text-[9px] font-semibold rounded-[55px] flex items-center gap-3"
       >
         See All
