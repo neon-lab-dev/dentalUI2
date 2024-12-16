@@ -6,6 +6,37 @@ import InputField from "@/components/Form/InputField";
 import {useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch  } from "@/store";
 import AppointmentCard from "@/components/Profile/AppointmentCard";
+import { clearUser } from "@/store/slices/userSlice";
+import axios from "axios";
+
+// Logout Button Component
+const LogoutButton = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLogout = async () => {
+    try {
+      // Make the API call to logout
+      await axios.get("https://dental-backend-three.vercel.app/api/v1/logout");
+
+      // Dispatch the action to clear user data from Redux and localStorage
+      dispatch(clearUser());
+
+      // Optionally, you can also redirect the user to a login page
+      window.location.href = "/login"; // Or use a router.push if using react-router
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleLogout}
+      className="xl:mt-36 mt-8 bg-primary-20 text-[#F5F5DC] w-full border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-sm font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap"
+    >
+      Logout
+    </button>
+  );
+};
 
 const MyAppointments = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -204,7 +235,7 @@ const MyProfile = () => {
 const Page = () => {
   const [selectedOption, setSelectedOption] = useState("MyAppointments");
 
-
+  
 
   return (
     <Container>
@@ -247,9 +278,7 @@ const Page = () => {
                 Profile
               </button>
             </nav>
-            <button className=" xl:mt-36 mt-8 bg-primary-20 text-[#F5F5DC] w-full  border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-sm font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap ">
-              Logout
-            </button>
+            <LogoutButton />
           </div>
 
           {/* Main Content */}

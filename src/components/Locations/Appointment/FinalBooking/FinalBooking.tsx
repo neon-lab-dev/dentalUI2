@@ -1,41 +1,46 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import InputField from "@/components/Form/InputField";
 import Button from "@/components/Buttons/Button";
 import Link from "next/link";
+import {  useSelector } from "react-redux";
+import { RootState} from "@/store"; // Adjust import paths
 
-interface FormData {
-  fname: string;
-  lname: string;
-  email: string;
-  phone: string;
-  dob: string;
-  insurance: string;
-  password: string;
-  cnfpassword: string;
+
+
+interface FinalBookingProps {
+  bookAppointment: () => void;  // Define the type of the bookAppointment prop
 }
 
-const FinalBooking = () => {
-  const [formData, setFormData] = useState<FormData>({
-    fname: "",
-    lname: "",
-    email: "",
-    phone: "",
-    dob: "",
-    insurance: "",
-    password: "",
-    cnfpassword: "",
-  });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+const FinalBooking = ({ bookAppointment }: FinalBookingProps) => {
+    const user = useSelector((state: RootState) => state.user);
+    const [fname, setFname] = useState(user.first_name);
+    const [lname, setLname] = useState(user.last_name);
+    const [email, setEmail] = useState(user.email);
+    const [phone, setPhone] = useState(user.phoneNo);
+    const [dob, setDOB] = useState(user.dob);
+    const [induranceStatus, setInduranceStatus] = useState(user.induranceStatus);
+  
+    useEffect(() => {
+        setFname(user.first_name);
+        setLname(user.last_name);
+        setEmail(user.email);
+        setPhone(user.phoneNo);
+        setDOB(formatDate(user.dob)); // Format the date
+        setInduranceStatus(user.induranceStatus);
+      }, [user]);
+    
+     // Format the date to dd-mm-yyyy format
+  const formatDate = (date: string) => {
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, "0");
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
   };
+  const bookAppointmentData = useSelector((state: RootState) => state.bookAppointment);
+  
 
   return (
     <div className="flex flex-col items-center">
@@ -58,9 +63,9 @@ const FinalBooking = () => {
         </div>
         <div className="w-full flex justify-between xl:py-5 xl:px-6 p-4  border border-[#333] rounded-2xl bg-[#F5F5DC] font-Poppins xl:text-[32px] md:text-[16px] text-[12px]">
           <div>
-            Appointment for <span className="font-bold">1 January, 2025</span>
+            Appointment for <span className="font-bold">{bookAppointmentData.BookAppointmentDate}</span>
           </div>
-          <div>at 11:00AM</div>
+          <div>at {bookAppointmentData.time}</div>
         </div>
 
         {/* Location and Treatment Info */}
@@ -68,18 +73,18 @@ const FinalBooking = () => {
           <div className="xl:px-[32px] xl:py-[24px] md:p-5 p-4 flex justify-between items-center shadow-sm bg-[#F5F5DC] rounded-3xl w-full">
             <div className="flex flex-col justify-between">
               <div className="font-Amiri font-bold xl:text-[32px] md:text-[20px] text-[16px] xl:leading-[48px] leading-6 md:leading-[30px]">
-                River North
+               {bookAppointmentData.city}
               </div>
               <div className="h-[2px] bg-[#FF7F50] self-stretch my-[10px]"></div>
               <div className="font-Poppins xl:text-xl md:text-[16px] text-[12px]">
-                444 North Orleans <br /> Chicago, IL 60654-5602
+                {bookAppointmentData.address} <br /> {bookAppointmentData.state}
               </div>
             </div>
           </div>
           <div className="xl:px-[32px] xl:py-[24px] md:p-5 p-4 flex justify-between items-center shadow-sm bg-[#FF7F50] rounded-3xl w-full">
             <div className="flex flex-col justify-between">
               <div className="font-Amiri font-bold xl:text-[32px] md:text-[20px] text-[16px] xl:leading-[48px] leading-6 md:leading-[30px]">
-                Invisalign
+                {bookAppointmentData.serviceName}
               </div>
               <div className="h-[2px] bg-[#F5F5DC] self-stretch my-[10px]"></div>
               <div className="font-Poppins xl:text-xl md:text-[16px] text-[12px]">
@@ -95,16 +100,17 @@ const FinalBooking = () => {
         </div>
         <div className="w-full flex flex-col xl:gap-8 md:gap-5 gap-4">
           {/* Name, Email, Phone, DOB, Insurance Fields */}
-          <div className="flex flex-wrap xl:gap-8 md:gap-5 gap-4">
+          <div className="py-6 flex flex-col lg:gap-8 gap-4">
+          <div className="md:flex-row flex flex-col lg:gap-8 gap-4">
             <InputField
               id="firstname"
               name="fname"
               label="First Name"
               type="text"
               placeholder="Enter First Name"
-              value={formData.fname}
-              onChange={handleChange}
-              className="xl:w-full w-full"
+              value={fname}
+              className="w-full"
+              disabled
             />
             <InputField
               id="lastname"
@@ -112,64 +118,61 @@ const FinalBooking = () => {
               label="Last Name"
               type="text"
               placeholder="Enter Last Name"
-              value={formData.lname}
-              onChange={handleChange}
-              className="xl:w-full w-full"
+              value={lname}
+              className="w-full"
+              disabled
             />
+          </div>
+          <div className="xl:flex-row flex flex-col lg:gap-8 gap-4">
             <InputField
               id="emailId"
               name="email"
               label="Email Id"
               type="email"
               placeholder="Enter Email ID"
-              value={formData.email}
-              onChange={handleChange}
-              className="xl:w-full w-full"
+              value={email}
+              className="w-full"
+              disabled
             />
             <InputField
               id="phonenumber"
               name="phone"
               label="Phone Number"
-              type="number"
+              type="text"
               placeholder="Enter Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
-              className="xl:w-full w-full"
+              value={phone.toString()}  // Ensure it's a string
+              className="w-full"
+              disabled
             />
+          </div>
+          <div className="md:flex-row flex flex-col lg:gap-8 gap-4">
             <InputField
               id="DOB"
               name="dob"
               label="Date Of Birth"
-              type="date"
+              type="text"
               placeholder="Enter Date Of Birth"
-              value={formData.dob}
-              onChange={handleChange}
-              className="xl:w-full w-full"
+              value={dob}
+              className="w-full"
+              disabled
             />
             <InputField
-              id="insurance"
+              id="example-select"
               name="insurance"
-              label="Insurance Status"
-              type="select"
-              value={formData.insurance}
-              onChange={handleChange}
-              options={[
-                "-Select One-",
-                "ICICI Lombard",
-                "Bajaj Fincerv",
-                "Kotak Mahindra",
-                "TATA AIA",
-                "Bharti AXA",
-                "LIC",
-              ]}
-              className="xl:w-full w-full"
+              label="Select an Insurance"
+              type="text"
+              value={induranceStatus}
+              className="w-full"
+              disabled
             />
           </div>
+        </div>
         </div>
 
         {/* Continue Booking Button */}
         <Link href="/locations">
           <Button
+            onClick={bookAppointment}
             variant="Filled"
             classNames="w-full flex justify-center px-[28px] py-[14px]"
           >

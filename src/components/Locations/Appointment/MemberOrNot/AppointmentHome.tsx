@@ -37,16 +37,18 @@ const AppointmentHome: React.FC<AppointmentHomeProps> = ({ goToNextStep }) => {
         </div>
 
         {/* Buttons */}
-        {[{
-          type: "New",
-          title: "No, I have never been to Dentist Clinic",
-          subtitle: "I am a new user!"
-        },
-        {
-          type: "Returning",
-          title: "Yes, I have been to Dentist Clinic",
-          subtitle: "I have a dentist clinic Account"
-        }].map((btn) => (
+        {[
+          {
+            type: "New",
+            title: "No, I have never been to Dentist Clinic",
+            subtitle: "I am a new user!",
+          },
+          {
+            type: "Returning",
+            title: "Yes, I have been to Dentist Clinic",
+            subtitle: "I have a dentist clinic Account",
+          },
+        ].map((btn) => (
           <Button
             key={btn.type}
             variant={selectedBtn === btn.type ? "Filled" : "Outlined"}

@@ -12,8 +12,9 @@ import { StaticImageData } from "next/image";
 
 
 interface LocationDataProps {
-  setSelectedSubClinicId: (id: string | null) => void; // Callback for selected sub-clinic ID
+  setSelectedSubClinicId: (clinicId: string, state: string, city: string, address: string) => void; // Accept 4 parameters
 }
+
 
 type GroupedClinicKeys = keyof GroupedClinics; // Restrict to the keys of GroupedClinics
 
