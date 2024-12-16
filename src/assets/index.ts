@@ -84,6 +84,9 @@ import location_2 from "@/assets/images/location2.png";
 import location_3 from "@/assets/images/location3.png";
 import location_4 from "@/assets/images/location4.png";
 
+// clinitPage/hero
+import cityClinic from "@/assets/images/cityClinic.png";
+
 //Appointment
 import rightblackarrow from"@/assets/icons/right-arrow-black.svg"
 
@@ -148,4 +151,5 @@ export const IMAGES = {
     location_2,
     location_3,
     location_4,
+    cityClinic,
 }

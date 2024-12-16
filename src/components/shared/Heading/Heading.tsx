@@ -30,7 +30,7 @@ const Heading: React.FC<THeading> = ({
       )}
 
       <h1
-        className={`text-neutral-15 font-Amiri font-bold lg:text-5xl md:text-4xl text-[32px] lg:leading-[66px] md:leading-[44px] leading-[32px] ${headingWidth} ${
+        className={`text-neutral-15 font-Amiri font-bold lg:text-5xl md:text-4xl text-[32px] lg:leading-[66px] md:leading-[44px] leading-[32px]  ${headingWidth} ${
           aligned === "Center" ? "mx-auto" : "mx-0"
         } w-full ${aligned === "Center" ? " text-center" : "text-start"}`}
       >

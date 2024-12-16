@@ -1,12 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 import clinicReducer from "./slices/clinicSlice"
+import appointmentReducer from "./slices/apppointmentSlice"
 import { useDispatch } from "react-redux";
+import authReducer from "./slices/authSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     clinic: clinicReducer,
+    appointments: appointmentReducer,
+    auth: authReducer
   },
 });
 

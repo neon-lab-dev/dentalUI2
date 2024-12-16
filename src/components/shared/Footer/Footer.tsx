@@ -22,10 +22,6 @@ const Footer = () => {
           path: "/locations",
         },
         {
-          label: "Insurance",
-          path: "/insurance",
-        },
-        {
           label: "Blogs",
           path: "/blogs",
         },
@@ -134,7 +130,7 @@ const Footer = () => {
                     {item.links.map((link) => (
                       <p
                         key={link.label}
-                        className="text-neutral-10 font-Poppins md:text-xl sm:text-base text-sm hover:underline"
+                        className="text-neutral-10 font-Poppins md:text-xl sm:text-base text-sm "
                       >
                         {link.label}
                       </p>

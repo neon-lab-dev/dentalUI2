@@ -1,7 +1,7 @@
-"use client"; // Marks this component as a Client Component
+"use client";
 
-import { Provider } from "react-redux";
 import { store } from "./index";
+import { Provider } from "react-redux";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return <Provider store={store}>{children}</Provider>;

@@ -1,35 +1,72 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
-  id:string
-  email: string;
+  id: string;
   first_name: string;
-  phoneNo:number
+  last_name: string;
+  email: string;
+  induranceStatus: string;
+  phoneNo: number;
+  dob: string;
   isLoggedIn: boolean;
 }
 
 const initialState: UserState = {
-  id:"",
-  email: "",
+  id: "",
   first_name: "",
-  phoneNo:0,
+  last_name: "",
+  email: "",
+  induranceStatus: "",
+  phoneNo: 0,
+  dob: "",
   isLoggedIn: false,
 };
+
+// Rehydrate state from localStorage if it exists
+if (typeof window !== "undefined") {
+  const savedUser = JSON.parse(localStorage.getItem("user") || "{}");
+  if (savedUser?.isLoggedIn) {
+    initialState.id = savedUser.id;
+    initialState.first_name = savedUser.first_name;
+    initialState.last_name = savedUser.last_name;
+    initialState.email = savedUser.email;
+    initialState.induranceStatus = savedUser.induranceStatus;
+    initialState.phoneNo = savedUser.phoneNo;
+    initialState.dob = savedUser.dob;
+    initialState.isLoggedIn = true;
+  }
+}
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {
-      state.email = action.payload.email;
-      state.first_name = action.payload.first_name;
+      const { id, first_name, last_name, email, induranceStatus, phoneNo, dob } = action.payload;
+      state.id = id;
+      state.first_name = first_name;
+      state.last_name = last_name;
+      state.email = email;
+      state.induranceStatus = induranceStatus;
+      state.phoneNo = phoneNo;
+      state.dob = dob;
       state.isLoggedIn = true;
-      console.log(state.first_name)
+
+      // Save user data to localStorage
+      localStorage.setItem("user", JSON.stringify(state));
     },
     clearUser: (state) => {
-      state.email = "";
+      state.id = "";
       state.first_name = "";
+      state.last_name = "";
+      state.email = "";
+      state.induranceStatus = "";
+      state.phoneNo = 0;
+      state.dob = "";
       state.isLoggedIn = false;
+
+      // Clear user data from localStorage
+      localStorage.removeItem("user");
     },
   },
 });

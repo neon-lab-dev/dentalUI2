@@ -20,11 +20,11 @@ export interface Clinic {
 
 // Define the structure of grouped clinics
 export interface GroupedClinics {
-    newYorkCity: { clinics: Clinic[]; count: number };
-    losAngeles: { clinics: Clinic[]; count: number };
-    houston: { clinics: Clinic[]; count: number };
-    chicago: { clinics: Clinic[]; count: number };
-  }
+  newYorkCity: { clinics: Clinic[]; count: number };
+  losAngeles: { clinics: Clinic[]; count: number };
+  houston: { clinics: Clinic[]; count: number };
+  chicago: { clinics: Clinic[]; count: number };
+}
 
 // Define the structure of the state
 interface ClinicState {
@@ -32,6 +32,7 @@ interface ClinicState {
   loading: boolean;
   error: string | null;
   groupedClinics: GroupedClinics;
+  selectedClinic: Clinic | null; // New: Single clinic details
 }
 
 // Initial state
@@ -45,6 +46,7 @@ const initialState: ClinicState = {
     houston: { clinics: [], count: 0 },
     chicago: { clinics: [], count: 0 },
   },
+  selectedClinic: null, // Default to null
 };
 
 // Async thunk to fetch clinics
@@ -53,6 +55,21 @@ export const fetchClinics = createAsyncThunk("clinics/fetchClinics", async () =>
   console.log(response.data.clinics);
   return response.data.clinics as Clinic[]; // Explicitly type the response
 });
+
+// New: Async thunk to fetch a single clinic by ID
+export const fetchClinicById = createAsyncThunk(
+  "clinics/fetchClinicById",
+  async (clinicId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `https://dental-backend-three.vercel.app/api/v1/clinic/${clinicId}`
+      );
+      return response.data.clinic as Clinic; // Explicitly type the response
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to fetch clinic details");
+    }
+  }
+);
 
 // Helper function to divide clinics into arrays by state
 const groupClinicsByState = (clinics: Clinic[]): GroupedClinics => {
@@ -94,7 +111,12 @@ const groupClinicsByState = (clinics: Clinic[]): GroupedClinics => {
 const clinicsSlice = createSlice({
   name: "clinics",
   initialState,
-  reducers: {},
+  reducers: {
+    // New: Action to clear the selected clinic (optional)
+    clearSelectedClinic: (state) => {
+      state.selectedClinic = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchClinics.pending, (state) => {
@@ -109,8 +131,24 @@ const clinicsSlice = createSlice({
       .addCase(fetchClinics.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch clinics";
+      })
+      // New: Fetch a single clinic
+      .addCase(fetchClinicById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchClinicById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedClinic = action.payload; // Save the fetched clinic details
+      })
+      .addCase(fetchClinicById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
+
+// Export actions (optional)
+export const { clearSelectedClinic } = clinicsSlice.actions;
 
 export default clinicsSlice.reducer;
