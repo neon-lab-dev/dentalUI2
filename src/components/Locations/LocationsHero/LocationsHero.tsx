@@ -1,3 +1,4 @@
+"use client"
 import Button from "@/components/Buttons/Button";
 import Heading from "@/components/shared/Heading/Heading";
 import ImageGallary from "./ImageGallary";
