@@ -3,13 +3,17 @@
 import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchClinicById, clearSelectedClinic } from "@/store/slices/clinicSlice";
+import {
+  fetchClinicById,
+  clearSelectedClinic,
+} from "@/store/slices/clinicSlice";
 import { RootState, AppDispatch } from "@/store";
 import Container from "@/components/shared/Container/Container";
 import ClinicDetailsHero from "@/components/Locations/ClinicLocation/ClinicDetailsHero";
 import Teams from "@/components/AboutUs/Teams/Teams";
 import OurPartners from "@/components/Home/OurPartners/OurPartners";
 import DentalService from "@/components/Services/DentalService/DentalService";
+import ClinicInfo from "@/components/Locations/ClinicLocation/ClinicInfo";
 
 const ClinicDetailsPage = () => {
   const clinic_id = useParams()?.clinic_id as string; // Ensure `clinic_id` is a string
@@ -39,20 +43,27 @@ const ClinicDetailsPage = () => {
           <>
             {/* Clinic Hero Section */}
             <ClinicDetailsHero
-            state={selectedClinic.state}
-  title={selectedClinic.city} // Replace with the correct property
-  subtitle={`${selectedClinic.address} ${selectedClinic.city}, ${selectedClinic.state}`}
-/>
-
+              state={selectedClinic.state}
+              title={selectedClinic.city} // Replace with the correct property
+              subtitle={`${selectedClinic.address} ${selectedClinic.city}, ${selectedClinic.state}`}
+            />
+            
             {/* Additional Sections */}
+            <ClinicInfo/>
             <DentalService />
             <Teams />
-            <OurPartners />
           </>
         ) : (
           <div>No clinic details found.</div>
         )}
       </Container>
+      {selectedClinic ? (
+        <>
+          <OurPartners />
+        </>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

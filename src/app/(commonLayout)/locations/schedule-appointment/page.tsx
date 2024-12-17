@@ -5,12 +5,11 @@ import Service from "@/components/Locations/Appointment/Service/Service";
 import Location from "@/components/Locations/Appointment/Location/Location";
 import FinalBooking from "@/components/Locations/Appointment/FinalBooking/FinalBooking";
 import Container from "@/components/shared/Container/Container";
-// import { useRouter } from "next/router";
 import axios from "axios";
 
 const ScheduleAppointment = () => {
   const [activeStep, setActiveStep] = useState(0);
-  // const router=useRouter()
+  
   const [appointmentData, setAppointmentData] = useState({
     clinicId: "",
     serviceName: "",
@@ -26,15 +25,16 @@ const ScheduleAppointment = () => {
     name: string;
     duration: string;
   }
+
   const updateAppointmentData = (field: string, value: string) => {
     setAppointmentData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
-    console.log(appointmentData)
+    console.log(appointmentData);
   };
 
-  const updateServiceData = (service:ServiceType) => {
+  const updateServiceData = (service: ServiceType) => {
     setAppointmentData((prevData) => ({
       ...prevData,
       serviceName: service.name,
@@ -92,6 +92,7 @@ const ScheduleAppointment = () => {
           updateAppointmentData={updateAppointmentData}
           onServiceSelect={updateServiceData}
           bookAppointment={bookAppointment}  // Pass bookAppointment as a prop
+          appointmentData={appointmentData} // Pass appointmentData to FinalBooking
         />
       </div>
     </Container>

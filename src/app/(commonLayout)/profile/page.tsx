@@ -1,13 +1,16 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, } from "react";
 import Container from "@/components/shared/Container/Container";
-import { fetchAppointments } from "@/store/slices/apppointmentSlice";
 import InputField from "@/components/Form/InputField";
 import {useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch  } from "@/store";
 import AppointmentCard from "@/components/Profile/AppointmentCard";
 import { clearUser } from "@/store/slices/userSlice";
 import axios from "axios";
+import { setAppointments, } from "@/store/slices/apppointmentSlice";
+import { ICONS } from "@/assets";
+import Image from "next/image";
+
 
 // Logout Button Component
 const LogoutButton = () => {
@@ -38,57 +41,76 @@ const LogoutButton = () => {
   );
 };
 
+
 const MyAppointments = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { upcomingAppointments, previousAppointments, loading, error } =
     useSelector((state: RootState) => state.appointments);
 
-  // Directly fetch token from localStorage
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (token) {
-      dispatch(fetchAppointments({ token })); // Pass token explicitly
-    }
-  }, [dispatch, token]);
-
-  // If token doesn't exist, prompt login
-  if (!token) {
-    return <div>Please log in to see your appointments.</div>;
-  }
-
-  // Show loading or error state
+    const fetchData = async () => {
+      if (isLoggedIn) {
+        try {
+          const response = await axios.get(
+            "https://dental-backend-three.vercel.app/api/v1/myappointment",
+            {
+              withCredentials: true,
+            }
+          );
+          if (response.data.success) {
+            const appointments = response.data.book; // Assuming `book` contains the appointment data
+  
+            // Dispatch the appointments to Redux
+            dispatch(setAppointments(appointments));
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+  
+    fetchData();
+  }, [isLoggedIn, dispatch]);
+  
+  if (!isLoggedIn) return <div>Please log in to see your appointments.</div>;
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  const formatDate = (dateString: string) => {
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+    const day = dateObj.getDate().toString().padStart(2, "0");
 
-  // Render appointments
+    return `${year}-${month}-${day}`;
+  };
+
+
   return (
     <div className="mt-16">
       <h2 className="text-2xl font-bold mb-6">Upcoming Appointments</h2>
       {upcomingAppointments.length > 0 ? (
         upcomingAppointments.map((appointment) => {
-          const dateObj = new Date(appointment.appointmentDate); // Convert ISO string to Date object
+          const dateObj = new Date(appointment.appointmentDate);
+          const formattedDate = formatDate(appointment.appointmentDate); 
+          // Check if the date is valid
+          if (isNaN(dateObj.getTime())) {
+            return <div key={appointment._id}>Invalid appointment date</div>;
+          }
+
           
-          const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1)
-            .toString()
-            .padStart(2, '0')}-${dateObj.getFullYear()}`; // Convert to 'dd-mm-yyyy'
-        
-          const formattedTime = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj
-            .getMinutes()
-            .toString()
-            .padStart(2, '0')}`; // Convert to 'hh:mm'
-        
           return (
             <AppointmentCard
               key={appointment._id}
               service={appointment.serviceName}
-              dateTime={`${formattedDate} ${formattedTime}`} // Pass formatted date and time
-              location={`${appointment.address}, ${appointment.city}, ${appointment.state}`} // Pass location
+              date={formattedDate}
+              time={appointment.time}
+              location={`${appointment.address}, ${appointment.city}, ${appointment.state}`}
             />
           );
         })
-        
       ) : (
         <p>No upcoming appointments found.</p>
       )}
@@ -97,32 +119,29 @@ const MyAppointments = () => {
       {previousAppointments.length > 0 ? (
         previousAppointments.map((appointment) => {
           const dateObj = new Date(appointment.appointmentDate);
-        
-          const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1)
-            .toString()
-            .padStart(2, '0')}-${dateObj.getFullYear()}`;
-        
-          const formattedTime = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj
-            .getMinutes()
-            .toString()
-            .padStart(2, '0')}`;
-        
+          const formattedDate = formatDate(appointment.appointmentDate);  
+          // Check if the date is valid
+          if (isNaN(dateObj.getTime())) {
+            return <div key={appointment._id}>Invalid appointment date</div>;
+          }
+
           return (
             <AppointmentCard
-              key={appointment._id}
-              service={appointment.serviceName}
-              dateTime={`${formattedDate} ${formattedTime}`}
-              location={`${appointment.address}, ${appointment.city}, ${appointment.state}`}
-            />
+            key={appointment._id}
+            service={appointment.serviceName}
+            date={formattedDate}
+            time={appointment.time}
+            location={`${appointment.address}, ${appointment.city}, ${appointment.state}`}
+          />
           );
         })
-        
       ) : (
         <p>No previous appointments found.</p>
       )}
     </div>
   );
 };
+
 
 
 
@@ -240,9 +259,9 @@ const Page = () => {
   return (
     <Container>
       <div className="flex w-full justify-center items-center bg-transparent">
-        <div className="w-full bg-transparent flex xl:flex-row flex-col gap-6 md:gap-8 justify-between">
+        <div className="w-full  bg-transparent flex xl:flex-row flex-col gap-6 md:gap-8 justify-between">
           {/* Sidebar or Navigation */}
-          <div className="flex-[3]  xl:flex-[3] flex-1 flex flex-col justify-between mt-16">
+          <div className="flex-[3] h-fit xl:flex-[3] flex-1 flex flex-col justify-between mt-16">
             <h1 className="hidden xl:flex text-black font-amiri text-[64px] font-bold leading-[90px]">
               My Account
             </h1>
@@ -256,26 +275,36 @@ const Page = () => {
             </div>
 
             <nav className="xl:mt-24 mt-10 rounded-[32px] bg-[#F5F5DC] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
-              <button
+            <button
                 onClick={() => setSelectedOption("MyAppointments")}
-                className={`flex w-full xl:py-[20px] py-4 px-2 justify-start ${
+                className={`flex w-full xl:py-[20px] py-4 px-2 items-center px-3  justify-start ${
                   selectedOption === "MyAppointments"
                     ? "text-black w-full bg-secondary-10 font-bold rounded-t-[32px]"
                     : "text-neutral-500"
                 }`}
               >
+                <Image
+                  src={selectedOption === "MyAppointments" ? ICONS.AppointmentFill : ICONS.Appointment}
+                  alt="Appointment Icon"
+                  className="mr-3 md:size-8 size-6"
+                />
                 My Appointments
               </button>
               <div className="border"></div>
               <button
                 onClick={() => setSelectedOption("Profile")}
-                className={`flex w-full xl:py-[20px] py-4 px-2 justify-start ${
+                className={`flex w-full xl:py-[20px] py-4 px-2 items-center px-3  justify-start ${
                   selectedOption === "Profile"
                     ? "text-black w-full bg-secondary-10 font-bold rounded-b-[32px]"
                     : "text-neutral-500"
                 }`}
               >
-                Profile
+                <Image
+                  src={selectedOption === "Profile" ? ICONS.ProfileFill : ICONS.Profile}
+                  alt="Appointment Icon"
+                  className="mr-3 md:size-8 size-6"
+                />
+               Profile
               </button>
             </nav>
             <LogoutButton />

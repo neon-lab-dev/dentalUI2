@@ -88,7 +88,16 @@ import location_4 from "@/assets/images/location4.png";
 import cityClinic from "@/assets/images/cityClinic.png";
 
 //Appointment
-import rightblackarrow from"@/assets/icons/right-arrow-black.svg"
+import rightblackarrow from "@/assets/icons/right-arrow-black.svg"
+
+// city page
+import service_bg from "@/assets/images/service-bg.jpeg"
+
+// profile page
+import AppointmentFill from "@/assets/icons/appointmentFill.svg";
+import Appointment from "@/assets/icons/appointment.svg";
+import ProfileFill from "@/assets/icons/profileFill.svg";
+import Profile from "@/assets/icons/profile.svg";
 
 export const ICONS = {
     phone,
@@ -112,7 +121,11 @@ export const ICONS = {
     blackplus,
     blackminus,
     hamburger,
-    rightblackarrow
+    rightblackarrow,
+    AppointmentFill,
+    Appointment,
+    ProfileFill,
+    Profile
 };
 
 export const IMAGES = {
@@ -152,4 +165,5 @@ export const IMAGES = {
     location_3,
     location_4,
     cityClinic,
+    service_bg,
 }
