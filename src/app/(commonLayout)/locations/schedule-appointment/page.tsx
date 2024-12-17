@@ -4,7 +4,6 @@ import AppointmentHome from "@/components/Locations/Appointment/MemberOrNot/Appo
 import Service from "@/components/Locations/Appointment/Service/Service";
 import Location from "@/components/Locations/Appointment/Location/Location";
 import FinalBooking from "@/components/Locations/Appointment/FinalBooking/FinalBooking";
-import Container from "@/components/shared/Container/Container";
 import axios from "axios";
 
 const ScheduleAppointment = () => {
@@ -78,8 +77,7 @@ const ScheduleAppointment = () => {
   };
   
 
-  return (
-    <Container>
+  return (<div>
       <div className="flex flex-col items-center gap-10 mt-[120px] overflow-hidden">
         <h1 className="text-neutral-15 text-center font-Amiri lg:text-[64px] md:text-[48px] text-[36px] font-bold lg:leading-[90px] md:leading-[64px] leading-[42px]">
           Schedule Your Appointment Today
@@ -93,8 +91,7 @@ const ScheduleAppointment = () => {
           bookAppointment={bookAppointment}  // Pass bookAppointment as a prop
           appointmentData={appointmentData} // Pass appointmentData to FinalBooking
         />
-      </div>
-    </Container>
+      </div></div>
   );
 };
 

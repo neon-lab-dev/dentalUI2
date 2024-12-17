@@ -2,7 +2,7 @@
 import { useState,useEffect } from "react";
 import InputField from "@/components/Form/InputField";
 import Button from "@/components/Buttons/Button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {  useSelector } from "react-redux";
 import { RootState} from "@/store"; // Adjust import paths
 
@@ -25,6 +25,9 @@ interface FinalBookingProps {
 const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) => {
 
     const user = useSelector((state: RootState) => state.user);
+    const [loading, setLoading] = useState(false);
+    // const [sucess, setSucess] = useState(false);
+  const router = useRouter();
     const [fname, setFname] = useState(user.first_name);
     const [lname, setLname] = useState(user.last_name);
     const [email, setEmail] = useState(user.email);
@@ -50,12 +53,31 @@ const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) =>
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
   };
-  
+  const handleBooking = async () => {
+    
+    setLoading(true); // Show loading overlay
+    try {
+      await bookAppointment(); // Wait for the appointment booking process
+      // setSucess(true);
+      router.push("/profile"); // Navigate to profile page on success
+    } catch (error) {
+      console.error("Booking failed:", error);
+      alert("Something went wrong! Please try again.");
+    } finally {
+      setLoading(false); // Hide loading overlay
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center relative">
+      {/* Loading Overlay */}
+      {loading &&(
+        <div className="absolute inset-0  bg-secondary-30 bg-opacity-75 flex items-end justify-center z-100">
+          <div className={`"text-primary-10 font-Amiri h-fit w-fit flex justify-center items-center text-5xl font-bold bg-secondary-30 p-40 rounded-3xl shadow-2xl mb-40`}> Booking Appointment...</div>
+        </div>
+      )}
       {/* Booking Progress */}
-      <div className="flex flex-col items-center justify-center gap-8 md:gap-10 xl:gap-12 py-8 md:py-12 px-4 md:px-8 xl:px-12 rounded-2xl md:rounded-[32px] xl:rounded-[48px] w-[90%] bg-[#EBFAFF] border border-[#333] shadow-sm">
+      <div className={`flex flex-col ${loading?"opacity-10":""} items-center justify-center gap-8 md:gap-10 xl:gap-12 py-8 md:py-12 px-4 md:px-8 xl:px-12 rounded-2xl md:rounded-[32px] xl:rounded-[48px] w-[90%] bg-[#EBFAFF] border border-[#333] shadow-sm`}>
         <div className="flex justify-between gap-5 w-full">
           {Array.from({ length: 4 }).map((_, index) => (
             <div
@@ -180,15 +202,13 @@ const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) =>
         </div>
 
         {/* Continue Booking Button */}
-        <Link href="/profile">
           <Button
-            onClick={bookAppointment}
+            onClick={handleBooking}
             variant="Filled"
             classNames="w-full flex justify-center px-[28px] py-[14px]"
           >
             Continue Booking
           </Button>
-        </Link>
       </div>
     </div>
   );
