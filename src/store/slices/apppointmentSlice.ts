@@ -8,6 +8,7 @@ interface Appointment {
   city: string;
   address: string;
   appointmentDate: string; // ISO string format
+  time:string
   user: string;
   createdAt: string;
 }

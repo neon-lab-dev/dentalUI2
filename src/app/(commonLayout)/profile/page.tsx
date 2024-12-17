@@ -75,6 +75,15 @@ const MyAppointments = () => {
   if (!isLoggedIn) return <div>Please log in to see your appointments.</div>;
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  const formatDate = (dateString: string) => {
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+    const day = dateObj.getDate().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
 
   return (
     <div className="mt-16">
@@ -82,25 +91,19 @@ const MyAppointments = () => {
       {upcomingAppointments.length > 0 ? (
         upcomingAppointments.map((appointment) => {
           const dateObj = new Date(appointment.appointmentDate);
-          const formattedDate = `${dateObj
-            .getDate()
-            .toString()
-            .padStart(2, "0")}-${(dateObj.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}-${dateObj.getFullYear()}`;
-          const formattedTime = `${dateObj
-            .getHours()
-            .toString()
-            .padStart(2, "0")}:${dateObj
-            .getMinutes()
-            .toString()
-            .padStart(2, "0")}`;
+          const formattedDate = formatDate(appointment.appointmentDate); 
+          // Check if the date is valid
+          if (isNaN(dateObj.getTime())) {
+            return <div key={appointment._id}>Invalid appointment date</div>;
+          }
 
+          
           return (
             <AppointmentCard
               key={appointment._id}
               service={appointment.serviceName}
-              dateTime={`${formattedDate} ${formattedTime}`}
+              date={formattedDate}
+              time={appointment.time}
               location={`${appointment.address}, ${appointment.city}, ${appointment.state}`}
             />
           );
@@ -113,27 +116,20 @@ const MyAppointments = () => {
       {previousAppointments.length > 0 ? (
         previousAppointments.map((appointment) => {
           const dateObj = new Date(appointment.appointmentDate);
-          const formattedDate = `${dateObj
-            .getDate()
-            .toString()
-            .padStart(2, "0")}-${(dateObj.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}-${dateObj.getFullYear()}`;
-          const formattedTime = `${dateObj
-            .getHours()
-            .toString()
-            .padStart(2, "0")}:${dateObj
-            .getMinutes()
-            .toString()
-            .padStart(2, "0")}`;
+          const formattedDate = formatDate(appointment.appointmentDate);  
+          // Check if the date is valid
+          if (isNaN(dateObj.getTime())) {
+            return <div key={appointment._id}>Invalid appointment date</div>;
+          }
 
           return (
             <AppointmentCard
-              key={appointment._id}
-              service={appointment.serviceName}
-              dateTime={`${formattedDate} ${formattedTime}`}
-              location={`${appointment.address}, ${appointment.city}, ${appointment.state}`}
-            />
+            key={appointment._id}
+            service={appointment.serviceName}
+            date={formattedDate}
+            time={appointment.time}
+            location={`${appointment.address}, ${appointment.city}, ${appointment.state}`}
+          />
           );
         })
       ) : (
@@ -142,6 +138,7 @@ const MyAppointments = () => {
     </div>
   );
 };
+
 
 
 
