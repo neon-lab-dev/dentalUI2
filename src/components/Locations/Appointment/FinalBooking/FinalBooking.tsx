@@ -180,7 +180,7 @@ const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) =>
         </div>
 
         {/* Continue Booking Button */}
-        <Link href="/locations">
+        <Link href="/profile">
           <Button
             onClick={bookAppointment}
             variant="Filled"
