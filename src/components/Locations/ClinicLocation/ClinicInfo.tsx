@@ -65,7 +65,7 @@ const ClinicInfo = () => {
       {/* Footer Note */}
       <div className="text-center text-sm mt-12 text-gray-500">
 <p>
-          We're located near [landmark or transportation hub], making it easy to visit us.
+          We&apos;re located near [landmark or transportation hub], making it easy to visit us.
         </p>
       </div>
     </div>

@@ -48,7 +48,6 @@ const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) =>
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
   };
-  const bookAppointmentData = useSelector((state: RootState) => state.bookAppointment);
   
 
   return (

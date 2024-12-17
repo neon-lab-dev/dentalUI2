@@ -92,6 +92,13 @@ import rightblackarrow from "@/assets/icons/right-arrow-black.svg"
 
 // city page
 import service_bg from "@/assets/images/service-bg.jpeg"
+
+// profile page
+import AppointmentFill from "@/assets/icons/appointmentFill.svg";
+import Appointment from "@/assets/icons/appointment.svg";
+import ProfileFill from "@/assets/icons/profileFill.svg";
+import Profile from "@/assets/icons/profile.svg";
+
 export const ICONS = {
     phone,
     email,
@@ -114,7 +121,11 @@ export const ICONS = {
     blackplus,
     blackminus,
     hamburger,
-    rightblackarrow
+    rightblackarrow,
+    AppointmentFill,
+    Appointment,
+    ProfileFill,
+    Profile
 };
 
 export const IMAGES = {

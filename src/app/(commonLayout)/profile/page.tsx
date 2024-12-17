@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,useEffect, use } from "react";
+import React, { useState,useEffect, } from "react";
 import Container from "@/components/shared/Container/Container";
 import InputField from "@/components/Form/InputField";
 import {useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,10 @@ import { RootState, AppDispatch  } from "@/store";
 import AppointmentCard from "@/components/Profile/AppointmentCard";
 import { clearUser } from "@/store/slices/userSlice";
 import axios from "axios";
-import { setAppointments, setLoading, setError } from "@/store/slices/apppointmentSlice";
+import { setAppointments, } from "@/store/slices/apppointmentSlice";
+import { ICONS } from "@/assets";
+import Image from "next/image";
+
 
 // Logout Button Component
 const LogoutButton = () => {
@@ -272,26 +275,36 @@ const Page = () => {
             </div>
 
             <nav className="xl:mt-24 mt-10 rounded-[32px] bg-[#F5F5DC] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
-              <button
+            <button
                 onClick={() => setSelectedOption("MyAppointments")}
-                className={`flex w-full xl:py-[20px] py-4 px-2 justify-start ${
+                className={`flex w-full xl:py-[20px] py-4 px-2 items-center px-3  justify-start ${
                   selectedOption === "MyAppointments"
                     ? "text-black w-full bg-secondary-10 font-bold rounded-t-[32px]"
                     : "text-neutral-500"
                 }`}
               >
+                <Image
+                  src={selectedOption === "MyAppointments" ? ICONS.AppointmentFill : ICONS.Appointment}
+                  alt="Appointment Icon"
+                  className="mr-3 md:size-8 size-6"
+                />
                 My Appointments
               </button>
               <div className="border"></div>
               <button
                 onClick={() => setSelectedOption("Profile")}
-                className={`flex w-full xl:py-[20px] py-4 px-2 justify-start ${
+                className={`flex w-full xl:py-[20px] py-4 px-2 items-center px-3  justify-start ${
                   selectedOption === "Profile"
                     ? "text-black w-full bg-secondary-10 font-bold rounded-b-[32px]"
                     : "text-neutral-500"
                 }`}
               >
-                Profile
+                <Image
+                  src={selectedOption === "Profile" ? ICONS.ProfileFill : ICONS.Profile}
+                  alt="Appointment Icon"
+                  className="mr-3 md:size-8 size-6"
+                />
+               Profile
               </button>
             </nav>
             <LogoutButton />
