@@ -18,7 +18,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-[#F5F5DC] rounded-[20px] shadow-[0px_0px_4px_rgba(0,0,0,0.25)] border border-neutral-10  my-3">
-      <div className="flex flex-col xl:flex-row xl:gap-20 gap-4 md:justify-between">
+      <div className="flex flex-col xl:flex-row xl:gap-20 gap-4 md:justify-between lg:flex-col-3">
         <div className="flex gap-4 xl:order-1">
           <div className="flex-shrink-0">
             <Image

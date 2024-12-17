@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { AppDispatch, RootState } from '@/store'; // Adjust import paths based on your project structure
 
 // Define the state type
 interface BookAppointmentState {
@@ -48,26 +46,4 @@ export const { updateField, resetForm } = bookAppointmentSlice.actions;
 // Export reducer
 export default bookAppointmentSlice.reducer;
 
-// Async thunk to send data to the API
-// Async thunk to send data to the API
-export const submitBookAppointment = () => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { bookAppointment } = getState(); // Get form data from Redux
-
-    try {
-        const response = await axios.post(
-            'http://localhost:7000/api/v1/book/new',
-            bookAppointment,
-            { withCredentials: true } // Include credentials
-        );
-        console.log('BookAppointment booked successfully:', response.data);
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            // Handle Axios-specific error
-            console.error('Axios error:', error.response?.data || error.message);
-        } else {
-            // Generic error fallback
-            console.error('Error booking BookAppointment:', (error as Error).message);
-        }
-    }
-};
 

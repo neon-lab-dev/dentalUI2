@@ -9,11 +9,20 @@ import { RootState} from "@/store"; // Adjust import paths
 
 
 interface FinalBookingProps {
-  bookAppointment: () => void;  // Define the type of the bookAppointment prop
+  bookAppointment: () => void;
+  appointmentData: {
+    clinicId: string;
+    serviceName: string;
+    state: string;
+    city: string;
+    address: string;
+    appointmentDate: string;
+    time: string;
+  };
 }
 
 
-const FinalBooking = ({ bookAppointment }: FinalBookingProps) => {
+const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) => {
     const user = useSelector((state: RootState) => state.user);
     const [fname, setFname] = useState(user.first_name);
     const [lname, setLname] = useState(user.last_name);
@@ -63,9 +72,9 @@ const FinalBooking = ({ bookAppointment }: FinalBookingProps) => {
         </div>
         <div className="w-full flex justify-between xl:py-5 xl:px-6 p-4  border border-[#333] rounded-2xl bg-[#F5F5DC] font-Poppins xl:text-[32px] md:text-[16px] text-[12px]">
           <div>
-            Appointment for <span className="font-bold">{bookAppointmentData.BookAppointmentDate}</span>
+            Appointment for <span className="font-bold">{appointmentData.appointmentDate}</span>
           </div>
-          <div>at {bookAppointmentData.time}</div>
+          <div>at {appointmentData.time}</div>
         </div>
 
         {/* Location and Treatment Info */}
@@ -73,18 +82,18 @@ const FinalBooking = ({ bookAppointment }: FinalBookingProps) => {
           <div className="xl:px-[32px] xl:py-[24px] md:p-5 p-4 flex justify-between items-center shadow-sm bg-[#F5F5DC] rounded-3xl w-full">
             <div className="flex flex-col justify-between">
               <div className="font-Amiri font-bold xl:text-[32px] md:text-[20px] text-[16px] xl:leading-[48px] leading-6 md:leading-[30px]">
-               {bookAppointmentData.city}
+               {appointmentData.city}
               </div>
               <div className="h-[2px] bg-[#FF7F50] self-stretch my-[10px]"></div>
               <div className="font-Poppins xl:text-xl md:text-[16px] text-[12px]">
-                {bookAppointmentData.address} <br /> {bookAppointmentData.state}
+                {appointmentData.address} <br /> {appointmentData.state}
               </div>
             </div>
           </div>
           <div className="xl:px-[32px] xl:py-[24px] md:p-5 p-4 flex justify-between items-center shadow-sm bg-[#FF7F50] rounded-3xl w-full">
             <div className="flex flex-col justify-between">
               <div className="font-Amiri font-bold xl:text-[32px] md:text-[20px] text-[16px] xl:leading-[48px] leading-6 md:leading-[30px]">
-                {bookAppointmentData.serviceName}
+                {appointmentData.serviceName}
               </div>
               <div className="h-[2px] bg-[#F5F5DC] self-stretch my-[10px]"></div>
               <div className="font-Poppins xl:text-xl md:text-[16px] text-[12px]">
