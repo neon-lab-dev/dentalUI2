@@ -48,8 +48,6 @@ const LoginPage = () => {
         { email: userName, password },
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
-      console.log(loginResponse);
-      
   
       if (loginResponse.data.success) {
         // Step 2: Fetch Profile API

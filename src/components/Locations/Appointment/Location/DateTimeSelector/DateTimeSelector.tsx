@@ -14,20 +14,22 @@ interface DatePickerPageProps {
 const DatePickerPage: React.FC<DatePickerPageProps> = ({
   goToNextStep,
   selectedSubClinicId,
-  updateAppointmentData
+  updateAppointmentData,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [availableSlots, setAvailableSlots] = useState<Array<{ time: string; isBooked: boolean; _id: string }>>([]);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [availableSlots, setAvailableSlots] = useState<
+    Array<{ time: string; isBooked: boolean; _id: string }>
+  >([]);
+  const [selectedTime, setSelectedTime] = useState<string | null>();
   const clinics = useSelector((state: RootState) => state.clinic.clinics);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
     console.log("Selected date:", date);
-  
+
     // Format the date to 'yyyy-mm-dd' format
-    const formattedDate = date.toISOString().split('T')[0]; // This removes the time portion
-  
+    const formattedDate = date.toISOString().split("T")[0]; // This removes the time portion
+
     updateAppointmentData("appointmentDate", formattedDate); // Update the selected date
   };
 
@@ -42,7 +44,9 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
 
       if (clinic && selectedDate) {
         const scheduleForDate = clinic.schedule.find(
-          (schedule) => new Date(schedule.date).toISOString().split("T")[0] === new Date(selectedDate).toISOString().split("T")[0]
+          (schedule) =>
+            new Date(schedule.date).toISOString().split("T")[0] ===
+            new Date(selectedDate).toISOString().split("T")[0]
         );
 
         if (scheduleForDate) {
@@ -78,28 +82,34 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
               <p>No available slots for the selected date.</p>
             ) : (
               <div className="bg-transparent p-4 grid xl:grid-cols-4 grid-cols-3 gap-6">
-                {availableSlots.length > 0 ? (
-                  availableSlots.map((slot) => (
-                    <Button
-                      key={slot._id}
-                      disable={slot.isBooked}
-                      onClick={() => handleTimeClick(slot.time)}
-                      variant={selectedTime === slot.time ? "Filled" : "Outlined"}
-                    >
-                      {slot.time}
-                    </Button>
-                  ))
-                ) : (
-                  ""
-                )}
+                {availableSlots.length > 0
+                  ? availableSlots.map((slot) => (
+                      <Button
+                        key={slot._id}
+                        disable={slot.isBooked}
+                        onClick={() => handleTimeClick(slot.time)}
+                        variant={
+                          selectedTime === slot.time ? "Filled" : "Outlined"
+                        }
+                      >
+                        {slot.time}
+                      </Button>
+                    ))
+                  : ""}
               </div>
             )}
 
             {/* Display Selected Date-Time */}
             <div>
               <p className="flex gap-10 xl:px-6 p-4 border border-neutral-10 rounded-2xl bg-secondary-30 font-Poppins lg:text-[32px] md:text-2xl text-xs">
-                <span className="font-Poppins">{formatDate(selectedDate)} </span>
-                <span className="text-neutral-10">{selectedTime && availableSlots.length > 0 && ` ${selectedTime}`}</span>
+                <span className="font-Poppins">
+                  {formatDate(selectedDate)}{" "}
+                </span>
+                <span className="text-neutral-10">
+                  {selectedTime &&
+                    availableSlots.length > 0 &&
+                    ` ${selectedTime}`}
+                </span>
               </p>
             </div>
           </div>
@@ -108,6 +118,7 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
             variant="Filled"
             onClick={goToNextStep} // Ensure this function is correctly passed and exists
             classNames="w-full flex justify-center mt-12 px-[28px] py-[14px]"
+            disable={!selectedTime} // Disable the button if no time is selected
           >
             Continue
           </Button>

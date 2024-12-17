@@ -66,7 +66,6 @@ const ScheduleAppointment = () => {
       );
       console.log("Appointment booked successfully:", response.data);
       alert("Appointment booked successfully!");
-      window.location.href = "/profile";
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error booking appointment:", error.message);

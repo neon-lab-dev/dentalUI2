@@ -23,6 +23,7 @@ interface FinalBookingProps {
 
 
 const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) => {
+
     const user = useSelector((state: RootState) => state.user);
     const [fname, setFname] = useState(user.first_name);
     const [lname, setLname] = useState(user.last_name);
@@ -38,6 +39,7 @@ const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) =>
         setPhone(user.phoneNo);
         setDOB(formatDate(user.dob)); // Format the date
         setInduranceStatus(user.induranceStatus);
+        console.log(user)
       }, [user]);
     
      // Format the date to dd-mm-yyyy format
@@ -178,7 +180,7 @@ const FinalBooking = ({ bookAppointment ,appointmentData}: FinalBookingProps) =>
         </div>
 
         {/* Continue Booking Button */}
-        <Link href="/locations">
+        <Link href="/profile">
           <Button
             onClick={bookAppointment}
             variant="Filled"
