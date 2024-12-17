@@ -1,33 +1,6 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Async action to fetch appointments
-export const fetchAppointments = createAsyncThunk(
-  "appointments/fetchAppointments",
-  async ({ token }: { token: string }, thunkAPI) => {
-    try {
-      const response = await axios.get(
-        "https://dental-backend-three.vercel.app/api/v1/myappointment",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        }
-      );
-
-      console.log("API Response:", response.data); // Log the response for debugging
-      return response.data.book; // Extract and return the 'book' array
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return thunkAPI.rejectWithValue(
-          error.response.data.message || "Failed to fetch appointments"
-        );
-      }
-      return thunkAPI.rejectWithValue("An unknown error occurred");
-    }
-  }
-);
-
-// Appointment slice
+// Appointment type definitions
 interface Appointment {
   _id: string;
   serviceName: string;
@@ -35,7 +8,6 @@ interface Appointment {
   city: string;
   address: string;
   appointmentDate: string; // ISO string format
-  time: string; // e.g., "09:00"
   user: string;
   createdAt: string;
 }
@@ -47,6 +19,7 @@ interface AppointmentState {
   error: string | null;
 }
 
+// Initial state
 const initialState: AppointmentState = {
   upcomingAppointments: [],
   previousAppointments: [],
@@ -57,33 +30,26 @@ const initialState: AppointmentState = {
 const appointmentSlice = createSlice({
   name: "appointments",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchAppointments.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchAppointments.fulfilled, (state, action: PayloadAction<Appointment[]>) => {
-        const currentDate = new Date();
-
-        // Separate appointments into upcoming and previous
-        const upcoming = action.payload.filter(
-          (appointment) => new Date(appointment.appointmentDate) > currentDate
-        );
-        const previous = action.payload.filter(
-          (appointment) => new Date(appointment.appointmentDate) <= currentDate
-        );
-
-        state.upcomingAppointments = upcoming;
-        state.previousAppointments = previous;
-        state.loading = false;
-      })
-      .addCase(fetchAppointments.rejected, (state, action: PayloadAction<unknown>) => {
-        state.loading = false;
-        state.error = action.payload as string; // cast to string if it's an error message
-      });
+  reducers: {
+    setAppointments: (state, action: PayloadAction<Appointment[]>) => {
+      const currentDate = new Date();
+      state.upcomingAppointments = action.payload.filter((appt) =>
+        new Date(appt.appointmentDate) > currentDate
+      );
+      state.previousAppointments = action.payload.filter((appt) =>
+        new Date(appt.appointmentDate) <= currentDate
+      );
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
+    clearAppointments: () => initialState,
   },
 });
 
+export const { setAppointments, setLoading, setError, clearAppointments } =
+  appointmentSlice.actions;
 export default appointmentSlice.reducer;
