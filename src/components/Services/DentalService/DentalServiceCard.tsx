@@ -19,7 +19,6 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
   title,
   content,
   isFullWidth=false,
-  isBtnVisible = false,
 }) => {
   const {  isLoggedIn } = useSelector(
     (state: RootState) => state.user
