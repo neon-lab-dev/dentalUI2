@@ -88,8 +88,10 @@ import location_4 from "@/assets/images/location4.png";
 import cityClinic from "@/assets/images/cityClinic.png";
 
 //Appointment
-import rightblackarrow from"@/assets/icons/right-arrow-black.svg"
+import rightblackarrow from "@/assets/icons/right-arrow-black.svg"
 
+// city page
+import service_bg from "@/assets/images/service-bg.jpeg"
 export const ICONS = {
     phone,
     email,
@@ -152,4 +154,5 @@ export const IMAGES = {
     location_3,
     location_4,
     cityClinic,
+    service_bg,
 }

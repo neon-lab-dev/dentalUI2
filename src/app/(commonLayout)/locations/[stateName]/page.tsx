@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "@/store";
 import Container from "@/components/shared/Container/Container";
 import ClinicCards from "@/components/Locations/ClinicLocation/ClinicCards";
 import Heading from "@/components/shared/Heading/Heading";
+import ServiceSection from "@/components/Locations/ClinicLocation/ServiceSection";
 
 // Function to capitalize each word and replace hyphens with spaces
 const toTitleCase = (str: string) => {
@@ -88,6 +89,7 @@ const ClinicLocationPage = () => {
         </div>
         
       </Container>
+      <ServiceSection/>
     </div>
   );
 };
