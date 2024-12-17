@@ -1,6 +1,10 @@
+
+"use client"
 import Button from "@/components/Buttons/Button";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface DentalServiceCardProps {
   img: string | StaticImageData;
@@ -17,6 +21,9 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
   isFullWidth=false,
   isBtnVisible = false,
 }) => {
+  const {  isLoggedIn } = useSelector(
+    (state: RootState) => state.user
+  );
   return (
     <div
       className={`${
@@ -45,8 +52,8 @@ const DentalServiceCard: React.FC<DentalServiceCardProps> = ({
           {title}
         </h1>
         <p className="text-neutral-10 font-Poppins lg:text-xl md:text-base text-xs text-start  mt-4">{content}</p>
-        <Link href={"/locations/schedule-appointment"}>
-        <Button variant="Gradient" classNames={`lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] mt-5 py-[14px] ${isBtnVisible?"":"hidden"} `}>
+        <Link href={isLoggedIn?"/locations/schedule-appointment":"/login"}>
+        <Button variant="Gradient" classNames="lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] ">
          Schedule An Appointment!
         </Button>
         </Link>

@@ -1,9 +1,15 @@
+"use client"
 import { IMAGES } from "@/assets";
 import Button from "@/components/Buttons/Button";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const ServicesHero = () => {
+  const {  isLoggedIn } = useSelector(
+    (state: RootState) => state.user
+  );
   return (
     <div className="pt-[63px] w-full rounded-3xl overflow-hidden max-w-screen">
       <div className="rounded-3xl relative max-h-[836px] w-full">
@@ -32,7 +38,7 @@ const ServicesHero = () => {
             </p>
 
             <div className="flex items-center justify-center gap-6 mt-8">
-            <Link href={"/locations/schedule-appointment"}>
+            <Link href={isLoggedIn?"/locations/schedule-appointment":"/login"}>
         <Button variant="Gradient" classNames="lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] ">
          Schedule An Appointment!
         </Button>

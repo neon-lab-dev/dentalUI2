@@ -53,7 +53,7 @@ const Navbar = () => {
         {/* Call-to-Action Buttons */}
         <div className="flex items-center gap-2 md:gap-6">
         {isLoggedIn ? (""
-        ):(<Link href={"/locations/schedule-appointment"}>
+        ):(<Link href={isLoggedIn ? "/locations/schedule-appointment" : "/login" }>
         
           <button  className="border-[#FF7F50] bg-none text-[#FF7F50] border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-base font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap ">
             Book Now!
