@@ -15,7 +15,7 @@ const ClinicLocationHero: React.FC<ClinicLocationHeroProps> = ({
   title,subtitle
 }) => {
   return (
-    <div className="flex flex-col lg:flex-row  gap-4 items-center lg:items-start   rounded-lg ">
+    <div className="flex flex-col lg:flex-row  mb-10 gap-4 items-center lg:items-start   rounded-lg ">
       {/* Text Section */}
       <div className="lg:w-1/2 flex-col flex gap-4 md:gap-8  ">
         <h1 className="font-Amiri lg:text-[64px] lg:leading-[90px] md:text-[48px] md:leading-[64px] text-[36px] leading-[42px] font-bold text-center lg:text-start">
