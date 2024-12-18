@@ -3,8 +3,20 @@
 import Button from "@/components/Buttons/Button";
 import { useState } from "react";
 import LatestBlogCard from "./LatestBlogCard";
+// Define a type for the blog data
+interface BlogPost {
+  img: string;
+  title: string;
+  content: string;
+  category: string;
+}
 
-const LatestBlogs = ({ blogData }: any) => {
+// Define props type for the LatestBlogs component
+interface LatestBlogsProps {
+  blogData: BlogPost[];
+}
+
+const LatestBlogs: React.FC<LatestBlogsProps> = ({ blogData }) => {
   // const blogData = [
   //   {
   //     img: IMAGES.blog1,
@@ -103,15 +115,13 @@ const LatestBlogs = ({ blogData }: any) => {
       <hr className="border border-neutral-15 mt-8" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {blogData.map(
-          // @ts-ignore
-          (blog, index) =>
-            <div key={index}>
+        {blogData.map((blog, index) => (
+          <div key={index}>
             {/* // blog.category === activeTab && (
             // ) */}
             <LatestBlogCard key={index} blog={blog} />
-            </div>
-        )}
+          </div>
+        ))}
       </div>
     </div>
   );
