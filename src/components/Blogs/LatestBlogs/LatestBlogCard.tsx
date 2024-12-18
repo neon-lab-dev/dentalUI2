@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { URLFor } from "@/app/lib/sanity";
 import Button from "@/components/Buttons/Button";
 import Image from "next/image";
 
 const LatestBlogCard = ({ blog }: { blog: any }) => {
+  console.log(blog,'card')
   return (
     <div className="shadow-md rounded-3xl">
       <Image
-        src={blog.img}
-        alt="Clinic image"
+        src={URLFor(blog.blogImage).url()}
+        alt="Clinic image" width={200} height={200}
         className={`w-full object-cover rounded-t-3xl h-[270px]`}
       />
       <div className="flex flex-col p-6">
@@ -15,7 +17,7 @@ const LatestBlogCard = ({ blog }: { blog: any }) => {
           {blog.title}
         </h1>
         <p className="text-neutral-10 font-Poppins text-xs lg:text-xl sm:text-base mt-[15px]">
-          {blog.content}
+          {blog.smallDescription}
         </p>
         <Button
           variant="Outlined"

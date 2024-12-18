@@ -1,79 +1,91 @@
 "use client";
-import { IMAGES } from "@/assets";
+// import { IMAGES } from "@/assets";
 import Button from "@/components/Buttons/Button";
 import { useState } from "react";
 import LatestBlogCard from "./LatestBlogCard";
+// Define a type for the blog data
+interface BlogPost {
+  img: string;
+  title: string;
+  content: string;
+  category: string;
+}
 
-const LatestBlogs = () => {
-  const blogData = [
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Latest"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Latest"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Latest"
-    },
-    {
-      img: IMAGES.blog2,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Hot"
-    },
-    {
-      img: IMAGES.blog3,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Trending"
-    },
-    {
-      img: IMAGES.blog3,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Trending"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-  ];
+// Define props type for the LatestBlogs component
+interface LatestBlogsProps {
+  blogData: BlogPost[];
+}
 
+const LatestBlogs: React.FC<LatestBlogsProps> = ({ blogData }) => {
+  // const blogData = [
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Latest"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Latest"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Latest"
+  //   },
+  //   {
+  //     img: IMAGES.blog2,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Hot"
+  //   },
+  //   {
+  //     img: IMAGES.blog3,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Trending"
+  //   },
+  //   {
+  //     img: IMAGES.blog3,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Trending"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  // ];
+  console.log(blogData);
   const [activeTab, setActiveTab] = useState("Latest");
   const tabButtons = ["Latest", "Hot", "Trending", "Popular"];
   return (
@@ -104,8 +116,11 @@ const LatestBlogs = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {blogData.map((blog, index) => (
-          blog.category === activeTab &&
-          <LatestBlogCard key={index} blog={blog} />
+          <div key={index}>
+            {/* // blog.category === activeTab && (
+            // ) */}
+            <LatestBlogCard key={index} blog={blog} />
+          </div>
         ))}
       </div>
     </div>
