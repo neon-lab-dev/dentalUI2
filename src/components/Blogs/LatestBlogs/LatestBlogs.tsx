@@ -1,79 +1,79 @@
 "use client";
-import { IMAGES } from "@/assets";
+// import { IMAGES } from "@/assets";
 import Button from "@/components/Buttons/Button";
 import { useState } from "react";
 import LatestBlogCard from "./LatestBlogCard";
 
-const LatestBlogs = () => {
-  const blogData = [
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Latest"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Latest"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Latest"
-    },
-    {
-      img: IMAGES.blog2,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-      category : "Hot"
-    },
-    {
-      img: IMAGES.blog3,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Trending"
-    },
-    {
-      img: IMAGES.blog3,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Trending"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-    {
-      img: IMAGES.blog1,
-      title: "Invisalign vs. Braces: Which is Right for You?",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
-        category : "Popular"
-    },
-  ];
-
+const LatestBlogs = ({ blogData }: any) => {
+  // const blogData = [
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Latest"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Latest"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Latest"
+  //   },
+  //   {
+  //     img: IMAGES.blog2,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //     category : "Hot"
+  //   },
+  //   {
+  //     img: IMAGES.blog3,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Trending"
+  //   },
+  //   {
+  //     img: IMAGES.blog3,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Trending"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  //   {
+  //     img: IMAGES.blog1,
+  //     title: "Invisalign vs. Braces: Which is Right for You?",
+  //     content:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis feugiat ",
+  //       category : "Popular"
+  //   },
+  // ];
+  console.log(blogData);
   const [activeTab, setActiveTab] = useState("Latest");
   const tabButtons = ["Latest", "Hot", "Trending", "Popular"];
   return (
@@ -103,10 +103,15 @@ const LatestBlogs = () => {
       <hr className="border border-neutral-15 mt-8" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {blogData.map((blog, index) => (
-          blog.category === activeTab &&
-          <LatestBlogCard key={index} blog={blog} />
-        ))}
+        {blogData.map(
+          // @ts-ignore
+          (blog, index) =>
+            <div key={index}>
+            {/* // blog.category === activeTab && (
+            // ) */}
+            <LatestBlogCard key={index} blog={blog} />
+            </div>
+        )}
       </div>
     </div>
   );
