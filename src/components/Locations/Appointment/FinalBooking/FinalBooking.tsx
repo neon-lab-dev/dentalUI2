@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import InputField from "@/components/Form/InputField";
 import Button from "@/components/Buttons/Button";
-import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store"; // Adjust import paths
 
@@ -26,7 +25,6 @@ interface FinalBookingProps {
 const FinalBooking = ({ bookAppointment, appointmentData, isLoading }: FinalBookingProps) => {
 
   const user = useSelector((state: RootState) => state.user);
-  const router = useRouter();
   const [fname, setFname] = useState(user.first_name);
   const [lname, setLname] = useState(user.last_name);
   const [email, setEmail] = useState(user.email);
