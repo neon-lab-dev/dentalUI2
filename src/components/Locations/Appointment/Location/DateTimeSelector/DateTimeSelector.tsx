@@ -27,15 +27,20 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
     setSelectedDate(date);
     console.log("Selected date:", date);
 
-    // Format the date to 'yyyy-mm-dd' format
-    const formattedDate = date.toISOString().split("T")[0]; // This removes the time portion
+    // Format the date to ISO string and keep only the date part
+    const formattedDate = date.toISOString().split('T')[0];
+    console.log("Formatted date:", formattedDate);
 
-    updateAppointmentData("appointmentDate", formattedDate); // Update the selected date
+    // Update the appointment data with the formatted date
+    updateAppointmentData("appointmentDate", formattedDate);
   };
 
   const handleTimeClick = (time: string) => {
     setSelectedTime(time);
-    updateAppointmentData("time", time); // Update the selected time
+    console.log("Selected time:", time);
+
+    // Update the appointment data with the time
+    updateAppointmentData("time", time);
   };
 
   useEffect(() => {
@@ -84,17 +89,17 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
               <div className="bg-transparent p-4 grid xl:grid-cols-4 grid-cols-3 gap-6">
                 {availableSlots.length > 0
                   ? availableSlots.map((slot) => (
-                      <Button
-                        key={slot._id}
-                        disable={slot.isBooked}
-                        onClick={() => handleTimeClick(slot.time)}
-                        variant={
-                          selectedTime === slot.time ? "Filled" : "Outlined"
-                        }
-                      >
-                        {slot.time}
-                      </Button>
-                    ))
+                    <Button
+                      key={slot._id}
+                      disable={slot.isBooked}
+                      onClick={() => handleTimeClick(slot.time)}
+                      variant={
+                        selectedTime === slot.time ? "Filled" : "Outlined"
+                      }
+                    >
+                      {slot.time}
+                    </Button>
+                  ))
                   : ""}
               </div>
             )}
