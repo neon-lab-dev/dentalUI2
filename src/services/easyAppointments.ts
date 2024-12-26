@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError } from 'axios';
 
 const API_BASE_URL = 'http://localhost:8080/index.php/api/v1';
@@ -22,19 +23,19 @@ interface CustomerResponse {
     phone: string;
 }
 
-interface AppointmentData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    appointmentDate: string;
-    time: string;
-    address?: string;
-    serviceName?: string;
-    induranceStatus?: string;
-    dob?: string;
-    state?: string;
-}
+// interface AppointmentData {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     phone: string;
+//     appointmentDate: string;
+//     time: string;
+//     address?: string;
+//     serviceName?: string;
+//     induranceStatus?: string;
+//     dob?: string;
+//     state?: string;
+// }
 
 interface ApiError {
     message: string;
@@ -45,7 +46,7 @@ interface ApiError {
 class EasyAppointmentsService {
     private cachedProviderServiceIds: { providerId: number, serviceId: number } | null = null;
 
-    private async findOrCreateCustomer(appointmentData: AppointmentData): Promise<number> {
+    private async findOrCreateCustomer(appointmentData: any): Promise<number> {
         try {
             if (!appointmentData.email) {
                 throw new Error('Email is required for customer creation');
@@ -128,7 +129,7 @@ class EasyAppointmentsService {
         }
     }
 
-    async createAppointment(appointmentData: AppointmentData) {
+    async createAppointment(appointmentData: any) { //AppointmentData
         try {
             // Find or create customer
             const customerId = await this.findOrCreateCustomer(appointmentData);
