@@ -1,7 +1,19 @@
 import axios from 'axios';
 
+const EASY_APPOINTMENTS_API = 'http://localhost:8080/index.php/api/v1';
 const AUTH_USERNAME = process.env.NEXT_PUBLIC_EASY_APPOINTMENTS_USERNAME || 'test123';
 const AUTH_PASSWORD = process.env.NEXT_PUBLIC_EASY_APPOINTMENTS_PASSWORD || 'test123';
+
+// Create a configured axios instance with default config
+const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8080',
+    withCredentials: false,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Basic ${Buffer.from(`${AUTH_USERNAME}:${AUTH_PASSWORD}`).toString('base64')}`
+    }
+});
 
 interface AppointmentPayload {
     start: string;     // Start date/time
@@ -30,18 +42,31 @@ interface CustomerPayload {
     ldapDn?: null;
 }
 
+interface AppointmentData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    appointmentDate: string;
+    time: string;
+    address?: string;
+    serviceName?: string;
+    induranceStatus?: string;
+    dob?: string;
+    state?: string;
+}
+
 class EasyAppointmentsService {
-    private baseUrl = 'http://localhost:8080/index.php/api/v1';
     private cachedProviderServiceIds: { providerId: number, serviceId: number } | null = null;
 
-    private async findOrCreateCustomer(appointmentData: any): Promise<number> {
+    private async findOrCreateCustomer(appointmentData: AppointmentData): Promise<number> {
         try {
             if (!appointmentData.email) {
                 throw new Error('Email is required for customer creation');
             }
 
             // First, try to find existing customer by exact email match
-            const searchResponse = await axios.get(`${this.baseUrl}/customers`);
+            const searchResponse = await axiosInstance.get('/index.php/api/v1/customers');
             const existingCustomer = searchResponse.data.find(
                 (customer: any) => customer.email.toLowerCase() === appointmentData.email.toLowerCase()
             );
@@ -53,11 +78,11 @@ class EasyAppointmentsService {
 
             // Create new customer if none exists
             const customerData: CustomerPayload = {
-                firstName: appointmentData.first_name,
-                lastName: appointmentData.last_name,
+                firstName: appointmentData.firstName,
+                lastName: appointmentData.lastName,
                 email: appointmentData.email,
                 phone: appointmentData.phone?.toString() || '',
-                city: appointmentData.city,
+                city: appointmentData.state || '',
                 timezone: 'UTC',
                 language: 'english',
                 notes: `Service: ${appointmentData.serviceName}, Insurance: ${appointmentData.induranceStatus || 'Not Provided'}`,
@@ -67,12 +92,7 @@ class EasyAppointmentsService {
                 ldapDn: null
             };
 
-            const createResponse = await axios.post(`${this.baseUrl}/customers`, customerData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Basic ${Buffer.from(`${AUTH_USERNAME}:${AUTH_PASSWORD}`).toString('base64')}`
-                }
-            });
+            const createResponse = await axiosInstance.post('/index.php/api/v1/customers', customerData);
             console.log('Created new customer:', createResponse.data.id);
             return createResponse.data.id;
         } catch (error) {
@@ -89,19 +109,11 @@ class EasyAppointmentsService {
             }
 
             // Get first available provider
-            const providersResponse = await axios.get(`${this.baseUrl}/providers`, {
-                headers: {
-                    'Authorization': `Basic ${Buffer.from(`${AUTH_USERNAME}:${AUTH_PASSWORD}`).toString('base64')}`
-                }
-            });
+            const providersResponse = await axiosInstance.get('/index.php/api/v1/providers');
             const providerId = providersResponse.data[0]?.id || 5;
 
             // Get first available service
-            const servicesResponse = await axios.get(`${this.baseUrl}/services`, {
-                headers: {
-                    'Authorization': `Basic ${Buffer.from(`${AUTH_USERNAME}:${AUTH_PASSWORD}`).toString('base64')}`
-                }
-            });
+            const servicesResponse = await axiosInstance.get('/index.php/api/v1/services');
             const serviceId = servicesResponse.data[0]?.id || 2;
 
             // Cache the results
@@ -144,7 +156,7 @@ class EasyAppointmentsService {
         }
     }
 
-    async createAppointment(appointmentData: any) {
+    async createAppointment(appointmentData: AppointmentData) {
         try {
             // Find or create customer
             const customerId = await this.findOrCreateCustomer(appointmentData);
@@ -173,12 +185,7 @@ class EasyAppointmentsService {
                 serviceId
             };
 
-            const response = await axios.post(`${this.baseUrl}/appointments`, appointmentPayload, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Basic ${Buffer.from(`${AUTH_USERNAME}:${AUTH_PASSWORD}`).toString('base64')}`
-                }
-            });
+            const response = await axiosInstance.post('/index.php/api/v1/appointments', appointmentPayload);
             console.log('Appointment created successfully:', response.data);
             return response.data;
         } catch (error: any) {
