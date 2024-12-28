@@ -21,10 +21,12 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
     Array<{ time: string; isBooked: boolean; _id: string }>
   >([]);
   const [selectedTime, setSelectedTime] = useState<string | null>();
+  const [dateSelected, setDateSelected] = useState(false);
   const clinics = useSelector((state: RootState) => state.clinic.clinics);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
+    setDateSelected(true);
     console.log("Selected date:", date);
 
     // Format the date to ISO string and keep only the date part
@@ -77,6 +79,9 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
         {/* Calendar Section */}
         <div className="flex-[4] xl:flex-[4] flex-1">
           <Calender onDateSelect={handleDateSelect} />
+          {!dateSelected && (
+            <p className="text-red-500 text-sm mt-2 text-center">Please select a date</p>
+          )}
         </div>
 
         {/* Time Section */}
@@ -86,22 +91,27 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
             {availableSlots.length <= 0 ? (
               <p>No available slots for the selected date.</p>
             ) : (
-              <div className="bg-transparent p-4 grid xl:grid-cols-4 grid-cols-3 gap-6">
-                {availableSlots.length > 0
-                  ? availableSlots.map((slot) => (
-                    <Button
-                      key={slot._id}
-                      disable={slot.isBooked}
-                      onClick={() => handleTimeClick(slot.time)}
-                      variant={
-                        selectedTime === slot.time ? "Filled" : "Outlined"
-                      }
-                    >
-                      {slot.time}
-                    </Button>
-                  ))
-                  : ""}
-              </div>
+              <>
+                <div className="bg-transparent p-4 grid xl:grid-cols-4 grid-cols-3 gap-6">
+                  {availableSlots.length > 0
+                    ? availableSlots.map((slot) => (
+                      <Button
+                        key={slot._id}
+                        disable={slot.isBooked}
+                        onClick={() => handleTimeClick(slot.time)}
+                        variant={
+                          selectedTime === slot.time ? "Filled" : "Outlined"
+                        }
+                      >
+                        {slot.time}
+                      </Button>
+                    ))
+                    : ""}
+                </div>
+                {dateSelected && !selectedTime && (
+                  <p className="text-red-500 text-sm text-center">Please select a time slot</p>
+                )}
+              </>
             )}
 
             {/* Display Selected Date-Time */}
@@ -121,9 +131,9 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
 
           <Button
             variant="Filled"
-            onClick={goToNextStep} // Ensure this function is correctly passed and exists
+            onClick={goToNextStep}
             classNames="w-full flex justify-center mt-12 px-[28px] py-[14px]"
-            disable={!selectedTime} // Disable the button if no time is selected
+            disable={!selectedTime || !dateSelected}
           >
             Continue
           </Button>

@@ -1,6 +1,29 @@
-version: '3.1'
+version: '3'
 services:
+  app:
+    platform: linux/arm64/v8
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      # Add your app's environment variables from .env
+      - NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID}
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/index.php/api/v1
+      - NEXT_PUBLIC_PROVIDER_ID=5
+      - NEXT_PUBLIC_SERVICE_ID=2
+      - NEXT_PUBLIC_API_USERNAME=test123
+      - NEXT_PUBLIC_API_PASSWORD=test123
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    command: npm start
+    depends_on:
+      - easyappointments
+
   easyappointments:
+    platform: linux/amd64
     image: 'alextselegidis/easyappointments:latest'
     environment:
       - BASE_URL=http://localhost:8080
@@ -14,11 +37,16 @@ services:
       - '8080:80'
     depends_on:
       - mysql
+    restart: unless-stopped
 
   mysql:
+    platform: linux/amd64
     image: 'mysql:8.0'
     volumes:
       - './docker/mysql:/var/lib/mysql'
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=easyappointments
+    ports:
+      - '3306:3306'
+    restart: unless-stopped

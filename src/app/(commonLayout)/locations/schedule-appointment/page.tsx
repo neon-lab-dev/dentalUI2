@@ -1,22 +1,70 @@
+/**
+ * Main Schedule Appointment Page
+ * 
+ * This is the main page component for the appointment scheduling flow.
+ * It manages a multi-step booking process including:
+ * 1. User Type Selection (Member/Non-Member)
+ * 2. Service Selection
+ * 3. Location Selection
+ * 4. Final Booking Confirmation
+ * 
+ * The component maintains the appointment state throughout the booking process
+ * and coordinates between different sub-components.
+ */
+
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import AppointmentHome from "@/components/Locations/Appointment/MemberOrNot/AppointmentHome";
 import Service from "@/components/Locations/Appointment/Service/Service";
 import Location from "@/components/Locations/Appointment/Location/Location";
 import FinalBooking from "@/components/Locations/Appointment/FinalBooking/FinalBooking";
 import axios from "axios";
 import { easyAppointmentsService } from "@/services/easyAppointments";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { useRouter } from "next/navigation";
 
+/**
+ * Interface defining the structure of appointment data
+ * Contains all necessary information for booking an appointment
+ */
+interface AppointmentData {
+  clinicId: string;        // Unique identifier for the selected clinic
+  serviceName: string;     // Name of the selected dental service
+  state: string;          // State where the clinic is located
+  city: string;           // City where the clinic is located
+  address: string;        // Full address of the selected clinic
+  appointmentDate: string; // Selected appointment date
+  time: string;           // Selected appointment time
+  first_name: string;     // Patient's first name
+  last_name: string;      // Patient's last name
+  email: string;          // Patient's email address
+  phone: number;          // Patient's contact number
+  dob?: string;           // Patient's date of birth (optional)
+  induranceStatus?: string; // Patient's insurance status (optional)
+}
+
+/**
+ * Interface for dental service type
+ */
+interface ServiceType {
+  id: number;           // Unique identifier for the service
+  name: string;         // Name of the service
+  duration: string;     // Duration of the service
+}
+
+/**
+ * Main component for the appointment scheduling page
+ */
 const ScheduleAppointment = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const user = useSelector((state: RootState) => state.user);
   const router = useRouter();
+  
+  // Track the current step in the booking process
+  const [activeStep, setActiveStep] = useState(0);
+  
+  // Loading state for API operations
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [appointmentData, setAppointmentData] = useState({
+  // Main state for appointment data
+  const [appointmentData, setAppointmentData] = useState<AppointmentData>({
     clinicId: "",
     serviceName: "",
     state: "",
@@ -24,14 +72,17 @@ const ScheduleAppointment = () => {
     address: "",
     appointmentDate: "",
     time: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: 0,
   });
 
-  interface ServiceType {
-    id: number;
-    name: string;
-    duration: string;
-  }
-
+  /**
+   * Updates a single field in the appointment data
+   * @param field - The field to update
+   * @param value - The new value
+   */
   const updateAppointmentData = (field: string, value: string) => {
     setAppointmentData((prevData) => ({
       ...prevData,
@@ -39,6 +90,10 @@ const ScheduleAppointment = () => {
     }));
   };
 
+  /**
+   * Updates the service-related data in the appointment
+   * @param service - The selected service object
+   */
   const updateServiceData = (service: ServiceType) => {
     setAppointmentData((prevData) => ({
       ...prevData,
@@ -46,6 +101,7 @@ const ScheduleAppointment = () => {
     }));
   };
 
+  // Define the steps in the booking process
   const steps = [
     { label: "Step 1: User Type", component: AppointmentHome },
     { label: "Step 2: Select Service", component: Service },
@@ -53,73 +109,108 @@ const ScheduleAppointment = () => {
     { label: "Step 4: Confirm Booking", component: FinalBooking },
   ];
 
+  /**
+   * Advances to the next step in the booking process
+   */
   const goToNextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep((prevStep) => prevStep + 1);
     }
   };
 
-  const handleBookingSuccess = () => {
-    // Show success message
-    alert("Appointment booked successfully!");
+  // Get the component for the current step
+  const CurrentComponent = steps[activeStep].component;
 
-    // Delay redirect slightly to ensure alert is seen
-    setTimeout(() => {
-      router.push("/profile");
-    }, 500);
-  };
-
-  const bookAppointment = async () => {
+  /**
+   * Handles the final appointment booking process
+   * Validates the data and submits it to the API
+   * @param completeAppointmentData - The complete appointment data
+   */
+  const bookAppointment = async (completeAppointmentData: AppointmentData) => {
     setIsLoading(true);
     try {
-      // Log the current appointment data
-      console.log("Current appointment data:", {
-        date: appointmentData.appointmentDate,
-        time: appointmentData.time,
-        allData: appointmentData
-      });
+      console.log("Complete appointment data:", completeAppointmentData);
 
       // Validate required fields
-      if (!appointmentData.appointmentDate || !appointmentData.time) {
-        throw new Error('Please select both date and time for the appointment');
-      }
+      const requiredFields = [
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'appointmentDate',
+        'time',
+        'clinicId',
+        'serviceName',
+        'state',
+        'city',
+        'address'
+      ];
 
-      // Merge user data with appointment data
-      const completeAppointmentData = {
-        ...appointmentData,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        phone: user.phoneNo,
-        dob: user.dob,
-        induranceStatus: user.induranceStatus
-      };
-
-      console.log("Booking appointment with data:", {
-        date: completeAppointmentData.appointmentDate,
-        time: completeAppointmentData.time,
-        allData: completeAppointmentData
+      const missingFields = requiredFields.filter(field => {
+        const value = completeAppointmentData[field as keyof AppointmentData];
+        const isEmpty = !value || (typeof value === 'string' && value.trim() === '');
+        if (isEmpty) {
+          console.log(`Missing or empty field: ${field}`);
+        }
+        return isEmpty;
       });
 
-      const easyAppointmentResponse = await easyAppointmentsService.createAppointment(completeAppointmentData);
-      console.log("EasyAppointments booking:", easyAppointmentResponse);
-
-      // Handle successful booking
-      handleBookingSuccess();
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Error booking appointment:", error.message);
-        console.error("Response data:", error.response?.data);
-      } else {
-        console.error("Unexpected error:", error);
+      if (missingFields.length > 0) {
+        throw new Error(`Please fill in all required fields: ${missingFields.join(', ')}`);
       }
-      alert(error instanceof Error ? error.message : "Failed to book appointment. Please try again.");
-    } finally {
-      setIsLoading(false);
+
+      // Create appointment in our backend first
+      const backendResponse = await axios.post(
+        "https://dental-backend-three.vercel.app/api/v1/book/new",
+        completeAppointmentData,
+        { withCredentials: true }
+      );
+
+      console.log("Backend booking successful:", backendResponse.data);
+
+      // Set a timeout for Easy Appointments attempt
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Easy Appointments timeout')), 5000);
+      });
+
+      try {
+        // Race between Easy Appointments request and timeout
+        const easyAppointmentResponse = await Promise.race([
+          easyAppointmentsService.createAppointment(completeAppointmentData),
+          timeoutPromise
+        ]);
+
+        console.log("Easy Appointments booking successful:", easyAppointmentResponse);
+
+        if (easyAppointmentResponse?.id) {
+          await axios.patch(
+            `https://dental-backend-three.vercel.app/api/v1/book/${backendResponse.data._id}`,
+            { easyAppointmentId: easyAppointmentResponse.id },
+            { withCredentials: true }
+          );
+        }
+      } catch (easyAppointmentError) {
+        // Just log the error but continue with success flow
+        console.warn("Easy Appointments booking failed or timed out:", easyAppointmentError);
+      }
+
+      // Success flow - happens regardless of Easy Appointments result
+      alert("Appointment booked successfully!");
+      setIsLoading(false);  // Clear loading state before navigation
+      router.push('/profile');
+
+    } catch (error) {
+      setIsLoading(false);  // Clear loading state before showing error
+      console.error("Error in booking process:", error);
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data?.message || "Failed to book appointment. Please try again.");
+      } else if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("Failed to book appointment. Please try again.");
+      }
     }
   };
-
-  const CurrentComponent = steps[activeStep].component;
 
   return (
     <div>
