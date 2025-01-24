@@ -1,9 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICONS } from "@/assets";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
-const ConvenientDentalCareCard = ({ details }: { details: any }) => {
+interface LocationCardDetails {
+  _id: string;
+  img: StaticImageData;
+  name: string;
+  numberOfClinic: string;
+}
+
+interface ConvenientDentalCareCardProps {
+  details: LocationCardDetails;
+}
+
+const ConvenientDentalCareCard = ({ details }: ConvenientDentalCareCardProps) => {
   return (
     <div className="relative overflow-hidden group cursor-pointer rounded-3xl max-w-[824px] max-h-[230px] md:max-h-[600px]">
       {/* Image */}

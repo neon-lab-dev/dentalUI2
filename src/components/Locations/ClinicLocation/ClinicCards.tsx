@@ -23,8 +23,8 @@ const ClinicCards: React.FC<ClinicCardsProps> = ({ city, clinic_id }) =>  {
 
       {/* Card Image */}
       <Image
-        src={IMAGES.cityClinic} // Replace with your actual image path
-        alt={city}
+        src={IMAGES.cityClinic}
+        alt={`${city} Dental Clinic`}
         layout="fill"
         objectFit="cover"
         className="filter transition-all duration-300 hover:grayscale-0"
@@ -33,13 +33,13 @@ const ClinicCards: React.FC<ClinicCardsProps> = ({ city, clinic_id }) =>  {
       {/* Button */}
       <div>
         <Link href={`/locations/clinic/${clinic_id}`}>
-        <Button
-          variant={isHovered ? "Filled2" : "Filled"}
-          classNames="absolute bottom-6 left-0 right-0 z-20 m-4"
-        >
-          {city} {/* City name on the button */}
-        </Button></Link>
-        
+          <Button
+            variant={isHovered ? "Filled2" : "Filled"}
+            classNames="absolute bottom-6 left-0 right-0 z-20 m-4"
+          >
+            {city} Dental Clinic
+          </Button>
+        </Link>
       </div>
     </div>
   );

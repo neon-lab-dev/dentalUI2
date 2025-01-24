@@ -4,11 +4,15 @@ import Button from "@/components/Buttons/Button";
 import Calender from "./Calendar";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { useAppDispatch } from "@/store";
+import { fetchAvailabilities } from "@/store/slices/availabilitySlice";
+import { AppointmentData } from "@/types/appointment";
+import { formatTimeForDisplay } from "@/utils/formatters";
 
 interface DatePickerPageProps {
   goToNextStep: () => void;
   selectedSubClinicId: string | null;
-  updateAppointmentData: (field: string, value: string) => void; // Callback to update appointment data
+  updateAppointmentData: (field: keyof AppointmentData, value: string | number) => void;
 }
 
 const DatePickerPage: React.FC<DatePickerPageProps> = ({
@@ -16,68 +20,69 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
   selectedSubClinicId,
   updateAppointmentData,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [availableSlots, setAvailableSlots] = useState<
-    Array<{ time: string; isBooked: boolean; _id: string }>
-  >([]);
+  const dispatch = useAppDispatch();
   const [selectedTime, setSelectedTime] = useState<string | null>();
   const [dateSelected, setDateSelected] = useState(false);
-  const clinics = useSelector((state: RootState) => state.clinic.clinics);
+
+  // Get services and availabilities from Redux store
+  const selectedService = useSelector((state: RootState) => {
+    const services = state.services.services;
+    return services.length > 0 ? services[0] : null;
+  });
+  const { slots, loading, error } = useSelector((state: RootState) => state.availabilities);
+
+  useEffect(() => {
+    // Update service information when component mounts or service changes
+    if (selectedService) {
+      updateAppointmentData("serviceId", selectedService.id);
+      updateAppointmentData("serviceName", selectedService.name);
+    }
+  }, [selectedService, updateAppointmentData]);
 
   const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
     setDateSelected(true);
-    console.log("Selected date:", date);
+    setSelectedTime(null); // Reset selected time when date changes
 
     // Format the date to ISO string and keep only the date part
     const formattedDate = date.toISOString().split('T')[0];
-    console.log("Formatted date:", formattedDate);
 
     // Update the appointment data with the formatted date
     updateAppointmentData("appointmentDate", formattedDate);
-  };
 
-  const handleTimeClick = (time: string) => {
-    setSelectedTime(time);
-    console.log("Selected time:", time);
-
-    // Update the appointment data with the time
-    updateAppointmentData("time", time);
-  };
-
-  useEffect(() => {
+    // Update provider ID
     if (selectedSubClinicId) {
-      const clinic = clinics.find((c) => c._id === selectedSubClinicId);
-
-      if (clinic && selectedDate) {
-        const scheduleForDate = clinic.schedule.find(
-          (schedule) =>
-            new Date(schedule.date).toISOString().split("T")[0] ===
-            new Date(selectedDate).toISOString().split("T")[0]
-        );
-
-        if (scheduleForDate) {
-          setAvailableSlots(scheduleForDate.slots);
-        } else {
-          setAvailableSlots([]); // No slots available for the selected date
-        }
-      }
+      updateAppointmentData("providerId", parseInt(selectedSubClinicId));
     }
-  }, [selectedSubClinicId, selectedDate, clinics]);
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+    // Fetch availabilities if we have all required data
+    if (selectedSubClinicId && selectedService) {
+      dispatch(fetchAvailabilities({
+        providerId: parseInt(selectedSubClinicId),
+        serviceId: selectedService.id,
+        date: formattedDate
+      }));
+    }
+  };
+
+  const handleTimeClick = (timeStr: string) => {
+    setSelectedTime(timeStr);
+    console.log("Selected time:", timeStr);
+    updateAppointmentData("time", timeStr);
+  };
+
+  const handleContinue = () => {
+    if (!selectedTime) {
+      alert("Please select a time slot");
+      return;
+    }
+    goToNextStep();
   };
 
   return (
     <div className="flex w-full justify-center items-center bg-transparent">
       <div className="w-full bg-transparent flex xl:flex-row flex-col gap-6 md:gap-8 justify-between">
         {/* Calendar Section */}
-        <div className="flex-[4] xl:flex-[4] flex-1">
+        <div className="flex-[4] xl:flex-[4]">
           <Calender onDateSelect={handleDateSelect} />
           {!dateSelected && (
             <p className="text-red-500 text-sm mt-2 text-center">Please select a date</p>
@@ -85,58 +90,41 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
         </div>
 
         {/* Time Section */}
-        <div className="flex-[6] xl:flex-[6] flex-1">
+        <div className="flex-[6] xl:flex-[6]">
           <div className="flex flex-col gap-12">
-            {/* Time Section */}
-            {availableSlots.length <= 0 ? (
+            {loading ? (
+              <p>Loading available time slots...</p>
+            ) : error ? (
+              <p className="text-red-500">Error loading time slots: {error}</p>
+            ) : slots.length === 0 ? (
               <p>No available slots for the selected date.</p>
             ) : (
               <>
-                <div className="bg-transparent p-4 grid xl:grid-cols-4 grid-cols-3 gap-6">
-                  {availableSlots.length > 0
-                    ? availableSlots.map((slot) => (
-                      <Button
-                        key={slot._id}
-                        disable={slot.isBooked}
-                        onClick={() => handleTimeClick(slot.time)}
-                        variant={
-                          selectedTime === slot.time ? "Filled" : "Outlined"
-                        }
-                      >
-                        {slot.time}
-                      </Button>
-                    ))
-                    : ""}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {slots.map((time) => (
+                    <Button
+                      key={time}
+                      variant={selectedTime === time ? "Filled" : "Outlined"}
+                      onClick={() => handleTimeClick(time)}
+                      classNames={`w-full py-2 px-4 rounded-lg text-sm ${
+                        selectedTime === time ? "text-black" : ""
+                      }`}
+                    >
+                      {formatTimeForDisplay(time)}
+                    </Button>
+                  ))}
                 </div>
-                {dateSelected && !selectedTime && (
-                  <p className="text-red-500 text-sm text-center">Please select a time slot</p>
-                )}
+                <Button
+                  variant="Filled"
+                  onClick={handleContinue}
+                  classNames="w-full py-3 rounded-lg mt-4"
+                  disable={!selectedTime ? true : undefined}
+                >
+                  Continue
+                </Button>
               </>
             )}
-
-            {/* Display Selected Date-Time */}
-            <div>
-              <p className="flex gap-10 xl:px-6 p-4 border border-neutral-10 rounded-2xl bg-secondary-30 font-Poppins lg:text-[32px] md:text-2xl text-xs">
-                <span className="font-Poppins">
-                  {formatDate(selectedDate)}{" "}
-                </span>
-                <span className="text-neutral-10">
-                  {selectedTime &&
-                    availableSlots.length > 0 &&
-                    ` ${selectedTime}`}
-                </span>
-              </p>
-            </div>
           </div>
-
-          <Button
-            variant="Filled"
-            onClick={goToNextStep}
-            classNames="w-full flex justify-center mt-12 px-[28px] py-[14px]"
-            disable={!selectedTime || !dateSelected}
-          >
-            Continue
-          </Button>
         </div>
       </div>
     </div>

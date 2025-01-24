@@ -3,13 +3,8 @@ import { ICONS, IMAGES } from "@/assets";
 import Button from "@/components/Buttons/Button";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 
 const Hero = () => {
-  const {  isLoggedIn } = useSelector(
-    (state: RootState) => state.user
-  );
   return (
     <div className="flex flex-col gap-[60px] pt-[120px]">
       <div>
@@ -25,7 +20,7 @@ const Hero = () => {
       </div>
       <div className="flex items-center justify-center gap-4 md:gap-6">
 
-      <Link href={isLoggedIn?"/locations/schedule-appointment":"/login"}>
+      <Link href="/locations/schedule-appointment">
         <Button variant="Gradient" classNames="lg:px-[50px] lg:py-[22px] lg:px-[36px] md:py-[16px] px-[28px] py-[14px] ">
          Schedule An Appointment!
         </Button>

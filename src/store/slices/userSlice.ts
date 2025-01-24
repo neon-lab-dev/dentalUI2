@@ -9,6 +9,7 @@ interface UserState {
   phoneNo: number;
   dob: string;
   isLoggedIn: boolean;
+  customerId?: number;
 }
 
 const initialState: UserState = {
@@ -20,6 +21,7 @@ const initialState: UserState = {
   phoneNo: 0,
   dob: "",
   isLoggedIn: false,
+  customerId: undefined,
 };
 
 // Rehydrate state from localStorage if it exists
@@ -41,32 +43,28 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      const { id, first_name, last_name, email, induranceStatus, phoneNo, dob } = action.payload;
-      state.id = id;
-      state.first_name = first_name;
-      state.last_name = last_name;
-      state.email = email;
-      state.induranceStatus = induranceStatus;
-      state.phoneNo = phoneNo;
-      state.dob = dob;
-      state.isLoggedIn = true;
-
-      // Save user data to localStorage
-      localStorage.setItem("user", JSON.stringify(state));
+    setUser: (state, action: PayloadAction<Partial<UserState>>) => {
+      const newState = { ...state, ...action.payload };
+      if (typeof window !== "undefined") {
+        localStorage.setItem("user", JSON.stringify(newState));
+      }
+      return newState;
     },
-    clearUser: (state) => {
-      state.id = "";
-      state.first_name = "";
-      state.last_name = "";
-      state.email = "";
-      state.induranceStatus = "";
-      state.phoneNo = 0;
-      state.dob = "";
-      state.isLoggedIn = false;
-
-      // Clear user data from localStorage
-      localStorage.removeItem("user");
+    clearUser: () => {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("user");
+      }
+      return {
+        id: "",
+        first_name: "",
+        last_name: "",
+        email: "",
+        induranceStatus: "",
+        phoneNo: 0,
+        dob: "",
+        isLoggedIn: false,
+        customerId: undefined,
+      };
     },
   },
 });

@@ -1,36 +1,68 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ServiceCard from "./ServiceCard";
-
-// Define the service type
-interface ServiceType {
-  id: number;
-  name: string;
-  duration: string;
-}
+import { AppDispatch, RootState } from "@/store";
+import { fetchServices, setSelectedService } from "@/store/slices/serviceSlice";
+import { formatDuration } from "@/utils/formatters";
+import { Service as ServiceType } from "@/services/easyAppointments";
+import { AppointmentData } from "@/types/appointment";
 
 // Define the props for the Service component
 interface ServiceProps {
-  goToNextStep: () => void; // Callback function for proceeding to the next step
-  onServiceSelect: (service: ServiceType) => void; // Callback to pass the selected service to the parent
-  updateAppointmentData: (field: string, value: string) => void; // Add this line to include updateAppointmentData
+  goToNextStep: () => void;
+  onServiceSelect: (service: ServiceType) => void;
+  updateAppointmentData: (field: keyof AppointmentData, value: string | number) => void;
 }
 
-const services: ServiceType[] = [
-  { id: 1, name: "Invisalign", duration: "40 minutes" },
-  { id: 2, name: "Teeth Whitening", duration: "30 minutes" },
-  { id: 3, name: "Dental Cleaning", duration: "45 minutes" },
-  { id: 4, name: "Braces Consultation", duration: "20 minutes" },
-  { id: 5, name: "Root Canal", duration: "60 minutes" },
-];
-const Service: React.FC<ServiceProps> = ({ goToNextStep, onServiceSelect }) => {
-  const [selectedService, setSelectedService] = useState<number | null>(null);
+const Service: React.FC<ServiceProps> = ({ goToNextStep, onServiceSelect, updateAppointmentData }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { services, loading, error } = useSelector((state: RootState) => state.services);
+  const [selectedServiceId, setSelectedServiceId] = useState<number | null>(null);
 
-  const handleCardSelect = (service: ServiceType) => {
-    setSelectedService(service.id);
-    onServiceSelect(service); // Pass the selected service to the parent (parent gets service name)
-    goToNextStep(); // Proceed to the next step
+  useEffect(() => {
+    dispatch(fetchServices());
+  }, [dispatch]);
+
+  const handleCardSelect = async (service: ServiceType) => {
+    console.log('🎯 [DEBUG] Service Component - Selected Service:', service);
+    setSelectedServiceId(service.id);
+    
+    // Update Redux state
+    dispatch(setSelectedService(service));
+    
+    // Update appointment data
+    updateAppointmentData("serviceId", service.id);
+    updateAppointmentData("serviceName", service.name);
+    
+    // Notify parent component
+    onServiceSelect(service);
+    
+    // Wait for state updates
+    await new Promise(resolve => setTimeout(resolve, 100));
+    console.log('🔄 [DEBUG] Service Component - Moving to next step with service:', service.name);
+    goToNextStep();
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center gap-8 md:gap-10 xl:gap-12 py-8 md:py-12 px-4 md:px-8 xl:px-12 rounded-2xl w-[90%] bg-[#EBFAFF] border border-[#333] shadow-sm">
+          <div className="text-center">Loading services...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center gap-8 md:gap-10 xl:gap-12 py-8 md:py-12 px-4 md:px-8 xl:px-12 rounded-2xl w-[90%] bg-[#EBFAFF] border border-[#333] shadow-sm">
+          <div className="text-center text-red-500">Error: {error}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -57,8 +89,11 @@ const Service: React.FC<ServiceProps> = ({ goToNextStep, onServiceSelect }) => {
           {services.map((service) => (
             <ServiceCard
               key={service.id}
-              service={service}
-              isSelected={selectedService === service.id}
+              service={{
+                name: service.name,
+                duration: formatDuration(service.duration)
+              }}
+              isSelected={selectedServiceId === service.id}
               onCardSelect={() => handleCardSelect(service)}
             />
           ))}

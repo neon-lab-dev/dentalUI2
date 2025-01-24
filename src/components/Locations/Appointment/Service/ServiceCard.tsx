@@ -4,13 +4,13 @@ import { ICONS } from "@/assets";
 import Image from "next/image";
 
 // Define types for the props
-interface Service {
+interface ServiceCardData {
   name: string;
   duration: string;
 }
 
 interface ServiceCardProps {
-  service: Service;
+  service: ServiceCardData;
   isSelected: boolean;
   onCardSelect: () => void; // Callback function for selection
 }

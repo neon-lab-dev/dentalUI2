@@ -4,12 +4,13 @@ services:
     platform: linux/arm64/v8
     build: .
     ports:
-      - '3000:3000'
+      - '3001:3000'
     environment:
       - NODE_ENV=development
       # Add your app's environment variables from .env
       - NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID}
       - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/index.php/api/v1
+      - NEXT_PUBLIC_API_BACKEND_BASE_URL=http://localhost:3001/api/v1
       - NEXT_PUBLIC_PROVIDER_ID=5
       - NEXT_PUBLIC_SERVICE_ID=2
       - NEXT_PUBLIC_API_USERNAME=test123

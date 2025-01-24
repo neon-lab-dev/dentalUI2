@@ -50,11 +50,17 @@ const initialState: ClinicState = {
 };
 
 // Async thunk to fetch clinics
-export const fetchClinics = createAsyncThunk("clinics/fetchClinics", async () => {
-  const response = await axios.get("https://dental-backend-three.vercel.app/api/v1/allclinic");
-  console.log(response.data.clinics);
-  return response.data.clinics as Clinic[]; // Explicitly type the response
-});
+export const fetchClinics = createAsyncThunk(
+  "clinics/fetchClinics",
+  async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/allclinic`);
+      return response.data.clinics;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 // New: Async thunk to fetch a single clinic by ID
 export const fetchClinicById = createAsyncThunk(
@@ -62,9 +68,9 @@ export const fetchClinicById = createAsyncThunk(
   async (clinicId: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `https://dental-backend-three.vercel.app/api/v1/clinic/${clinicId}`
+        `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/clinic/${clinicId}`
       );
-      return response.data.clinic as Clinic; // Explicitly type the response
+      return response.data.clinic;
     } catch (error: unknown) {
       // Ensure the error is typed correctly
       if (axios.isAxiosError(error) && error.response) {

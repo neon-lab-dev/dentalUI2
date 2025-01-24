@@ -49,44 +49,46 @@ const Navbar = () => {
             </Link>
           ))}
         </div>
-      <div className="flex items-center">
-        {/* Call-to-Action Buttons */}
-        <div className="flex items-center gap-2 md:gap-6">
-        {isLoggedIn ? (""
-        ):(<Link href={isLoggedIn ? "/locations/schedule-appointment" : "/login" }>
-        
-          <button  className="border-[#FF7F50] bg-none text-[#FF7F50] border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-base font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap ">
-            Book Now!
-          </button>
-        </Link>)}
-        
-          <Link href={isLoggedIn ? "/profile" : "/login"}>
+        <div className="flex items-center">
+          {/* Call-to-Action Buttons */}
+          <div className="flex items-center gap-2 md:gap-6">
             {isLoggedIn ? (
-              <button
-                className="lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap text-neutral-10 font-Poppins text-base bg-secondary-10"
-              >
-                <span>Hi, {first_name}!</span>
-              </button>
+              ""
             ) : (
-              <button  className=" border-[#FF7F50] bg-[#FF7F50] text-[#F5F5DC]   border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-sm font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap ">
-                Login
-              </button>
+              <Link href="/locations/schedule-appointment">
+                <button
+                  className="border-[#FF7F50] bg-none text-[#FF7F50] border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-base font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap"
+                >
+                  Book Now!
+                </button>
+              </Link>
             )}
-          </Link>
+            <Link href={isLoggedIn ? "/profile" : "/login"}>
+              {isLoggedIn ? (
+                <button
+                  className="lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap text-neutral-10 font-Poppins text-base bg-secondary-10"
+                >
+                  <span>Hi, {first_name}!</span>
+                </button>
+              ) : (
+                <button
+                  className=" border-[#FF7F50] bg-[#FF7F50] text-[#F5F5DC]   border lg:px-[50px] lg:py-[22px] md:px-[36px] md:py-[16px] px-[18px] py-[8px] lg:text-[22px] md:text-[18px] text-sm font-Poppins font-semibold rounded-[55px] flex items-center justify-center gap-3 text-nowrap "
+                >
+                  Login
+                </button>
+              )}
+            </Link>
+          </div>
+          {/* Hamburger Icon */}
+          <div className="lg:hidden flex items-center">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="focus:outline-none"
+            >
+              <Image src={ICONS.hamburger} alt="" className="md:size-14 size-7" />
+            </button>
+          </div>
         </div>
-        {/* Hamburger Icon */}
-        <div className="lg:hidden flex items-center">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="focus:outline-none"
-          >
-            <Image src={ICONS.hamburger} alt="" className="md:size-14 size-7" />
-          </button>
-        </div>
-      </div>
-        
-
-        
       </div>
     </Container>
   );

@@ -3,18 +3,21 @@ import React, { useState } from "react";
 import LocationData from "./LocationCard/LocationData";
 import DateTimeSelector from "./DateTimeSelector/DateTimeSelector";
 import { LocationProvider } from "./LocationContext";
+import { AppointmentData } from "@/types/appointment";
 
 interface LocationProps {
   goToNextStep: () => void; // Callback function for proceeding to the next step
-  updateAppointmentData: (field: string, value: string) => void; // Callback to update appointment data
+  goToPreviousStep: () => void; // Callback function for proceeding to the previous step
+  updateAppointmentData: (field: keyof AppointmentData, value: string | number) => void; // Callback to update appointment data
+  onClinicSelect: (clinicId: string, state: string, city: string, address: string) => void;
 }
 
-const Location: React.FC<LocationProps> = ({ goToNextStep, updateAppointmentData }) => {
+const Location: React.FC<LocationProps> = ({ goToNextStep, goToPreviousStep, updateAppointmentData, onClinicSelect }) => {
   const [selectedClinicId, setSelectedClinicId] = useState<string | null>(null); // State for selected clinic ID
   
   const handleClinicSelection = (clinicId: string, state: string, city: string, address: string) => {
     setSelectedClinicId(clinicId);
-    updateAppointmentData("clinicId", clinicId);
+    onClinicSelect(clinicId, state, city, address);
     updateAppointmentData("state", state);
     updateAppointmentData("city", city);
     updateAppointmentData("address", address);
@@ -34,8 +37,18 @@ const Location: React.FC<LocationProps> = ({ goToNextStep, updateAppointmentData
           ))}
         </div>
 
+        {/* Back Button */}
+        <button
+          onClick={goToPreviousStep}
+          className="self-start text-[#FF7F50] hover:text-[#ff6937] font-Poppins text-lg"
+        >
+          ← Back to Services
+        </button>
+
         {/* Select Location */}
-        <h2 className="font-Amiri font-bold text-center text-[32px] md:text-4xl lg:text-5xl font-bold leading-10 md:leading-[44px] lg:leading-[66px]">
+        <h2
+          className="font-Amiri text-center text-[32px] md:text-4xl lg:text-5xl leading-10 md:leading-[44px] lg:leading-[66px]"
+        >
           Select Location
         </h2>
         <LocationProvider>
@@ -43,16 +56,22 @@ const Location: React.FC<LocationProps> = ({ goToNextStep, updateAppointmentData
         </LocationProvider>
 
         {/* Select Date and Time */}
-        <h2 className="font-Amiri font-bold text-center text-[32px] md:text-4xl xl:text-5xl leading-10 md:leading-[44px] xl:leading-[66px]">
-          Select Date and Time
-        </h2>
-        <div className="w-full">
-        <DateTimeSelector
-  goToNextStep={goToNextStep}
-  selectedSubClinicId={selectedClinicId}
-  updateAppointmentData={updateAppointmentData} // Pass the missing prop
-/>
-        </div>
+        {selectedClinicId && (
+          <>
+            <h2
+              className="font-Amiri text-center text-[32px] md:text-4xl xl:text-5xl leading-10 md:leading-[44px] xl:leading-[66px]"
+            >
+              Select Date and Time
+            </h2>
+            <div className="w-full">
+              <DateTimeSelector
+                goToNextStep={goToNextStep}
+                selectedSubClinicId={selectedClinicId}
+                updateAppointmentData={updateAppointmentData}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

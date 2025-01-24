@@ -44,7 +44,7 @@ const LoginPage = () => {
     try {
       // Step 1: Login API
       const loginResponse = await axios.post(
-        "https://dental-backend-three.vercel.app/api/v1/login",
+        `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/login`,
         { email: userName, password },
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
@@ -52,13 +52,26 @@ const LoginPage = () => {
       if (loginResponse.data.success) {
         // Step 2: Fetch Profile API
         const profileResponse = await axios.get(
-          "https://dental-backend-three.vercel.app/api/v1/me",
+          `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/me`,
           { withCredentials: true } // Ensure credentials are sent
         );
   
         if (profileResponse.data.success) {
           const profileData = profileResponse.data.user;
-  
+          
+          // Format the date if it exists
+          const formatDate = (date: string) => {
+            if (!date) return "";
+            
+            // Try parsing the date
+            const parsedDate = new Date(date);
+            if (!isNaN(parsedDate.getTime())) {
+              return parsedDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+            }
+            
+            return date; // Return original if parsing fails
+          };
+
           // Step 3: Dispatch profile data to Redux
           dispatch(
             setUser({
@@ -68,7 +81,7 @@ const LoginPage = () => {
               email: profileData.email,
               induranceStatus: profileData.induranceStatus || "",
               phoneNo: profileData.phoneNo,
-              dob: profileData.dob || "",
+              dob: formatDate(profileData.dob || ""),
               isLoggedIn: true,
             })
           );

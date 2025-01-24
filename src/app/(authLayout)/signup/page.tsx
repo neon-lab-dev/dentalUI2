@@ -21,7 +21,7 @@ const SignUpPage = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.post(
-        "https://dental-backend-three.vercel.app/api/v1/register",
+        `${process.env.NEXT_PUBLIC_API_BACKEND_BASE_URL}/register`,
         {
           first_name: fname,
           last_name: lname,

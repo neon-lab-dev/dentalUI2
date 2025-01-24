@@ -1,106 +1,78 @@
-# Dental Clinic Website
+# Dental UI 2.0
 
-A modern, feature-rich dental clinic website built with Next.js 15 and TypeScript, designed to provide a seamless experience for dental patients.
+A modern, user-friendly dental appointment booking system built with Next.js and TypeScript.
 
 ## Features
 
-- 🦷 Modern and responsive UI design
-- 📅 Online appointment scheduling system
-- 📍 Multiple location support
-- 📱 Mobile-friendly interface
-- 📝 Dental blog integration with Sanity CMS
-- 🔄 Real-time appointment management
+### 🦷 Core Features
+- User authentication and registration
+- Clinic location search and selection
+- Interactive appointment scheduling
+- Service selection and booking
+- Provider availability management
+- Real-time appointment confirmation
 
-## Project Structure
+### 🎨 UI/UX
+- Modern, responsive design
+- Intuitive booking flow
+- Interactive service cards
+- Progress indicators
+- Loading states and error handling
+- Mobile-friendly interface
 
-```
-dentalUI2/
-├── src/
-│   ├── app/                    # Next.js app router pages
-│   ├── assets/                 # Static assets and images
-│   ├── components/             # Reusable UI components
-│   ├── services/               # API and external service integrations
-│   └── store/                  # Redux store configuration
-├── Dental-blog/               # Sanity CMS blog setup
-└── public/                    # Public assets
-```
+### 🔧 Technical Improvements
+- Redux state management for better data flow
+- TypeScript for type safety
+- API error handling and validation
+- Proper date and time formatting
+- Comprehensive logging for debugging
+- Code organization and reusability
 
-## Tech Stack
+## Recent Updates
 
-- **Frontend Framework:** Next.js 15
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **State Management:** Redux Toolkit
-- **CMS:** Sanity.io
-- **UI Components:** HeadlessUI
-- **Date Handling:** date-fns
-- **Slider:** Swiper
+### Service Selection & Booking Flow
+- Fixed service selection state management using Redux
+- Improved appointment data handling and validation
+- Added proper error handling for API responses
+- Enhanced user feedback during booking process
+- Fixed appointment creation payload formatting
+- Added detailed logging for debugging
 
-## Getting Started
+### Customer Management
+- Improved customer creation and lookup
+- Added validation for required customer fields
+- Enhanced error handling for customer operations
+- Better handling of customer data in appointment process
+
+### Code Quality
+- Created shared utility functions for common operations
+- Improved TypeScript type definitions
+- Enhanced code documentation
+- Better error messages and logging
+- Consistent API response handling
+
+## Setup
 
 1. Clone the repository
 2. Install dependencies:
    ```bash
    npm install
    ```
-
-3. Set up environment variables:
-   Create a `.env.local` file with necessary configurations
-
-4. Run the development server:
+3. Set up environment variables in `.env`
+4. Start the development server:
    ```bash
    npm run dev
    ```
 
-5. For blog setup (optional):
-   ```bash
-   cd Dental-blog
-   npm install
-   npm run dev
-   ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Development
-
-- The project uses Next.js App Router for routing
-- Components are organized by feature in the `components` directory
-- Appointment scheduling system is available at `/locations/schedule-appointment`
-- Blog content is managed through Sanity CMS
-
-## Docker Setup
-
-To run the application using Docker, follow these steps:
-
-1. **Build the Docker images**:
-   ```bash
-   docker-compose build
-   ```
-
-2. **Run the application**:
-   ```bash
-   docker-compose up
-   ```
-
-3. **Access the application**:
-   Open your browser and go to `http://localhost:3000`.
-
-4. **Stopping the application**:
-   To stop the application, press `CTRL+C` in the terminal where you ran the `docker-compose up` command.
-
-## Deployment
-
-The application can be deployed using Vercel or any other Next.js-compatible hosting platform:
-
-```bash
-npm run build
-npm run start
+## Environment Variables
+```
+NEXT_PUBLIC_API_URL=http://localhost:8080
 ```
 
 ## Contributing
+1. Create a feature branch
+2. Make your changes
+3. Submit a pull request
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
+## License
+MIT License
