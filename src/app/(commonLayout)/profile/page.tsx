@@ -1,16 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import { easyAppointmentsService } from '@/services/easyAppointments';
-import { formatDateTime, formatDateForProfile } from "@/utils/formatters";
-import { ICONS } from "@/assets";
-import Image from "next/image";
-import InputField from "@/components/Form/InputField";
-import { AppDispatch, RootState } from '@/store';
-import axios from 'axios';
-import { clearUser } from '@/store/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { AppDispatch, RootState } from '@/store';
+import { clearUser } from '@/store/slices/userSlice';
+import { easyAppointmentsService } from '@/services/easyAppointments';
+import InputField from '@/components/Form/InputField';
 
 interface Appointment {
     id: number;
@@ -33,72 +30,55 @@ interface Appointment {
     providerZip?: string;
 }
 
-interface AppointmentFilters {
-    status?: 'upcoming' | 'completed' | 'cancelled' | 'in-progress';
-    startDate?: string;
-    endDate?: string;
-}
-
 const MyProfile = () => {
-    const user = useSelector((state: RootState) => state.user);
-    const [appointments, setAppointments] = useState<Appointment[]>([]);
-    const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [activeTab, setActiveTab] = useState<'all' | 'upcoming' | 'completed'>('all');
     const [activeSection, setActiveSection] = useState<'profile' | 'appointments'>('profile');
+    const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [activeTab, setActiveTab] = useState<'all' | 'upcoming' | 'completed'>('all');
+    const user = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
         const fetchAppointments = async () => {
-            try {
+            if (user.customerId) {
                 setLoading(true);
-                if (user.customerId) {
+                try {
                     const result = await easyAppointmentsService.getCustomerAppointments(user.customerId, {
-                        page: currentPage,
-                        length: 50, // Increased to show more appointments
                         sort: 'start',
                         order: 'desc'
                     });
 
                     setAppointments(result.appointments);
-                    setTotalPages(result.totalPages);
+                } catch (error) {
+                    console.error('Failed to fetch appointments:', error);
+                } finally {
+                    setLoading(false);
                 }
-            } catch (error) {
-                console.error('Failed to fetch appointments:', error);
-                setAppointments([]);
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchAppointments();
-    }, [user.customerId, currentPage]);
+    }, [user.customerId]);
 
-    useEffect(() => {
-        if (activeTab === 'all') {
-            setFilteredAppointments(appointments);
-        } else {
-            setFilteredAppointments(appointments.filter(apt => apt.status === activeTab));
-        }
-    }, [activeTab, appointments]);
+    const filteredAppointments = appointments.filter((appointment) => {
+        if (activeTab === 'all') return true;
+        return appointment.status === activeTab;
+    });
 
-    const handleTabChange = (status: typeof activeTab) => {
-        setActiveTab(status);
-        setCurrentPage(1); // Reset to first page when changing tabs
+    const handleTabChange = (tab: typeof activeTab) => {
+        setActiveTab(tab);
     };
 
     const getTabStyle = (tabName: typeof activeTab) => {
         return `px-6 py-2 rounded-full text-sm font-medium cursor-pointer transition-colors ${activeTab === tabName
-                ? 'bg-white text-black'
-                : 'text-gray-600 hover:bg-gray-100'
+            ? 'bg-white text-black'
+            : 'text-gray-600 hover:bg-gray-100'
             }`;
     };
 
     const getSectionStyle = (section: typeof activeSection) => {
         return `w-full px-4 py-3 text-left text-sm font-medium cursor-pointer transition-colors ${activeSection === section
-                ? 'bg-primary-50 text-primary-600 border-r-2 border-primary-600'
-                : 'text-gray-600 hover:bg-gray-50'
+            ? 'bg-primary-50 text-primary-600 border-r-2 border-primary-600'
+            : 'text-gray-600 hover:bg-gray-50'
             }`;
     };
 
@@ -195,7 +175,7 @@ const MyProfile = () => {
                                             label="Date Of Birth"
                                             type="text"
                                             placeholder="Enter Date Of Birth"
-                                            value={formatDateForProfile(user.dob)}
+                                            value={user.dob}
                                             className="w-full"
                                             disabled
                                         />
@@ -360,6 +340,7 @@ const Page = () => {
     const user = useSelector((state: RootState) => state.user);
     return (
         <div className="container mx-auto py-4 md:py-8 px-4 md:px-8">
+            <h1>Welcome, {user.first_name}</h1>
             <MyProfile />
         </div>
     );
