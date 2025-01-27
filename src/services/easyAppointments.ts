@@ -212,6 +212,12 @@ export interface Appointment {
     serviceId: number;
     googleCalendarId: string | null;
     status: string;
+    serviceName?: string;
+    providerName?: string;
+    providerAddress?: string;
+    providerCity?: string;
+    providerState?: string;
+    providerZip?: string;
 }
 
 /**
@@ -534,71 +540,152 @@ class EasyAppointmentsService {
     }
 
     /**
-     * Get appointments for a specific customer
-     * @param customerId - ID of the customer
-     * @returns List of appointments
+     * Fetches a specific provider's details
+     * @param providerId - ID of the provider to fetch
+     * @returns Promise<Provider>
      */
-    public async getCustomerAppointments(customerId: number): Promise<Appointment[]> {
+    async getProviderById(providerId: number): Promise<Provider> {
         try {
-            console.log('📅 [APPOINTMENTS] Fetching appointments for customer:', customerId);
+            const response = await apiClient.get(`/providers/${providerId}`);
+            return response.data;
+        } catch (error) {
+            throw this.handleApiError(error, 'Failed to fetch provider details');
+        }
+    }
 
+    /**
+     * Fetches a specific service's details
+     * @param serviceId - ID of the service to fetch
+     * @returns Promise<Service>
+     */
+    async getServiceById(serviceId: number): Promise<Service> {
+        try {
+            const response = await apiClient.get(`/services/${serviceId}`);
+            return response.data;
+        } catch (error) {
+            throw this.handleApiError(error, 'Failed to fetch service details');
+        }
+    }
+
+    /**
+     * Get appointments for a specific customer with pagination and filtering
+     * Also fetches provider and service details for each appointment
+     */
+    public async getCustomerAppointments(
+        customerId: number,
+        options: {
+            page?: number;
+            length?: number;
+            sort?: string;
+            order?: 'asc' | 'desc';
+            status?: string;
+        } = {}
+    ): Promise<{
+        appointments: Appointment[];
+        totalPages: number;
+    }> {
+        try {
+            const { page = 1, length = 10, sort = 'start', order = 'desc' } = options;
             const response = await apiClient.get('/appointments', {
                 params: {
-                    customerId: customerId,
-                    page: 1,
-                    length: 50,
-                    sort: 'start',
-                    order: 'desc'
+                    customerId,
+                    page,
+                    length,
+                    sort,
+                    order
                 }
             });
 
-            console.log('📥 [APPOINTMENTS] Got response:', response.data);
-
-            if (!response.data || !Array.isArray(response.data)) {
-                console.warn('⚠️ [APPOINTMENTS] Invalid response format:', response.data);
-                return [];
+            if (!response?.data?.length) {
+                return { appointments: [], totalPages: 0 };
             }
 
-            // Map API response to our Appointment type
-            const appointments: Appointment[] = response.data.map((appointment: any) => {
-                // Determine appointment status based on dates
-                const now = new Date();
-                const startDate = new Date(appointment.start_datetime);
-                const endDate = new Date(appointment.end_datetime);
+            const appointments = await Promise.all(
+                response.data
+                    .sort((a: any, b: any) => {
+                        // Sort by start date in descending order (latest first)
+                        return new Date(b.start).getTime() - new Date(a.start).getTime();
+                    })
+                    .map(async (appointment: any) => {
+                        try {
+                            // Fetch provider and service details
+                            const [provider, service] = await Promise.all([
+                                this.getProviderById(appointment.providerId),
+                                this.getServiceById(appointment.serviceId)
+                            ]);
 
-                let status = appointment.status || '';
-                if (!status) {
-                    if (endDate < now) {
-                        status = 'completed';
-                    } else if (startDate > now) {
-                        status = 'upcoming';
-                    } else {
-                        status = 'in-progress';
-                    }
-                }
+                            // Determine appointment status based on dates and existing status
+                            const now = new Date();
+                            const startDate = new Date(appointment.start);
+                            const endDate = new Date(appointment.end);
 
-                return {
-                    id: appointment.id,
-                    book: appointment.book || '',
-                    hash: appointment.hash || '',
-                    start: appointment.start_datetime,
-                    end: appointment.end_datetime,
-                    location: appointment.location || 'Main Office',
-                    notes: appointment.notes || null,
-                    serviceId: appointment.id_services,
-                    customerId: appointment.id_users_customer,
-                    providerId: appointment.id_users_provider,
-                    googleCalendarId: appointment.google_calendar_id || null,
-                    status
-                };
-            });
+                            let appointmentStatus = appointment.status?.toLowerCase() || '';
 
-            console.log('✅ [APPOINTMENTS] Processed appointments:', appointments);
-            return appointments;
+                            // Map API status to our status types based on dates
+                            if (appointmentStatus === 'confirmed' || appointmentStatus === 'booked') {
+                                if (startDate > now) {
+                                    appointmentStatus = 'upcoming';
+                                } else if (endDate < now) {
+                                    appointmentStatus = 'completed';
+                                } else {
+                                    appointmentStatus = 'in-progress';
+                                }
+                            } else if (appointmentStatus === 'cancelled') {
+                                appointmentStatus = 'cancelled';
+                            }
 
+                            // Only filter by status if explicitly provided
+                            if (options.status && appointmentStatus !== options.status) {
+                                return null;
+                            }
+
+                            console.log('📦 [APPOINTMENT] Service details:', {
+                                appointmentId: appointment.id,
+                                serviceId: appointment.serviceId,
+                                serviceName: service.name,
+                                providerId: appointment.providerId,
+                                providerName: `${provider.firstName} ${provider.lastName}`.trim()
+                            });
+
+                            const mappedAppointment: Appointment = {
+                                id: appointment.id,
+                                book: appointment.book || '',
+                                hash: appointment.hash || '',
+                                start: appointment.start,
+                                end: appointment.end,
+                                location: provider.address || 'Main Office',
+                                notes: appointment.notes || null,
+                                serviceId: service.id, // Fix the service ID mapping
+                                customerId: appointment.customerId,
+                                providerId: appointment.providerId,
+                                googleCalendarId: appointment.googleCalendarId || null,
+                                status: appointmentStatus,
+                                serviceName: service.name,
+                                providerName: `${provider.firstName} ${provider.lastName}`.trim(),
+                                providerAddress: provider.address || '',
+                                providerCity: provider.city || '',
+                                providerState: provider.state || '',
+                                providerZip: provider.zip || ''
+                            };
+
+                            return mappedAppointment;
+                        } catch (error) {
+                            console.error('Failed to fetch details for appointment:', appointment.id, error);
+                            return null;
+                        }
+                    })
+            );
+
+            // Filter out null appointments (failed to fetch details)
+            const validAppointments = appointments.filter((apt): apt is Appointment => apt !== null);
+
+            return {
+                appointments: validAppointments,
+                totalPages: Math.ceil(validAppointments.length / length)
+            };
         } catch (error) {
-            console.error('🚨 [APPOINTMENTS] Error fetching appointments:', error);
-            throw this.handleApiError(error, 'Failed to fetch appointments');
+            console.error('Failed to fetch appointments:', error);
+            return { appointments: [], totalPages: 0 };
         }
     }
 }
