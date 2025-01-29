@@ -2,6 +2,7 @@ import "./globals.css";
 import { Amiri, Poppins } from "next/font/google";
 import { Providers } from "@/store/Providers";
 import Rehydration from "@/store/Rehydration";
+import { Toaster } from 'react-hot-toast';
 
 const amiri = Amiri({
   subsets: ["latin"],
@@ -30,6 +31,33 @@ export default function RootLayout({
       <body className={`${amiri.className} ${poppins.className}`}>
         <Providers>
           <Rehydration>{children}</Rehydration>
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            gutter={8}
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              },
+              success: {
+                duration: 3000,
+                iconTheme: {
+                  primary: '#22c55e',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                duration: 4000,
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
         </Providers>
       </body>
     </html>

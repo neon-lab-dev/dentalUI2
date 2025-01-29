@@ -15,6 +15,7 @@ import { easyAppointmentsService } from "@/services/easyAppointments";
 import FinalBooking from "@/components/Locations/Appointment/FinalBooking/FinalBooking";
 import { AppointmentData, PartialAppointmentData, RequiredAppointmentFields } from "@/types/appointment";
 import DateTimeSelector from "@/components/Locations/Appointment/Location/DateTimeSelector/DateTimeSelector";
+import { showToast } from '@/utils/toast';
 
 const ClinicDetailsPage = () => {
   const clinic_id = useParams()?.clinic_id as string;
@@ -65,7 +66,7 @@ const ClinicDetailsPage = () => {
       const missingFields = requiredFields.filter(field => !appointmentData[field]);
       
       if (missingFields.length > 0) {
-        alert(`Please select all required appointment details: ${missingFields.join(', ')}`);
+        showToast.error(`Please select all required appointment details: ${missingFields.join(', ')}`);
         return;
       }
     }

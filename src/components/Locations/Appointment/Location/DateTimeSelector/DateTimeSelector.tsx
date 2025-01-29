@@ -8,6 +8,7 @@ import { useAppDispatch } from "@/store";
 import { fetchAvailabilities } from "@/store/slices/availabilitySlice";
 import { AppointmentData } from "@/types/appointment";
 import { formatTimeForDisplay } from "@/utils/formatters";
+import { showToast } from '@/utils/toast';
 
 interface DatePickerPageProps {
   goToNextStep: () => void;
@@ -72,7 +73,7 @@ const DatePickerPage: React.FC<DatePickerPageProps> = ({
 
   const handleContinue = () => {
     if (!selectedTime) {
-      alert("Please select a time slot");
+      showToast.error("Please select a time slot");
       return;
     }
     goToNextStep();

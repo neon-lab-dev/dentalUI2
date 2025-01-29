@@ -21,6 +21,8 @@ import FinalBooking from "@/components/Locations/Appointment/FinalBooking/FinalB
 import { Service as ServiceType } from "@/services/easyAppointments";
 import { easyAppointmentsService } from "@/services/easyAppointments";
 import { AppointmentData, RequiredAppointmentFields } from "@/types/appointment";
+import { showToast } from '@/utils/toast';
+import { useRouter } from 'next/navigation';
 
 /**
  * Main component for the appointment scheduling page
@@ -111,30 +113,37 @@ const ScheduleAppointment = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
+  const router = useRouter();
+
   /**
    * Handles the final appointment booking
    */
   const handleBookAppointment = async (completeAppointmentData: AppointmentData) => {
+    console.log('✅ [PAGE] Starting booking process with data:', completeAppointmentData);
+    
     try {
-      console.log('📝 [PAGE] Calling bookAppointment service...');
       const isConfirmed = await easyAppointmentsService.bookAppointment(completeAppointmentData);
       console.log('✅ [PAGE] Booking service returned:', isConfirmed);
       
       if (!isConfirmed) {
         console.log('❌ [PAGE] Appointment not confirmed');
-        alert('Appointment could not be confirmed. Please try again.');
+        showToast.error('Appointment could not be confirmed. Please try again.');
         return;
       }
       
       // Show success and redirect
-      console.log('✅ [PAGE] Booking successful, showing alert and redirecting...');
-      alert('Appointment booked successfully! You will receive a confirmation email shortly.');
-      window.location.replace('/');
+      console.log('✅ [PAGE] Booking successful, showing toast and redirecting...');
+      showToast.success('Appointment booked successfully! You will receive a confirmation email shortly.');
+      
+      // Delay redirect slightly to allow toast to be seen
+      setTimeout(() => {
+        router.push('/');
+      }, 2000);
       
     } catch (error) {
       console.log('❌ [PAGE] Error in booking process:', error);
       const message = error instanceof Error ? error.message : 'Failed to book appointment. Please try again.';
-      alert(message);
+      showToast.error(message);
       throw error; // Re-throw to let FinalBooking handle it
     }
   };

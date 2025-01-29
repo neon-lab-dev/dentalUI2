@@ -18,6 +18,8 @@ import { AppointmentData, FinalBookingData } from "@/types/appointment";
 import { easyAppointmentsService } from "@/services/easyAppointments";
 import { setUser } from "@/store/slices/userSlice";
 import { formatDuration } from "@/utils/formatters";
+import { showToast } from '@/utils/toast';
+import { useRouter } from 'next/navigation';
 
 /**
  * Props interface for the FinalBooking component
@@ -96,6 +98,7 @@ const FinalBooking = ({ bookAppointment, appointmentData }: FinalBookingProps) =
   const user = useSelector((state: RootState) => state.user);
   const { selectedService } = useSelector((state: RootState) => state.services);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   // Local state for form fields and loading
   const [fname, setFname] = useState(user.first_name || '');
@@ -145,19 +148,16 @@ const FinalBooking = ({ bookAppointment, appointmentData }: FinalBookingProps) =
   /**
    * Handles the appointment booking submission
    */
-  const handleBooking = async () => {
-    if (!validateForm()) {
-      return;
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
-      setIsSubmitting(true);
-
       // Validate date is not in the past
       const appointmentDateTime = new Date(`${appointmentData.appointmentDate} ${appointmentData.time}`);
       const now = new Date();
       if (appointmentDateTime < now) {
-        alert('Cannot book appointments in the past. Please select a future date and time.');
+        showToast.error('Cannot book appointments in the past. Please select a future date and time.');
         setIsSubmitting(false);
         return;
       }
@@ -165,14 +165,14 @@ const FinalBooking = ({ bookAppointment, appointmentData }: FinalBookingProps) =
       // Format phone number
       const phoneStr = phone.toString().replace(/\D/g, '');
       if (phoneStr.length !== 10) {
-        alert('Please enter a valid 10-digit phone number');
+        showToast.error('Please enter a valid 10-digit phone number');
         setIsSubmitting(false);
         return;
       }
 
       // Ensure we have the correct service data
       if (!selectedService) {
-        alert('Service information is missing. Please go back and select a service.');
+        showToast.error('Service information is missing. Please go back and select a service.');
         setIsSubmitting(false);
         return;
       }
@@ -191,11 +191,13 @@ const FinalBooking = ({ bookAppointment, appointmentData }: FinalBookingProps) =
       };
 
       // Set a timeout to ensure loading doesn't get stuck
+      const loadingToastId = showToast.loading('Booking your appointment...');
       const timeoutId = setTimeout(() => {
         console.log('⚠️ [BOOKING] Request taking too long, proceeding with redirect...');
         setIsSubmitting(false);
-        alert('Your appointment request has been sent. You will receive a confirmation email shortly.');
-        window.location.replace('/');
+        showToast.dismiss(loadingToastId);
+        showToast.success('Your appointment request has been sent. You will receive a confirmation email shortly.');
+        router.push('/');
       }, 5500); // 5.5 seconds to account for API timeout
 
       try {
@@ -225,17 +227,19 @@ const FinalBooking = ({ bookAppointment, appointmentData }: FinalBookingProps) =
         // Now book the appointment
         await bookAppointment(completeAppointmentData);
         clearTimeout(timeoutId); // Clear timeout if request succeeds
+        showToast.dismiss(loadingToastId);
       } catch (error) {
         clearTimeout(timeoutId); // Clear timeout if request fails
+        showToast.dismiss(loadingToastId);
         throw error; // Re-throw to be caught by outer catch block
       }
 
     } catch (error) {
       console.error('🚨 Booking failed:', error);
       if (error instanceof Error) {
-        alert(`Booking failed: ${error.message}`);
+        showToast.error(`Booking failed: ${error.message}`);
       } else {
-        alert('Something went wrong while booking your appointment. Please try again.');
+        showToast.error('Something went wrong while booking your appointment. Please try again.');
       }
       setIsSubmitting(false);
     }
@@ -400,7 +404,7 @@ const FinalBooking = ({ bookAppointment, appointmentData }: FinalBookingProps) =
 
         {/* Book Appointment Button */}
         <Button
-          onClick={handleBooking}
+          onClick={handleSubmit}
           variant="Filled"
           disable={isSubmitting}
           classNames={`w-full flex justify-center px-[28px] py-[14px] transition-all duration-300 ${isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:scale-[1.02]"

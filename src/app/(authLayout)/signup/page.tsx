@@ -4,6 +4,8 @@ import axios from "axios";
 import InputField from "@/components/Form/InputField";
 import Button from "@/components/Buttons/Button";
 import Link from "next/link";
+import { showToast } from '@/utils/toast';
+import { useRouter } from 'next/navigation';
 
 const SignUpPage = () => {
   const [fname, setFname] = useState("");
@@ -16,6 +18,7 @@ const SignUpPage = () => {
   const [cnfpassword, setCnfPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleRegister = async () => {
     setLoading(true); // Start loading
@@ -36,24 +39,22 @@ const SignUpPage = () => {
       );
 
       if (response.data.success) {
-        alert("Registration successful");
+        return response.data;
       } else {
-        setErrorMessage(`Registration failed: ${response.data.message}`);
+        throw new Error(response.data.message);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        setErrorMessage(
-          `Registration failed: ${error.response?.data?.message || "Unknown error occurred."}`
-        );
+        throw new Error(error.response?.data?.message || "Unknown error occurred.");
       } else {
-        setErrorMessage("An unexpected error occurred. Please try again.");
+        throw error;
       }
     } finally {
       setLoading(false); // Stop loading
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fname || !lname || !email || !phone || !dob || !password || !cnfpassword) {
       setErrorMessage("All fields are required.");
@@ -72,7 +73,15 @@ const SignUpPage = () => {
       return;
     }
     setErrorMessage(""); // Clear errors
-    handleRegister();
+    try {
+      await handleRegister();
+      showToast.success("Registration successful! Redirecting to login...");
+      setTimeout(() => {
+        router.push('/login');
+      }, 1500);
+    } catch (error) {
+      showToast.error(error instanceof Error ? error.message : "Registration failed. Please try again.");
+    }
   };
 
   return (
