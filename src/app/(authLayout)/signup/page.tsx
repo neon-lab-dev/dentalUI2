@@ -6,6 +6,7 @@ import Button from "@/components/Buttons/Button";
 import Link from "next/link";
 import { showToast } from '@/utils/toast';
 import { useRouter } from 'next/navigation';
+import { validateForm, validators } from '@/utils/validation';
 
 const SignUpPage = () => {
   const [fname, setFname] = useState("");
@@ -56,23 +57,32 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fname || !lname || !email || !phone || !dob || !password || !cnfpassword) {
-      setErrorMessage("All fields are required.");
+
+    // Define validation rules
+    const validationRules = {
+      fname: [validators.required('First name')],
+      lname: [validators.required('Last name')],
+      email: [validators.required('Email'), validators.email()],
+      phone: [validators.required('Phone number'), validators.phone()],
+      dob: [validators.required('Date of birth'), validators.date('Invalid date format')],
+      password: [validators.required('Password'), validators.password()],
+      cnfpassword: [
+        validators.required('Confirm password'),
+        validators.passwordMatch(password),
+      ],
+    };
+
+    // Validate form
+    const formData = { fname, lname, email, phone, dob, password, cnfpassword };
+    const errors = validateForm(formData, validationRules);
+
+    if (Object.keys(errors).length > 0) {
+      const errorMessage = Object.values(errors)[0];
+      setErrorMessage(errorMessage);
       return;
     }
-    if (password.length < 6) {
-      setErrorMessage("Password must be at least 6 characters long.");
-      return;
-    }
-    if (password !== cnfpassword) {
-      setErrorMessage("Passwords do not match.");
-      return;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setErrorMessage("Please enter a valid email address.");
-      return;
-    }
-    setErrorMessage(""); // Clear errors
+
+    setErrorMessage(''); // Clear errors
     try {
       await handleRegister();
       showToast.success("Registration successful! Redirecting to login...");

@@ -20,6 +20,7 @@ import { setUser } from "@/store/slices/userSlice";
 import { formatDuration } from "@/utils/formatters";
 import { showToast } from '@/utils/toast';
 import { useRouter } from 'next/navigation';
+import { validateForm, validators } from '@/utils/validation';
 
 /**
  * Props interface for the FinalBooking component
@@ -130,33 +131,41 @@ const FinalBooking = ({ bookAppointment, appointmentData }: FinalBookingProps) =
     }
   }, [user]);
 
-  // Validate form fields
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!fname) newErrors.fname = 'First name is required';
-    if (!lname) newErrors.lname = 'Last name is required';
-    if (!email) newErrors.email = 'Email is required';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = 'Invalid email format';
-    if (!phone) newErrors.phone = 'Phone number is required';
-    if (!/^\d{10}$/.test(phone.toString())) newErrors.phone = 'Invalid phone number';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  /**
-   * Handles the appointment booking submission
-   */
+  // Validate form fields before submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Define validation rules
+    const validationRules = {
+      fname: [validators.required('First name')],
+      lname: [validators.required('Last name')],
+      email: [validators.required('Email'), validators.email()],
+      phone: [validators.required('Phone number'), validators.phone()],
+      dob: [validators.required('Date of birth'), validators.date('Invalid date format')],
+    };
+
+    // Validate form
+    const formData = { fname, lname, email, phone, dob };
+    const newErrors = validateForm(formData, validationRules);
+
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
+      setIsSubmitting(false);
+      const errorMessage = Object.values(newErrors)[0];
+      showToast.error(errorMessage);
+      return;
+    }
+
     try {
-      // Validate date is not in the past
+      // Validate appointment date is not in the past
       const appointmentDateTime = new Date(`${appointmentData.appointmentDate} ${appointmentData.time}`);
-      const now = new Date();
-      if (appointmentDateTime < now) {
+      const dateValidation = validateForm(
+        { appointmentDate: appointmentDateTime },
+        { appointmentDate: [validators.futureDate()] }
+      );
+
+      if (Object.keys(dateValidation).length > 0) {
         showToast.error('Cannot book appointments in the past. Please select a future date and time.');
         setIsSubmitting(false);
         return;
